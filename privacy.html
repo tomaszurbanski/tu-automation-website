@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Polityka Prywatności / Privacy Policy / Datenschutz – TU Automation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .privacy-page { max-width: 820px; margin: 0 auto; padding: 120px 5% 80px; position: relative; z-index: 2; }
+    .privacy-page h1 { font-family:'Rajdhani',sans-serif; font-size:2rem; color:#fff; margin-bottom:8px; }
+    .privacy-page .subtitle { color:var(--muted); font-size:0.85rem; margin-bottom:40px; }
+    .privacy-lang { display:flex; gap:8px; margin-bottom:32px; }
+    .privacy-lang-btn { padding:6px 14px; border:1px solid var(--border); background:transparent; color:var(--muted); cursor:pointer; font-family:'Rajdhani',sans-serif; font-size:0.85rem; font-weight:600; letter-spacing:1px; transition:all 0.2s; }
+    .privacy-lang-btn.active { border-color:var(--cyan); color:var(--cyan); }
+    .privacy-section { display:none; }
+    .privacy-section.active { display:block; }
+    .privacy-section h2 { font-family:'Rajdhani',sans-serif; font-size:1.1rem; color:var(--cyan); margin:28px 0 8px; letter-spacing:0.5px; text-transform:uppercase; }
+    .privacy-section p, .privacy-section li { font-size:0.9rem; color:var(--muted); line-height:1.9; margin-bottom:8px; }
+    .privacy-section ul { padding-left:20px; }
+    .back-link { display:inline-flex; align-items:center; gap:8px; color:var(--cyan); text-decoration:none; font-size:0.85rem; margin-bottom:32px; transition:opacity 0.2s; }
+    .back-link:hover { opacity:0.7; }
+  </style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav id="nav" style="position:fixed">
+  <div class="nav-logo">TU<span>Automation</span></div>
+  <div class="nav-right">
+    <a href="index.html" class="nav-cta" style="font-size:0.75rem">← Strona główna</a>
+  </div>
+</nav>
+
+<div class="privacy-page">
+  <a href="index.html" class="back-link">← Powrót / Back / Zurück</a>
+  <h1>Polityka Prywatności</h1>
+  <p class="subtitle">Privacy Policy · Datenschutzerklärung</p>
+
+  <div class="privacy-lang">
+    <button class="privacy-lang-btn active" onclick="showLang('pl',this)">PL</button>
+    <button class="privacy-lang-btn" onclick="showLang('en',this)">EN</button>
+    <button class="privacy-lang-btn" onclick="showLang('de',this)">DE</button>
+  </div>
+
+  <!-- PL -->
+  <div class="privacy-section active" id="priv-pl">
+    <h2>1. Administrator danych</h2>
+    <p>Administratorem danych osobowych jest Tomasz Urbański, prowadzący działalność pod nazwą TU Automation, Deutschland. Kontakt: turbanski824@gmail.com, tel. +49 157 56290902.</p>
+    <h2>2. Jakie dane zbieramy</h2>
+    <ul>
+      <li>Dane podane w formularzu kontaktowym: imię i nazwisko, e-mail, numer telefonu, nazwa firmy, opis projektu.</li>
+      <li>Dane techniczne: adres IP, typ przeglądarki, czas wizyty — wyłącznie w celach statystycznych, jeśli wyrazisz zgodę na cookies.</li>
+    </ul>
+    <h2>3. Cel przetwarzania</h2>
+    <p>Dane przetwarzane są wyłącznie w celu odpowiedzi na zapytanie kontaktowe i nawiązania współpracy. Nie sprzedajemy ani nie udostępniamy danych osobom trzecim.</p>
+    <h2>4. Cookies</h2>
+    <p>Strona może używać plików cookies do analizy ruchu (np. Google Analytics). Pliki cookies są zapisywane wyłącznie po wyrażeniu zgody. Możesz odmówić zgody lub ją cofnąć w każdej chwili.</p>
+    <h2>5. Prawa użytkownika</h2>
+    <p>Masz prawo do dostępu do swoich danych, ich poprawienia, usunięcia oraz wniesienia sprzeciwu wobec przetwarzania. Aby skorzystać z tych praw, skontaktuj się mailowo: turbanski824@gmail.com.</p>
+    <h2>6. Podstawa prawna</h2>
+    <p>Przetwarzanie danych odbywa się na podstawie art. 6 ust. 1 lit. b i f RODO (wykonanie umowy / prawnie uzasadniony interes).</p>
+    <h2>7. Kontakt</h2>
+    <p>TU Automation · Tomasz Urbański · Deutschland<br/>turbanski824@gmail.com · +49 157 56290902</p>
+  </div>
+
+  <!-- EN -->
+  <div class="privacy-section" id="priv-en">
+    <h2>1. Data controller</h2>
+    <p>The data controller is Tomasz Urbański, operating as TU Automation, Germany. Contact: turbanski824@gmail.com, phone +49 157 56290902.</p>
+    <h2>2. Data collected</h2>
+    <ul>
+      <li>Data submitted via the contact form: full name, email, phone number, company name, project description.</li>
+      <li>Technical data: IP address, browser type, visit time — for statistical purposes only, if you consent to cookies.</li>
+    </ul>
+    <h2>3. Purpose of processing</h2>
+    <p>Data is processed solely for the purpose of responding to your inquiry and establishing a business relationship. We do not sell or share personal data with third parties.</p>
+    <h2>4. Cookies</h2>
+    <p>The website may use cookies for traffic analysis (e.g. Google Analytics). Cookies are stored only after you give consent. You can decline or withdraw consent at any time.</p>
+    <h2>5. Your rights</h2>
+    <p>You have the right to access, correct, delete, and object to processing of your data. To exercise these rights, contact: turbanski824@gmail.com.</p>
+    <h2>6. Legal basis</h2>
+    <p>Processing is based on Art. 6(1)(b) and (f) GDPR (performance of a contract / legitimate interests).</p>
+    <h2>7. Contact</h2>
+    <p>TU Automation · Tomasz Urbański · Germany<br/>turbanski824@gmail.com · +49 157 56290902</p>
+  </div>
+
+  <!-- DE -->
+  <div class="privacy-section" id="priv-de">
+    <h2>1. Verantwortlicher</h2>
+    <p>Verantwortlicher im Sinne der DSGVO ist Tomasz Urbański, handelnd unter TU Automation, Deutschland. Kontakt: turbanski824@gmail.com, Tel. +49 157 56290902.</p>
+    <h2>2. Erhobene Daten</h2>
+    <ul>
+      <li>Über das Kontaktformular übermittelte Daten: Name, E-Mail, Telefonnummer, Firmenname, Projektbeschreibung.</li>
+      <li>Technische Daten: IP-Adresse, Browsertyp, Besuchszeit — ausschließlich zu statistischen Zwecken, sofern Sie der Cookie-Nutzung zustimmen.</li>
+    </ul>
+    <h2>3. Zweck der Verarbeitung</h2>
+    <p>Daten werden ausschließlich zur Beantwortung Ihrer Anfrage und zur Anbahnung einer Geschäftsbeziehung verarbeitet. Eine Weitergabe an Dritte erfolgt nicht.</p>
+    <h2>4. Cookies</h2>
+    <p>Die Website kann Cookies zur Verkehrsanalyse verwenden (z.B. Google Analytics). Cookies werden nur nach Ihrer Zustimmung gespeichert. Sie können die Zustimmung jederzeit verweigern oder widerrufen.</p>
+    <h2>5. Ihre Rechte</h2>
+    <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung und Widerspruch gegen die Verarbeitung Ihrer Daten. Zur Ausübung dieser Rechte wenden Sie sich an: turbanski824@gmail.com.</p>
+    <h2>6. Rechtsgrundlage</h2>
+    <p>Die Verarbeitung erfolgt auf Grundlage von Art. 6 Abs. 1 lit. b und f DSGVO (Vertragserfüllung / berechtigtes Interesse).</p>
+    <h2>7. Kontakt</h2>
+    <p>TU Automation · Tomasz Urbański · Deutschland<br/>turbanski824@gmail.com · +49 157 56290902</p>
+  </div>
+</div>
+
+<script>
+function showLang(lang, btn) {
+  document.querySelectorAll('.privacy-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.privacy-lang-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('priv-' + lang).classList.add('active');
+  btn.classList.add('active');
+}
+// auto-detect
+const bl = navigator.language.toLowerCase();
+if (bl.startsWith('de')) showLang('de', document.querySelectorAll('.privacy-lang-btn')[2]);
+else if (!bl.startsWith('pl')) showLang('en', document.querySelectorAll('.privacy-lang-btn')[1]);
+</script>
+</body>
+</html>

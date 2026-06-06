@@ -4,10 +4,9 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>TU Automation – Automatyka Przemysłowa | Tomasz Urbański</title>
-  <meta name="description" content="TU Automation – projektowanie i wdrażanie systemów automatyki przemysłowej. PLC Siemens, SCADA, HMI, roboty UR, aplikacje mobilne. Doświadczenie w przemyśle tekstylnym i produkcyjnym."/>
+  <meta name="description" content="TU Automation – projektowanie i wdrażanie systemów automatyki przemysłowej. PLC Siemens, SCADA, HMI, roboty UR. Niemcy i cały świat."/>
   <meta name="author" content="Tomasz Urbański"/>
-  <meta property="og:title" content="TU Automation – Automatyka Przemysłowa"/>
-  <meta property="og:description" content="Profesjonalne systemy sterowania PLC, SCADA, HMI oraz aplikacje dla robotów Universal Robots."/>
+  <meta property="og:title" content="TU Automation – Industrial Automation"/>
   <meta property="og:type" content="website"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
@@ -23,75 +22,69 @@
 <nav id="nav">
   <div class="nav-logo">TU<span>Automation</span></div>
   <ul class="nav-links" id="navLinks">
-    <li><a href="#services">Usługi</a></li>
-    <li><a href="#tech">Technologie</a></li>
-    <li><a href="#projects">Projekty</a></li>
-    <li><a href="#process">Proces</a></li>
-    <li><a href="#contact">Kontakt</a></li>
+    <li><a href="#services" data-i18n="nav.services">Usługi</a></li>
+    <li><a href="#tech" data-i18n="nav.tech">Technologie</a></li>
+    <li><a href="#projects" data-i18n="nav.projects">Projekty</a></li>
+    <li><a href="#process" data-i18n="nav.process">Proces</a></li>
+    <li><a href="#contact" data-i18n="nav.contact">Kontakt</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Zapytaj o projekt</a>
-  <div class="hamburger" id="hamburger">
-    <span></span><span></span><span></span>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="pl">PL</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="de">DE</button>
+    </div>
+    <a href="#contact" class="nav-cta" data-i18n="nav.cta">Zapytaj o projekt</a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
   </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
   <div class="hero-content">
-    <div class="hero-badge">Automatyka Przemysłowa</div>
+    <div class="hero-badge" data-i18n="hero.badge">Automatyka Przemysłowa</div>
     <h1 class="hero-title">
-      Inteligentne systemy<br/>
-      <span class="accent" id="typed"></span>
+      <span data-i18n="hero.title1">Inteligentne systemy</span><br/>
+      <span class="typed-line"><span class="accent" id="typed"></span><span class="cursor">_</span></span>
     </h1>
-    <p class="hero-subtitle">
-      Projektuję i wdrażam systemy sterowania PLC, SCADA i HMI dla przemysłu
-      produkcyjnego i tekstylnego. Od analizy wymagań po uruchomienie i serwis —
-      kompleksowe rozwiązania automatyki pod klucz.
+    <p class="hero-subtitle" data-i18n="hero.subtitle">
+      Projektuję i wdrażam systemy sterowania PLC, SCADA i HMI dla przemysłu produkcyjnego i tekstylnego. Od analizy wymagań po uruchomienie i serwis — kompleksowe rozwiązania automatyki pod klucz.
     </p>
     <div class="hero-btns">
-      <a href="#contact" class="btn-primary">Omów projekt</a>
-      <a href="#projects" class="btn-outline">Zobacz realizacje</a>
+      <a href="#contact" class="btn-primary" data-i18n="hero.btn1">Omów projekt</a>
+      <a href="#projects" class="btn-outline" data-i18n="hero.btn2">Zobacz realizacje</a>
     </div>
     <div class="hero-stats">
       <div class="stat-item">
         <span class="stat-num" data-count="15">0</span>
-        <span class="stat-label">Lat doświadczenia</span>
+        <span class="stat-label" data-i18n="hero.stat1">Lat doświadczenia</span>
       </div>
       <div class="stat-item">
         <span class="stat-num" data-count="80">0</span>
-        <span class="stat-label">Zrealizowanych projektów</span>
+        <span class="stat-label" data-i18n="hero.stat2">Zrealizowanych projektów</span>
       </div>
       <div class="stat-item">
         <span class="stat-num" data-count="12">0</span>
-        <span class="stat-label">Obsługiwanych klientów</span>
+        <span class="stat-label" data-i18n="hero.stat3">Obsługiwanych klientów</span>
       </div>
     </div>
   </div>
-
   <div class="hero-visual">
     <div class="hero-icon-card">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
       HMI
     </div>
     <div class="hero-icon-card">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/></svg>
       PLC
     </div>
     <div class="hero-icon-card">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83"/>
-      </svg>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83"/></svg>
       SCADA
     </div>
     <div class="hero-icon-card">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 2a7 7 0 100 14A7 7 0 0012 2zM5 12H2m20 0h-3M12 5V2m0 20v-3"/><circle cx="12" cy="12" r="2"/>
-      </svg>
-      Robot
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a7 7 0 100 14A7 7 0 0012 2zM5 12H2m20 0h-3M12 5V2m0 20v-3"/><circle cx="12" cy="12" r="2"/></svg>
+      UR
     </div>
   </div>
 </section>
@@ -99,61 +92,46 @@
 <!-- SERVICES -->
 <section id="services">
   <div class="section-header reveal">
-    <div class="section-tag">Oferta</div>
-    <h2 class="section-title">Zakres usług</h2>
-    <p class="section-desc">
-      Kompleksowa obsługa projektów automatyki — od koncepcji i programowania
-      po uruchomienie, szkolenie i serwis gwarancyjny.
-    </p>
+    <div class="section-tag" data-i18n="sec.services.tag">Oferta</div>
+    <h2 class="section-title" data-i18n="sec.services.title">Zakres usług</h2>
+    <p class="section-desc" data-i18n="sec.services.desc">Kompleksowa obsługa projektów automatyki — od koncepcji i programowania po uruchomienie, szkolenie i serwis gwarancyjny.</p>
   </div>
   <div class="services-grid">
     <div class="service-card reveal">
       <div class="service-num">01</div>
-      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/>
-      </svg>
-      <h3>Programowanie PLC</h3>
-      <p>Projektowanie i pisanie oprogramowania dla sterowników Siemens S5, S7, TIA Portal, LOGO! oraz innych platform. Strukturalne podejście, pełna dokumentacja kodu i modularna architektura programu.</p>
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/></svg>
+      <h3 data-i18n="s1.title">Programowanie PLC</h3>
+      <p data-i18n="s1.desc">Projektowanie i pisanie oprogramowania dla sterowników Siemens S5, S7, TIA Portal, LOGO! oraz innych platform. Strukturalne podejście, pełna dokumentacja kodu i modularna architektura programu.</p>
     </div>
     <div class="service-card reveal">
       <div class="service-num">02</div>
-      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/>
-      </svg>
-      <h3>Systemy SCADA i HMI</h3>
-      <p>Tworzenie paneli wizualizacyjnych i systemów nadzoru w WinCC, FactoryTalk, Ignition i innych platformach SCADA. Dashboardy w czasie rzeczywistym, alarmy, trendy i raporty historyczne.</p>
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+      <h3 data-i18n="s2.title">Systemy SCADA i HMI</h3>
+      <p data-i18n="s2.desc">Tworzenie paneli wizualizacyjnych i systemów nadzoru w WinCC, FactoryTalk, Ignition. Dashboardy w czasie rzeczywistym, alarmy, trendy i raporty historyczne.</p>
     </div>
     <div class="service-card reveal">
       <div class="service-num">03</div>
-      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 2a7 7 0 100 14A7 7 0 0012 2zM5 12H2m20 0h-3M12 5V2m0 20v-3"/><circle cx="12" cy="12" r="2"/>
-      </svg>
-      <h3>Aplikacje dla UR</h3>
-      <p>Tworzenie aplikacji URCaps dla robotów Universal Robots. Integracja chwytaków, czujników, systemów wizji i zewnętrznych systemów sterowania. Programowanie URScript i przepływ procesów robotycznych.</p>
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a7 7 0 100 14A7 7 0 0012 2zM5 12H2m20 0h-3M12 5V2m0 20v-3"/><circle cx="12" cy="12" r="2"/></svg>
+      <h3 data-i18n="s3.title">Aplikacje dla UR</h3>
+      <p data-i18n="s3.desc">Tworzenie aplikacji URCaps dla robotów Universal Robots. Integracja chwytaków, czujników, systemów wizji i zewnętrznych systemów sterowania. Programowanie URScript.</p>
     </div>
     <div class="service-card reveal">
       <div class="service-num">04</div>
-      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M4 4h16v16H4z M4 9h16 M9 9v11"/>
-      </svg>
-      <h3>Sieci przemysłowe</h3>
-      <p>Projektowanie i uruchamianie sieci Profibus, Profinet, EtherNet/IP, Modbus TCP/RTU. Konfiguracja urządzeń sieciowych, diagnostyka i optymalizacja komunikacji między sterownikami a urządzeniami peryferyjnymi.</p>
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z M4 9h16 M9 9v11"/></svg>
+      <h3 data-i18n="s4.title">Sieci przemysłowe</h3>
+      <p data-i18n="s4.desc">Projektowanie i uruchamianie sieci Profibus, Profinet, EtherNet/IP, Modbus TCP/RTU. Konfiguracja urządzeń sieciowych, diagnostyka i optymalizacja komunikacji.</p>
     </div>
     <div class="service-card reveal">
       <div class="service-num">05</div>
-      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 18.5a6.5 6.5 0 100-13 6.5 6.5 0 000 13z"/><path d="M20.5 20.5l-3-3M3.5 20.5l3-3M20.5 3.5l-3 3M3.5 3.5l3 3"/>
-      </svg>
-      <h3>Modernizacje i migracje</h3>
-      <p>Migracja starszych systemów S5, S7-300 na nowoczesne platformy TIA Portal bez zatrzymywania produkcji. Integracja legacy systemów z nowymi urządzeniami i modernizacja instalacji elektrycznej.</p>
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 18.5a6.5 6.5 0 100-13 6.5 6.5 0 000 13z"/><path d="M20.5 20.5l-3-3M3.5 20.5l3-3M20.5 3.5l-3 3M3.5 3.5l3 3"/></svg>
+      <h3 data-i18n="s5.title">Modernizacje i migracje</h3>
+      <p data-i18n="s5.desc">Migracja starszych systemów S5, S7-300 na nowoczesne platformy TIA Portal bez zatrzymywania produkcji. Integracja legacy systemów z nowymi urządzeniami.</p>
     </div>
     <div class="service-card reveal">
       <div class="service-num">06</div>
-      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-      </svg>
-      <h3>Aplikacje i IoT</h3>
-      <p>Tworzenie dedykowanych aplikacji mobilnych i webowych do monitorowania maszyn, zarządzania serwisem i wizualizacji danych produkcyjnych. Integracja z bazami danych i platformami IoT.</p>
+      <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      <h3 data-i18n="s6.title">AI i kontrola maszyn</h3>
+      <p data-i18n="s6.desc">Integracja sztucznej inteligencji z systemami sterowania: predykcja awarii, anomalie, optymalizacja parametrów procesu w czasie rzeczywistym. Dedykowane aplikacje mobilne i webowe do monitorowania i zarządzania serwisem.</p>
     </div>
   </div>
 </section>
@@ -161,13 +139,10 @@
 <!-- TECH -->
 <section id="tech">
   <div class="section-header reveal">
-    <div class="section-tag">Stack technologiczny</div>
-    <h2 class="section-title">Technologie i platformy</h2>
+    <div class="section-tag" data-i18n="sec.tech.tag">Stack technologiczny</div>
+    <h2 class="section-title" data-i18n="sec.tech.title">Technologie i platformy</h2>
   </div>
-  <p class="tech-text reveal">
-    Wieloletnie doświadczenie z szerokim spektrum systemów automatyki —
-    od klasycznych sterowników Siemens S5 po nowoczesne platformy chmurowe i AI.
-  </p>
+  <p class="tech-text reveal" data-i18n="sec.tech.desc">Wieloletnie doświadczenie z szerokim spektrum systemów automatyki — od klasycznych sterowników Siemens S5 po nowoczesne platformy chmurowe i AI.</p>
   <div class="tech-grid reveal">
     <span class="tech-tag highlight">Siemens S5</span>
     <span class="tech-tag highlight">Siemens S7</span>
@@ -200,83 +175,45 @@
 <!-- CLIENTS -->
 <section id="clients">
   <div class="section-header reveal">
-    <div class="section-tag">Branże</div>
-    <h2 class="section-title">Obsługiwane sektory</h2>
-    <p class="section-desc">Doświadczenie zdobyte w wymagających środowiskach przemysłowych różnych branż.</p>
+    <div class="section-tag" data-i18n="sec.clients.tag">Branże</div>
+    <h2 class="section-title" data-i18n="sec.clients.title">Obsługiwane sektory</h2>
+    <p class="section-desc" data-i18n="sec.clients.desc">Doświadczenie zdobyte w wymagających środowiskach przemysłowych różnych branż.</p>
   </div>
   <div class="clients-grid">
     <div class="client-card reveal">
-      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11m16-11v11M8 10v11m4-11v11m4-11v11"/>
-      </svg>
-      <div>
-        <h4>Przemysł tekstylny</h4>
-        <p>Automaty dziewiarskie, maszyny tkackie, linie farbiarskie, systemy nawojowe</p>
-      </div>
+      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11m16-11v11M8 10v11m4-11v11m4-11v11"/></svg>
+      <div><h4 data-i18n="c1.title">Przemysł tekstylny</h4><p data-i18n="c1.desc">Automaty dziewiarskie, maszyny tkackie, linie farbiarskie, systemy nawojowe</p></div>
     </div>
     <div class="client-card reveal">
-      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-      </svg>
-      <div>
-        <h4>Produkcja i montaż</h4>
-        <p>Linie produkcyjne, systemy montażowe, kontrola jakości, roboty przemysłowe</p>
-      </div>
+      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <div><h4 data-i18n="c2.title">Produkcja i montaż</h4><p data-i18n="c2.desc">Linie produkcyjne, systemy montażowe, kontrola jakości, roboty przemysłowe</p></div>
     </div>
     <div class="client-card reveal">
-      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/>
-      </svg>
-      <div>
-        <h4>Spożywczy i farmacja</h4>
-        <p>Procesy dozowania, pakowania, sterylizacji; spełnienie wymogów GMP i HACCP</p>
-      </div>
+      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+      <div><h4 data-i18n="c3.title">Spożywczy i farmacja</h4><p data-i18n="c3.desc">Procesy dozowania, pakowania, sterylizacji; spełnienie wymogów GMP i HACCP</p></div>
     </div>
     <div class="client-card reveal">
-      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83"/>
-      </svg>
-      <div>
-        <h4>Energetyka i utilities</h4>
-        <p>Systemy zarządzania energią, stacje transformatorowe, monitoring mediów</p>
-      </div>
+      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83"/></svg>
+      <div><h4 data-i18n="c4.title">Energetyka i utilities</h4><p data-i18n="c4.desc">Systemy zarządzania energią, stacje transformatorowe, monitoring mediów</p></div>
     </div>
     <div class="client-card reveal">
-      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
-      </svg>
-      <div>
-        <h4>Wodociągi i oczyszczalnie</h4>
-        <p>Sterowanie pompowniami, monitoring jakości wody, systemy SCADA dla wodociągów</p>
-      </div>
+      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      <div><h4 data-i18n="c5.title">Wodociągi i oczyszczalnie</h4><p data-i18n="c5.desc">Sterowanie pompowniami, monitoring jakości wody, systemy SCADA</p></div>
     </div>
     <div class="client-card reveal">
-      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-        <rect x="1" y="3" width="22" height="18" rx="2" ry="2"/><line x1="1" y1="9" x2="23" y2="9"/>
-      </svg>
-      <div>
-        <h4>Logistyka i magazyny</h4>
-        <p>Przenośniki, sortery, systemy WMS, automatyczne magazyny WMS</p>
-      </div>
+      <svg class="client-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="3" width="22" height="18" rx="2" ry="2"/><line x1="1" y1="9" x2="23" y2="9"/></svg>
+      <div><h4 data-i18n="c6.title">Logistyka i magazyny</h4><p data-i18n="c6.desc">Przenośniki, sortery, systemy WMS, automatyczne magazyny</p></div>
     </div>
   </div>
-  <p class="clients-desc reveal">
-    Każda branża ma swoje specyficzne wymagania, normy i standardy bezpieczeństwa.
-    Dostosowuję rozwiązania do środowiska pracy — czy to produkcja ciągła,
-    praca zmianowa czy środowisko zagrożone wybuchem (ATEX).
-  </p>
 </section>
 
 <!-- APPS FOR UR -->
 <section id="apps">
   <div class="section-header reveal">
-    <div class="section-tag">Universal Robots</div>
-    <h2 class="section-title">Aplikacje dla robotów UR</h2>
+    <div class="section-tag" data-i18n="sec.apps.tag">Universal Robots</div>
+    <h2 class="section-title" data-i18n="sec.apps.title">Aplikacje dla robotów UR</h2>
   </div>
-  <p class="apps-intro reveal">
-    Tworzę dedykowane URCaps — rozszerzenia dla tabletów robotów Universal Robots,
-    które integrują zewnętrzne urządzenia i upraszczają programowanie dla operatorów.
-  </p>
+  <p class="apps-intro reveal" data-i18n="sec.apps.desc">Tworzę dedykowane URCaps — rozszerzenia dla tabletów robotów Universal Robots, które integrują zewnętrzne urządzenia i upraszczają programowanie dla operatorów.</p>
   <div class="apps-dashboard reveal">
     <div class="dashboard-header">
       <div class="dash-dot green"></div>
@@ -287,52 +224,56 @@
     <div class="apps-grid">
       <div class="app-item">
         <div class="app-status ok">OK</div>
-        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M6.5 6.5h11v11h-11z M2 12h4.5 M17.5 12H22 M12 2v4.5 M12 17.5V22"/>
-        </svg>
-        <h4>Gripper Control</h4>
-        <p>Sterowanie chwytakami Robotiq, OnRobot, SMC</p>
+        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6.5 6.5h11v11h-11z M2 12h4.5 M17.5 12H22 M12 2v4.5 M12 17.5V22"/></svg>
+        <h4 data-i18n="app1.title">Gripper Control</h4>
+        <p data-i18n="app1.desc">Sterowanie chwytakami Robotiq, OnRobot, SMC</p>
       </div>
       <div class="app-item">
         <div class="app-status ok">OK</div>
-        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        </svg>
-        <h4>Vision Integration</h4>
-        <p>Systemy wizji Cognex, Keyence, Basler</p>
+        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <h4 data-i18n="app2.title">Vision Integration</h4>
+        <p data-i18n="app2.desc">Systemy wizji Cognex, Keyence, Basler</p>
       </div>
       <div class="app-item">
         <div class="app-status ok">OK</div>
-        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-        </svg>
-        <h4>Force Sensing</h4>
-        <p>Kontrola siły docisku i momentu obrotowego</p>
+        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <h4 data-i18n="app3.title">Force Sensing</h4>
+        <p data-i18n="app3.desc">Kontrola siły docisku i momentu obrotowego</p>
       </div>
       <div class="app-item">
         <div class="app-status ok">OK</div>
-        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M4 4h16v16H4z M4 9h16 M9 9v11"/>
-        </svg>
-        <h4>PLC Bridge</h4>
-        <p>Integracja z Siemens przez Profinet/Modbus</p>
+        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z M4 9h16 M9 9v11"/></svg>
+        <h4 data-i18n="app4.title">PLC Bridge</h4>
+        <p data-i18n="app4.desc">Integracja z Siemens przez Profinet/Modbus</p>
       </div>
       <div class="app-item">
         <div class="app-status warn">CUSTOM</div>
-        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
-        </svg>
-        <h4>Recipe Manager</h4>
-        <p>Zarządzanie recepturami i parametrami procesu</p>
+        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <h4 data-i18n="app5.title">Recipe Manager</h4>
+        <p data-i18n="app5.desc">Zarządzanie recepturami i parametrami procesu</p>
       </div>
       <div class="app-item">
         <div class="app-status ok">OK</div>
-        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-        <h4>Safety Monitor</h4>
-        <p>Monitoring stref bezpieczeństwa i ograniczeń ruchu</p>
+        <svg class="app-item-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <h4 data-i18n="app6.title">Safety Monitor</h4>
+        <p data-i18n="app6.desc">Monitoring stref bezpieczeństwa i ograniczeń ruchu</p>
       </div>
+    </div>
+  </div>
+  <!-- Store links -->
+  <div class="store-section reveal">
+    <p class="store-label" data-i18n="apps.store.label">Aplikacja mobilna do zarządzania serwisem robotów — dostępna wkrótce:</p>
+    <div class="store-btns">
+      <a href="#" class="store-btn" title="Coming soon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        App Store
+        <span class="store-soon" data-i18n="apps.store.soon">wkrótce</span>
+      </a>
+      <a href="#" class="store-btn" title="Coming soon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76a2 2 0 001.84-.19l10.73-6.2-2.84-2.84-9.73 9.23zm15.54-9.76L16.4 12l2.32-2 .66-.38a1.51 1.51 0 000-2.62l-.66-.38-2.32-2 2.32-2a1.51 1.51 0 000-2.62L5.02.4A2 2 0 003.18.21L13.71 10.8l-2.84 2.84 10.53 10.53-.66-.38zM3.18.21a2 2 0 00-.18.19v23.2a2 2 0 00.18.19L13.71 12 3.18.21z"/></svg>
+        Google Play
+        <span class="store-soon" data-i18n="apps.store.soon">wkrótce</span>
+      </a>
     </div>
   </div>
 </section>
@@ -340,45 +281,30 @@
 <!-- PROCESS -->
 <section id="process">
   <div class="section-header reveal">
-    <div class="section-tag">Metodologia</div>
-    <h2 class="section-title">Jak pracuję</h2>
-    <p class="section-desc">Sprawdzony proces realizacji projektów minimalizuje ryzyko i skraca czas wdrożenia.</p>
+    <div class="section-tag" data-i18n="sec.process.tag">Metodologia</div>
+    <h2 class="section-title" data-i18n="sec.process.title">Jak pracuję</h2>
+    <p class="section-desc" data-i18n="sec.process.desc">Sprawdzony proces realizacji projektów minimalizuje ryzyko i skraca czas wdrożenia.</p>
   </div>
   <div class="process-steps">
     <div class="process-step reveal">
       <div class="step-num">01</div>
-      <div class="step-content">
-        <h3>Analiza i specyfikacja</h3>
-        <p>Spotkanie z klientem, audyt istniejących systemów, analiza wymagań technologicznych i bezpieczeństwa. Tworzenie specyfikacji funkcjonalnej (FDS) i technicznej (TDS) uzgodnionej z klientem przed rozpoczęciem prac.</p>
-      </div>
+      <div class="step-content"><h3 data-i18n="p1.title">Analiza i specyfikacja</h3><p data-i18n="p1.desc">Spotkanie z klientem, audyt istniejących systemów, analiza wymagań. Tworzenie specyfikacji funkcjonalnej (FDS) i technicznej (TDS) uzgodnionej z klientem przed rozpoczęciem prac.</p></div>
     </div>
     <div class="process-step reveal">
       <div class="step-num">02</div>
-      <div class="step-content">
-        <h3>Projektowanie i programowanie</h3>
-        <p>Projektowanie architektury systemu, dobór sprzętu, pisanie oprogramowania sterownika z pełną dokumentacją. Modularna struktura kodu umożliwia łatwe modyfikacje i rozbudowę w przyszłości.</p>
-      </div>
+      <div class="step-content"><h3 data-i18n="p2.title">Projektowanie i programowanie</h3><p data-i18n="p2.desc">Projektowanie architektury systemu, dobór sprzętu, pisanie oprogramowania sterownika z pełną dokumentacją. Modularna struktura kodu umożliwia łatwe modyfikacje i rozbudowę.</p></div>
     </div>
     <div class="process-step reveal">
       <div class="step-num">03</div>
-      <div class="step-content">
-        <h3>Testy i symulacja</h3>
-        <p>Testy jednostkowe modułów, symulacja na modelu cyfrowym lub makiecie przed uruchomieniem na maszynie. FAT (Factory Acceptance Test) przeprowadzany z udziałem klienta.</p>
-      </div>
+      <div class="step-content"><h3 data-i18n="p3.title">Testy i symulacja</h3><p data-i18n="p3.desc">Testy jednostkowe modułów, symulacja przed uruchomieniem na maszynie. FAT (Factory Acceptance Test) przeprowadzany z udziałem klienta.</p></div>
     </div>
     <div class="process-step reveal">
       <div class="step-num">04</div>
-      <div class="step-content">
-        <h3>Uruchomienie i SAT</h3>
-        <p>Uruchomienie systemu na obiekcie klienta, testy SAT (Site Acceptance Test), strojenie parametrów procesu. Nadzór nad rozruchem produkcyjnym i eliminacja błędów wychodzących w trakcie eksploatacji.</p>
-      </div>
+      <div class="step-content"><h3 data-i18n="p4.title">Uruchomienie i SAT</h3><p data-i18n="p4.desc">Uruchomienie systemu na obiekcie klienta, testy SAT, strojenie parametrów procesu. Nadzór nad rozruchem produkcyjnym i eliminacja błędów wychodzących w trakcie eksploatacji.</p></div>
     </div>
     <div class="process-step reveal">
       <div class="step-num">05</div>
-      <div class="step-content">
-        <h3>Szkolenie i serwis</h3>
-        <p>Szkolenie operatorów i służb utrzymania ruchu. Przekazanie dokumentacji powykonawczej, kodu źródłowego i instrukcji obsługi. Wsparcie serwisowe i gwarancyjne po uruchomieniu.</p>
-      </div>
+      <div class="step-content"><h3 data-i18n="p5.title">Szkolenie i serwis</h3><p data-i18n="p5.desc">Szkolenie operatorów i służb utrzymania ruchu. Przekazanie dokumentacji powykonawczej, kodu źródłowego i instrukcji obsługi. Wsparcie serwisowe i gwarancyjne po uruchomieniu.</p></div>
     </div>
   </div>
 </section>
@@ -386,200 +312,136 @@
 <!-- WHY -->
 <section id="why">
   <div class="section-header reveal">
-    <div class="section-tag">Dlaczego TU Automation</div>
-    <h2 class="section-title">Przewagi współpracy</h2>
+    <div class="section-tag" data-i18n="sec.why.tag">Dlaczego TU Automation</div>
+    <h2 class="section-title" data-i18n="sec.why.title">Przewagi współpracy</h2>
   </div>
   <div class="why-grid">
-    <div class="why-item reveal">
-      <h4>Jeden punkt kontaktu</h4>
-      <p>Pracujesz bezpośrednio z inżynierem realizującym projekt. Zero pośredników — decyzje zapadają szybko, komunikacja jest bezpośrednia i efektywna.</p>
-    </div>
-    <div class="why-item reveal">
-      <h4>Doświadczenie z legacy</h4>
-      <p>Znam Siemens S5 od środka. Potrafię zmodernizować stary system bez przerywania produkcji, zachowując ciągłość operacyjną zakładu.</p>
-    </div>
-    <div class="why-item reveal">
-      <h4>Kompleksowe podejście</h4>
-      <p>PLC, SCADA, HMI, sieci, aplikacje mobilne — obsługuję cały stack technologiczny projektu automatyki bez potrzeby angażowania wielu podwykonawców.</p>
-    </div>
-    <div class="why-item reveal">
-      <h4>Szybki czas reakcji</h4>
-      <p>Jako jednoosobowa firma jestem elastyczny i mobilny. Krytyczne awarie obsługuję priorytetowo, minimalizując czas przestoju linii produkcyjnej.</p>
-    </div>
-    <div class="why-item reveal">
-      <h4>Własne narzędzia</h4>
-      <p>Tworzę własne aplikacje diagnostyczne i serwisowe (jak LineMind AI), które podnoszą efektywność mojej pracy i dostarczają klientom dodatkową wartość.</p>
-    </div>
-    <div class="why-item reveal">
-      <h4>Przejrzyste warunki</h4>
-      <p>Jasna wycena, harmonogram i zakres przed rozpoczęciem prac. Bez ukrytych kosztów i niespodzianek przy odbiorze projektu.</p>
-    </div>
+    <div class="why-item reveal"><h4 data-i18n="w1.title">Jeden punkt kontaktu</h4><p data-i18n="w1.desc">Pracujesz bezpośrednio z inżynierem realizującym projekt. Zero pośredników — decyzje zapadają szybko, komunikacja jest bezpośrednia i efektywna.</p></div>
+    <div class="why-item reveal"><h4 data-i18n="w2.title">Doświadczenie z legacy</h4><p data-i18n="w2.desc">Znam Siemens S5 od środka. Potrafię zmodernizować stary system bez przerywania produkcji, zachowując ciągłość operacyjną zakładu.</p></div>
+    <div class="why-item reveal"><h4 data-i18n="w3.title">Kompleksowe podejście</h4><p data-i18n="w3.desc">PLC, SCADA, HMI, sieci, aplikacje mobilne — obsługuję cały stack technologiczny bez potrzeby angażowania wielu podwykonawców.</p></div>
+    <div class="why-item reveal"><h4 data-i18n="w4.title">Szybki czas reakcji</h4><p data-i18n="w4.desc">Jako jednoosobowa firma jestem elastyczny i mobilny. Krytyczne awarie obsługuję priorytetowo, minimalizując czas przestoju linii produkcyjnej.</p></div>
+    <div class="why-item reveal"><h4 data-i18n="w5.title">AI w automatyce</h4><p data-i18n="w5.desc">Integruję algorytmy AI bezpośrednio z systemami PLC i SCADA — predykcja awarii, wykrywanie anomalii, optymalizacja produkcji. LineMind AI to przykład własnego rozwiązania tej klasy.</p></div>
+    <div class="why-item reveal"><h4 data-i18n="w6.title">Przejrzyste warunki</h4><p data-i18n="w6.desc">Jasna wycena, harmonogram i zakres przed rozpoczęciem prac. Bez ukrytych kosztów i niespodzianek przy odbiorze projektu.</p></div>
   </div>
-  <p class="why-desc reveal">
-    Specjalizacja w przemyśle tekstylnym to rzadka kompetencja — znajomość specyfiki
-    maszyn dziewiarskich, tkackich i wykończalniczych pozwala mi szybko diagnozować
-    problemy i proponować trafne rozwiązania bez kosztownego okresu wdrożenia.
-  </p>
 </section>
 
 <!-- PROJECTS -->
 <section id="projects">
   <div class="section-header reveal">
-    <div class="section-tag">Portfolio</div>
-    <h2 class="section-title">Wybrane realizacje</h2>
-    <p class="section-desc">Przykłady wdrożonych systemów automatyki i oprogramowania z różnych branż i platform.</p>
+    <div class="section-tag" data-i18n="sec.projects.tag">Portfolio</div>
+    <h2 class="section-title" data-i18n="sec.projects.title">Wybrane realizacje</h2>
+    <p class="section-desc" data-i18n="sec.projects.desc">Przykłady wdrożonych systemów automatyki i oprogramowania z różnych branż i platform.</p>
   </div>
   <div class="projects-grid">
-
     <div class="project-card featured reveal">
       <div class="project-header">
         <span class="project-num">PROJEKT #01 · FEATURED</span>
         <span class="project-badge badge-ai">AI + IoT</span>
       </div>
       <div class="project-body">
-        <h3>LineMind AI – Monitorowanie maszyn z AI</h3>
-        <p>System monitorowania linii produkcyjnych oparty o sztuczną inteligencję. Aplikacja webowa PWA zbiera dane z czujników w czasie rzeczywistym, wykrywa anomalie i przewiduje awarie przed ich wystąpieniem. Backend FastAPI + Python, baza SQLite, alerty mobilne i raporty efektywności OEE.</p>
-        <div class="project-tags">
-          <span class="project-tag">Python</span>
-          <span class="project-tag">FastAPI</span>
-          <span class="project-tag">AI/ML</span>
-          <span class="project-tag">PWA</span>
-          <span class="project-tag">SQLite</span>
-          <span class="project-tag">Modbus</span>
-          <span class="project-tag">OEE</span>
-        </div>
+        <h3 data-i18n="proj1.title">LineMind AI – Monitorowanie maszyn z AI</h3>
+        <p data-i18n="proj1.desc">System monitorowania linii produkcyjnych oparty o sztuczną inteligencję. Aplikacja webowa PWA zbiera dane z czujników w czasie rzeczywistym, wykrywa anomalie i przewiduje awarie. Backend FastAPI + Python, baza SQLite, alerty mobilne i raporty OEE.</p>
+        <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">FastAPI</span><span class="project-tag">AI/ML</span><span class="project-tag">PWA</span><span class="project-tag">SQLite</span><span class="project-tag">Modbus</span><span class="project-tag">OEE</span></div>
       </div>
     </div>
-
     <div class="project-card reveal">
       <div class="project-header">
         <span class="project-num">PROJEKT #02</span>
         <span class="project-badge badge-plc">PLC + SCADA</span>
       </div>
       <div class="project-body">
-        <h3>Modernizacja linii dziewiarskiej – Siemens S5 → S7</h3>
-        <p>Migracja sterowania automatów dziewiarskich ze starszego Siemens S5 na S7-1500 z TIA Portal. Zachowanie wszystkich funkcji technologicznych, nowy panel HMI, zdalna diagnostyka przez PROFINET. Projekt zrealizowany bez zatrzymania produkcji.</p>
-        <div class="project-tags">
-          <span class="project-tag">Siemens S5</span>
-          <span class="project-tag">S7-1500</span>
-          <span class="project-tag">TIA Portal</span>
-          <span class="project-tag">HMI</span>
-          <span class="project-tag">Profinet</span>
-        </div>
+        <h3 data-i18n="proj2.title">Modernizacja linii dziewiarskiej – S5 → S7</h3>
+        <p data-i18n="proj2.desc">Migracja sterowania automatów dziewiarskich ze Siemens S5 na S7-1500 z TIA Portal. Zachowanie wszystkich funkcji technologicznych, nowy panel HMI, zdalna diagnostyka przez PROFINET — bez zatrzymania produkcji.</p>
+        <div class="project-tags"><span class="project-tag">Siemens S5</span><span class="project-tag">S7-1500</span><span class="project-tag">TIA Portal</span><span class="project-tag">HMI</span><span class="project-tag">Profinet</span></div>
       </div>
     </div>
-
     <div class="project-card reveal">
       <div class="project-header">
         <span class="project-num">PROJEKT #03</span>
         <span class="project-badge badge-app">URCap + App</span>
       </div>
       <div class="project-body">
-        <h3>Aplikacja URCap do sterowania dozowaniem</h3>
-        <p>Dedykowana aplikacja URCap integrująca robota UR10 z układem dozowania kleju. Sterowanie precyzją nałożenia, kontrola ciśnienia, zarządzanie recepturami bezpośrednio z tabletu robota. Interfejs dostosowany do obsługi przez operatora bez znajomości robotyki.</p>
-        <div class="project-tags">
-          <span class="project-tag">Universal Robots</span>
-          <span class="project-tag">URCaps</span>
-          <span class="project-tag">Java</span>
-          <span class="project-tag">Modbus TCP</span>
-        </div>
+        <h3 data-i18n="proj3.title">Aplikacja URCap do sterowania dozowaniem</h3>
+        <p data-i18n="proj3.desc">Dedykowana aplikacja URCap integrująca robota UR10 z układem dozowania kleju. Kontrola ciśnienia, zarządzanie recepturami bezpośrednio z tabletu robota. Interfejs dostosowany do obsługi przez operatora bez znajomości robotyki.</p>
+        <div class="project-tags"><span class="project-tag">Universal Robots</span><span class="project-tag">URCaps</span><span class="project-tag">Java</span><span class="project-tag">Modbus TCP</span></div>
       </div>
     </div>
-
     <div class="project-card reveal">
       <div class="project-header">
         <span class="project-num">PROJEKT #04</span>
         <span class="project-badge badge-hw">SCADA + IIoT</span>
       </div>
       <div class="project-body">
-        <h3>System SCADA dla oczyszczalni ścieków</h3>
-        <p>Kompleksowy system nadzoru dla oczyszczalni ścieków — monitoring pomp, napowietrzaczy i reaktorów biologicznych. Wizualizacja WinCC OA, trendy historyczne, alarmy SMS, raportowanie automatyczne do GIS. Sieć Profibus obsługująca 120+ urządzeń terenowych.</p>
-        <div class="project-tags">
-          <span class="project-tag">WinCC OA</span>
-          <span class="project-tag">S7-400</span>
-          <span class="project-tag">Profibus</span>
-          <span class="project-tag">OPC UA</span>
-          <span class="project-tag">SMS Alarm</span>
-        </div>
+        <h3 data-i18n="proj4.title">System SCADA dla oczyszczalni ścieków</h3>
+        <p data-i18n="proj4.desc">Kompleksowy system nadzoru — monitoring pomp, napowietrzaczy i reaktorów biologicznych. Wizualizacja WinCC OA, trendy historyczne, alarmy SMS, raportowanie automatyczne. Sieć Profibus obsługująca 120+ urządzeń terenowych.</p>
+        <div class="project-tags"><span class="project-tag">WinCC OA</span><span class="project-tag">S7-400</span><span class="project-tag">Profibus</span><span class="project-tag">OPC UA</span><span class="project-tag">SMS</span></div>
       </div>
     </div>
-
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-header reveal">
-    <div class="section-tag">Kontakt</div>
-    <h2 class="section-title">Zacznijmy projekt</h2>
+    <div class="section-tag" data-i18n="sec.contact.tag">Kontakt</div>
+    <h2 class="section-title" data-i18n="sec.contact.title">Zacznijmy projekt</h2>
   </div>
   <div class="contact-wrapper">
     <div class="contact-info reveal">
-      <h2>Porozmawiajmy o Twoim projekcie automatyki</h2>
-      <p>
-        Opisz mi swój problem lub cel, który chcesz osiągnąć — przygotowuję
-        bezpłatną wstępną ocenę projektu i orientacyjną wycenę w ciągu 48 godzin.
-        Działam na terenie całej Polski, dla wymagających projektów — również za granicą.
-      </p>
+      <h2 data-i18n="contact.h2">Porozmawiajmy o Twoim projekcie automatyki</h2>
+      <p data-i18n="contact.p">Opisz mi swój problem lub cel — przygotowuję bezpłatną wstępną ocenę projektu i orientacyjną wycenę w ciągu 48 godzin. Działam z Niemiec, realizuję projekty na terenie całej Europy.</p>
       <div class="contact-detail">
-        <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2.02z"/>
-        </svg>
-        <a href="tel:+48XXXXXXXXX">+48 XXX XXX XXX</a>
+        <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2.02z"/></svg>
+        <a href="tel:+4915756290902">+49 157 56290902</a>
       </div>
       <div class="contact-detail">
-        <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
-        </svg>
-        <a href="mailto:kontakt@tu-automation.pl">kontakt@tu-automation.pl</a>
+        <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <a href="mailto:turbanski824@gmail.com">turbanski824@gmail.com</a>
       </div>
       <div class="contact-detail">
-        <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/>
-        </svg>
-        <span>Polska – cały kraj</span>
+        <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        <span data-i18n="contact.location">Deutschland · Cała Europa · Cały świat</span>
       </div>
     </div>
-
     <form class="contact-form reveal" id="contactForm">
       <div class="form-row">
         <div class="form-group">
-          <label for="name">Imię i nazwisko</label>
-          <input type="text" id="name" placeholder="Jan Kowalski" required/>
+          <label for="fname" data-i18n="form.name">Imię i nazwisko</label>
+          <input type="text" id="fname" data-i18n-p="form.name.ph" placeholder="Jan Kowalski" required/>
         </div>
         <div class="form-group">
-          <label for="company">Firma</label>
-          <input type="text" id="company" placeholder="Nazwa firmy"/>
+          <label for="fcompany" data-i18n="form.company">Firma</label>
+          <input type="text" id="fcompany" data-i18n-p="form.company.ph" placeholder="Nazwa firmy"/>
         </div>
       </div>
       <div class="form-row">
         <div class="form-group">
-          <label for="email">E-mail</label>
-          <input type="email" id="email" placeholder="jan@firma.pl" required/>
+          <label for="femail" data-i18n="form.email">E-mail</label>
+          <input type="email" id="femail" placeholder="jan@firma.pl" required/>
         </div>
         <div class="form-group">
-          <label for="phone">Telefon</label>
-          <input type="tel" id="phone" placeholder="+48 600 000 000"/>
+          <label for="fphone" data-i18n="form.phone">Telefon</label>
+          <input type="tel" id="fphone" placeholder="+49 ..."/>
         </div>
       </div>
       <div class="form-group">
-        <label for="service">Rodzaj usługi</label>
-        <select id="service">
-          <option value="">Wybierz...</option>
-          <option>Programowanie PLC / Siemens</option>
-          <option>System SCADA / HMI</option>
-          <option>Aplikacja URCap / Universal Robots</option>
-          <option>Modernizacja / migracja systemu</option>
-          <option>Sieci przemysłowe</option>
-          <option>Aplikacja IoT / mobilna</option>
-          <option>Inne / nie wiem jeszcze</option>
+        <label for="fservice" data-i18n="form.service">Rodzaj usługi</label>
+        <select id="fservice">
+          <option value="" data-i18n="form.service.opt0">Wybierz...</option>
+          <option data-i18n="form.service.opt1">Programowanie PLC / Siemens</option>
+          <option data-i18n="form.service.opt2">System SCADA / HMI</option>
+          <option data-i18n="form.service.opt3">Aplikacja URCap / Universal Robots</option>
+          <option data-i18n="form.service.opt4">Modernizacja / migracja systemu</option>
+          <option data-i18n="form.service.opt5">Sieci przemysłowe</option>
+          <option data-i18n="form.service.opt6">Aplikacja IoT / mobilna</option>
+          <option data-i18n="form.service.opt7">Inne</option>
         </select>
       </div>
       <div class="form-group">
-        <label for="message">Opis projektu</label>
-        <textarea id="message" placeholder="Opisz czego potrzebujesz, jakie maszyny / systemy są zaangażowane, jaki jest cel projektu..." required></textarea>
+        <label for="fmessage" data-i18n="form.message">Opis projektu</label>
+        <textarea id="fmessage" data-i18n-p="form.message.ph" placeholder="Opisz czego potrzebujesz..." required></textarea>
       </div>
-      <button type="submit" class="btn-submit" id="submitBtn">Wyślij zapytanie</button>
+      <button type="submit" class="btn-submit" id="submitBtn" data-i18n="form.submit">Wyślij zapytanie</button>
     </form>
   </div>
 </section>
@@ -589,20 +451,35 @@
   <div class="footer-inner">
     <div>
       <div class="footer-logo">TU<span>Automation</span></div>
-      <div class="footer-tagline">Automatyka przemysłowa · Tomasz Urbański</div>
+      <div class="footer-tagline" data-i18n="footer.tagline">Automatyka przemysłowa · Tomasz Urbański</div>
     </div>
     <div class="footer-links">
-      <a href="#services">Usługi</a>
-      <a href="#tech">Technologie</a>
-      <a href="#projects">Projekty</a>
-      <a href="#contact">Kontakt</a>
+      <a href="#services" data-i18n="nav.services">Usługi</a>
+      <a href="#tech" data-i18n="nav.tech">Technologie</a>
+      <a href="#projects" data-i18n="nav.projects">Projekty</a>
+      <a href="#contact" data-i18n="nav.contact">Kontakt</a>
+      <a href="privacy.html" data-i18n="footer.privacy">Polityka prywatności</a>
     </div>
     <div class="footer-location">
-      <div>Polska</div>
+      <div data-i18n="footer.location">Deutschland · Europa · Świat</div>
       <div>© 2025 <span>TU Automation</span></div>
     </div>
   </div>
 </footer>
+
+<!-- COOKIE BANNER -->
+<div class="cookie-banner" id="cookieBanner">
+  <div class="cookie-inner">
+    <div class="cookie-text">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="flex-shrink:0;margin-top:2px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span data-i18n="cookie.text">Ta strona używa plików cookies w celu analizy ruchu i poprawy jakości. Więcej informacji: </span><a href="privacy.html" data-i18n="cookie.link">Polityka prywatności</a>
+    </div>
+    <div class="cookie-btns">
+      <button class="cookie-decline" id="cookieDecline" data-i18n="cookie.decline">Odrzuć</button>
+      <button class="cookie-accept" id="cookieAccept" data-i18n="cookie.accept">Akceptuj</button>
+    </div>
+  </div>
+</div>
 
 <script src="script.js"></script>
 </body>
