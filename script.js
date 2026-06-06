@@ -1065,22 +1065,31 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
         gc.clearRect(0, 0, glitch.width, glitch.height);
         glitch.style.opacity = '0';
         schedule();
-        // short white-noise burst if music is on
-        if (window._tuAudioCtx && window._tuMusicPlaying) {
-          const ac = window._tuAudioCtx;
-          const dur = 0.28;
-          const buf = ac.createBuffer(1, ac.sampleRate * dur, ac.sampleRate);
+        // Interference sound – always plays once AudioContext is available
+        const sfxCtx = window._tuAudioCtx;
+        if (sfxCtx && sfxCtx.state === 'running') {
+          const t = sfxCtx.currentTime;
+          const dur = 0.42;
+          // White-noise static
+          const buf = sfxCtx.createBuffer(1, Math.ceil(sfxCtx.sampleRate * dur), sfxCtx.sampleRate);
           const d = buf.getChannelData(0);
-          for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * 0.12;
-          const src = ac.createBufferSource();
-          src.buffer = buf;
-          const ng = ac.createGain();
-          ng.gain.setValueAtTime(0.25, ac.currentTime);
-          ng.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
-          src.connect(ng);
-          ng.connect(ac.destination);
-          src.start();
-          src.stop(ac.currentTime + dur);
+          for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+          const ns = sfxCtx.createBufferSource(); ns.buffer = buf;
+          const nf = sfxCtx.createBiquadFilter(); nf.type = 'bandpass'; nf.frequency.value = 2800; nf.Q.value = 0.5;
+          const ng = sfxCtx.createGain();
+          ng.gain.setValueAtTime(0.22, t);
+          ng.gain.exponentialRampToValueAtTime(0.001, t + dur);
+          ns.connect(nf); nf.connect(ng); ng.connect(sfxCtx.destination);
+          ns.start(); ns.stop(t + dur);
+          // EMI buzz (sawtooth sweep – classic PLC interference sound)
+          const bz = sfxCtx.createOscillator(); bz.type = 'sawtooth';
+          bz.frequency.setValueAtTime(120, t);
+          bz.frequency.exponentialRampToValueAtTime(52, t + dur * 0.65);
+          const bg = sfxCtx.createGain();
+          bg.gain.setValueAtTime(0.10, t + 0.004);
+          bg.gain.exponentialRampToValueAtTime(0.001, t + dur * 0.78);
+          bz.connect(bg); bg.connect(sfxCtx.destination);
+          bz.start(); bz.stop(t + dur);
         }
       }
     }
@@ -1100,45 +1109,105 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
 (function initAmbientMusic() {
   const btn = document.getElementById('music-btn');
   if (!btn) return;
-  let ac, masterGain, playing = false;
-  const oscs = [], lfos = [];
+
+  let ac, masterGain, dly;
+  let leadOsc, leadGain, bassOsc, bassGain;
+  const padOscs = [];
+  let playing = false, schedTimer;
+  let nextTime, seqStep;
+
+  const BPM = 80;
+  const S8  = 60 / BPM / 2; // 8th-note = 0.375 s
+
+  // 16-step lead melody in A minor  (0 = rest)
+  const LEAD = [
+    329.63, 0,      293.66, 261.63,  // E4 — D4 C4
+    220.00, 196.00, 220.00, 261.63,  // A3 G3 A3 C4
+    293.66, 329.63, 392.00, 392.00,  // D4 E4 G4 G4(hold)
+    329.63, 293.66, 261.63, 0,       // E4 D4 C4 —
+  ];
+
+  // Bass root per 4-step block  A1 E1 F1 G1
+  const BASS_F = [55, 41.20, 43.65, 49];
+
+  // Chord voicings  Am Em F G
+  const CHORDS = [
+    [110, 130.81, 164.81],
+    [82.41, 98,   123.47],
+    [87.31, 110,  130.81],
+    [98,    123.47, 146.83],
+  ];
+
+  function trig(osc, g, freq, t, dur, vel) {
+    osc.frequency.setValueAtTime(freq, t);
+    g.gain.cancelScheduledValues(t);
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vel, t + 0.022);
+    g.gain.setValueAtTime(vel, t + dur - 0.055);
+    g.gain.linearRampToValueAtTime(0.0001, t + dur);
+  }
+
+  function padChord(freqs, t, dur) {
+    padOscs.forEach((p, i) => {
+      p.osc.frequency.setValueAtTime(freqs[i % 3], t);
+      p.g.gain.cancelScheduledValues(t);
+      p.g.gain.setValueAtTime(0.0001, t);
+      p.g.gain.linearRampToValueAtTime(0.016, t + 0.55);
+      p.g.gain.setValueAtTime(0.016, t + dur - 0.45);
+      p.g.gain.linearRampToValueAtTime(0.0001, t + dur);
+    });
+  }
 
   function build() {
     ac = new (window.AudioContext || window.webkitAudioContext)();
     window._tuAudioCtx = ac;
+
     masterGain = ac.createGain();
-    masterGain.gain.setValueAtTime(0.001, ac.currentTime);
+    masterGain.gain.value = 0.0001;
     masterGain.connect(ac.destination);
 
-    const dl1 = ac.createDelay(4); dl1.delayTime.value = 2.1;
-    const fb1 = ac.createGain(); fb1.gain.value = 0.44;
-    dl1.connect(fb1); fb1.connect(dl1); dl1.connect(masterGain);
+    dly = ac.createDelay(2); dly.delayTime.value = 0.37;
+    const fb = ac.createGain(); fb.gain.value = 0.43;
+    const cut = ac.createBiquadFilter(); cut.type = 'lowpass'; cut.frequency.value = 1800;
+    dly.connect(cut); cut.connect(fb); fb.connect(dly);
+    const dlyOut = ac.createGain(); dlyOut.gain.value = 0.28;
+    dly.connect(dlyOut); dlyOut.connect(masterGain);
 
-    const dl2 = ac.createDelay(3); dl2.delayTime.value = 1.35;
-    const fb2 = ac.createGain(); fb2.gain.value = 0.37;
-    dl2.connect(fb2); fb2.connect(dl2); dl2.connect(masterGain);
+    leadOsc = ac.createOscillator(); leadOsc.type = 'triangle'; leadOsc.frequency.value = 440;
+    leadGain = ac.createGain(); leadGain.gain.value = 0.0001;
+    const lf = ac.createBiquadFilter(); lf.type = 'lowpass'; lf.frequency.value = 1400; lf.Q.value = 1.4;
+    leadOsc.connect(lf); lf.connect(leadGain);
+    leadGain.connect(masterGain); leadGain.connect(dly);
+    leadOsc.start();
 
-    const voices = [
-      { freq: 55,     gain: 0.21, type: 'sine'     },
-      { freq: 82.41,  gain: 0.13, type: 'sine'     },
-      { freq: 110,    gain: 0.17, type: 'triangle' },
-      { freq: 164.81, gain: 0.07, type: 'sine'     },
-      { freq: 220,    gain: 0.09, type: 'sine'     },
-    ];
-    voices.forEach((v, i) => {
-      const osc = ac.createOscillator();
-      osc.type = v.type; osc.frequency.value = v.freq;
-      const og = ac.createGain(); og.gain.value = v.gain;
-      const lfo = ac.createOscillator();
-      lfo.frequency.value = 0.04 + Math.random() * 0.11;
-      const lg = ac.createGain(); lg.gain.value = v.gain * 0.3;
-      lfo.connect(lg); lg.connect(og.gain);
-      osc.connect(og);
-      og.connect(i % 2 === 0 ? dl1 : dl2);
-      og.connect(masterGain);
-      osc.start(); lfo.start();
-      oscs.push(osc); lfos.push(lfo);
+    bassOsc = ac.createOscillator(); bassOsc.type = 'sine'; bassOsc.frequency.value = 55;
+    bassGain = ac.createGain(); bassGain.gain.value = 0.0001;
+    bassOsc.connect(bassGain); bassGain.connect(masterGain);
+    bassOsc.start();
+
+    [0, 7, -7, 12, -12, 4, -4, 17, -17].forEach((det, i) => {
+      const o = ac.createOscillator(); o.type = 'sine';
+      o.frequency.value = CHORDS[0][i % 3]; o.detune.value = det;
+      const g = ac.createGain(); g.gain.value = 0.0001;
+      o.connect(g); g.connect(masterGain); g.connect(dly);
+      o.start();
+      padOscs.push({ osc: o, g });
     });
+  }
+
+  function schedule() {
+    while (nextTime < ac.currentTime + 0.25) {
+      const s = seqStep % 16;
+      if (LEAD[s] > 0) trig(leadOsc, leadGain, LEAD[s], nextTime, S8 * 0.87, 0.21);
+      if (s % 4 === 0) {
+        const bi = (s >> 2) % 4;
+        trig(bassOsc, bassGain, BASS_F[bi], nextTime, S8 * 3.75, 0.27);
+        padChord(CHORDS[bi], nextTime, S8 * 3.85);
+      }
+      nextTime += S8;
+      seqStep++;
+    }
+    schedTimer = setTimeout(schedule, 28);
   }
 
   btn.addEventListener('click', () => {
@@ -1147,16 +1216,19 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
       if (ac.state === 'suspended') ac.resume();
       masterGain.gain.cancelScheduledValues(ac.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime);
-      masterGain.gain.linearRampToValueAtTime(0.26, ac.currentTime + 3.5);
+      masterGain.gain.linearRampToValueAtTime(0.55, ac.currentTime + 3.5);
+      seqStep = 0; nextTime = ac.currentTime + 0.06;
+      schedule();
       playing = true; window._tuMusicPlaying = true;
       btn.classList.add('playing');
       btn.querySelector('.icon-play').style.display = 'none';
       btn.querySelector('.icon-pause').style.display = '';
     } else {
+      clearTimeout(schedTimer);
       masterGain.gain.cancelScheduledValues(ac.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime);
-      masterGain.gain.linearRampToValueAtTime(0.001, ac.currentTime + 2.5);
-      setTimeout(() => { if (ac) ac.suspend(); }, 2600);
+      masterGain.gain.linearRampToValueAtTime(0.0001, ac.currentTime + 2.5);
+      setTimeout(() => { if (ac) ac.suspend(); }, 3000);
       playing = false; window._tuMusicPlaying = false;
       btn.classList.remove('playing');
       btn.querySelector('.icon-play').style.display = '';
@@ -1164,6 +1236,79 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
     }
   });
 })();
+
+// ── CODE TERMINAL ──
+(function initCodeTerminal() {
+  const el = document.getElementById('codeTermText');
+  const titleEl = document.getElementById('codeTermTitle');
+  if (!el) return;
+
+  function diagSnippet() {
+    const now = new Date().toLocaleTimeString('pl-PL', { hour12: false });
+    return `[${now}] PLC Diagnostics\nCPU_1: RUN  Cycle: 11ms\nDB1.Speed  = 1487 RPM\nDB1.Temp   = 68.4 \xb0C\nDB1.Status = 0x00A1`;
+  }
+
+  const SNIPPETS = [
+    {
+      title: 'TIA Portal \xb7 PLC_1 \xb7 OB1',
+      code: () => 'IF StartSignal AND\n   NOT EmergencyStop THEN\n  MotorRun := TRUE;\n  RunTimer(\n    IN:=TRUE, PT:=T#5S);\nEND_IF;',
+    },
+    {
+      title: 'Python \xb7 plc_diag.py',
+      code: () => 'async def read_status():\n  db = await client.read_db(\n        1, offset=0, size=64)\n  speed = parse_word(db, 2)\n  return {"speed": speed,\n          "ok": speed > 0}',
+    },
+    {
+      title: 'URScript \xb7 pick_place.urp',
+      code: () => 'def pick_and_place():\n  movej(pick_pose,\n    a=1.2, v=0.8)\n  grip(force=60)\n  movel(place_pose,\n    a=0.6, v=0.3)\n  grip(force=0)\nend',
+    },
+    {
+      title: 'PLC_1 \xb7 Diagnostics',
+      code: diagSnippet,
+    },
+  ];
+
+  let idx = 0, pos = 0, erasing = false, timer;
+
+  function tick() {
+    const snip = SNIPPETS[idx];
+    const code = typeof snip.code === 'function' ? snip.code() : snip.code;
+    titleEl.textContent = snip.title;
+
+    if (!erasing) {
+      if (pos <= code.length) {
+        el.textContent = code.slice(0, pos);
+        pos++;
+        timer = setTimeout(tick, pos === 1 ? 700 : 22 + Math.random() * 38);
+      } else {
+        erasing = true;
+        timer = setTimeout(tick, 2600);
+      }
+    } else {
+      if (pos > 0) {
+        pos = Math.max(0, pos - 3);
+        el.textContent = code.slice(0, pos);
+        timer = setTimeout(tick, 12);
+      } else {
+        erasing = false;
+        idx = (idx + 1) % SNIPPETS.length;
+        timer = setTimeout(tick, 480);
+      }
+    }
+  }
+
+  tick();
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) clearTimeout(timer);
+    else tick();
+  });
+})();
+
+// ── SHARED AUDIO CONTEXT (for interference SFX on first interaction) ──
+document.addEventListener('click', () => {
+  if (!window._tuAudioCtx) {
+    try { window._tuAudioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+  }
+}, { once: true });
 
 // ── INIT ──
 applyLang(currentLang);
