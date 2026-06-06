@@ -684,6 +684,16 @@ footer {
   .lang-switcher { display: none; }
 }
 
+/* ── ARABIC RTL ── */
+[lang="ar"] { font-family: 'Cairo', 'Tahoma', 'Arial Unicode MS', sans-serif; }
+[lang="ar"] .section-title, [lang="ar"] .hero-title, [lang="ar"] .stat-num,
+[lang="ar"] .service-card h3, [lang="ar"] .project-title, [lang="ar"] .footer-logo,
+[lang="ar"] .nav-logo { font-family: 'Cairo', 'Tahoma', sans-serif; }
+[lang="ar"] .lang-switcher { direction: ltr; }
+[lang="ar"] .nav-links { direction: rtl; }
+[lang="ar"] .hero-badge::before { left: auto; right: 0; }
+[lang="ar"] .section-tag::before { left: auto; right: 0; margin-right: 0; margin-left: 8px; }
+
 /* ── SCL BACKGROUND CANVAS ── */
 #scl-bg { position: fixed; inset: 0; z-index: 1; pointer-events: none; }
 
