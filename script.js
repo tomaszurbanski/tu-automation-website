@@ -950,15 +950,15 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
   function setup() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-    if (window.innerWidth < 768) { cancelAnimationFrame(raf); return; }
-    const n = Math.ceil(canvas.width / CW) + 1;
-    cols = Array.from({ length: n }, (_, i) => ({
+    const isMob = window.innerWidth < 768;
+    // On mobile: skip heavy SCL text columns, keep lightweight snow
+    cols = isMob ? [] : Array.from({ length: Math.ceil(canvas.width / CW) + 1 }, (_, i) => ({
       x: i * CW + Math.round(Math.random() * 24 - 12),
       offset: Math.floor(Math.random() * L.length),
       speed: 0.16 + Math.random() * 0.24,
       scroll: Math.random() * L.length * LH
     }));
-    flakes = Array.from({ length: 50 }, () => ({
+    flakes = Array.from({ length: isMob ? 28 : 50 }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
       r: 0.8 + Math.random() * 1.6,
