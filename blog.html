@@ -15,59 +15,73 @@
 <div class="scanline"></div>
 <nav id="nav" style="position:fixed">
   <div class="nav-logo">TU<span>Automation</span></div>
-  <ul class="nav-links">
-    <li><a href="index.html#services">Usługi</a></li>
-    <li><a href="index.html#projects">Projekty</a></li>
-    <li><a href="blog.html" style="color:var(--cyan)">Blog</a></li>
-    <li><a href="index.html#contact">Kontakt</a></li>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#services" data-i18n="nav.services">Usługi</a></li>
+    <li><a href="index.html#projects" data-i18n="nav.projects">Projekty</a></li>
+    <li><a href="blog.html" style="color:var(--cyan)" data-i18n="nav.blog">Blog</a></li>
+    <li><a href="index.html#contact" data-i18n="nav.contact">Kontakt</a></li>
+    <li class="nav-lang-row">
+      <button class="lang-btn" data-lang="pl">PL</button>
+      <button class="lang-btn" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="tr">TR</button>
+      <button class="lang-btn" data-lang="ar">AR</button>
+    </li>
   </ul>
   <div class="nav-right">
-    <a href="index.html#contact" class="nav-cta">Zapytaj o projekt</a>
+    <a href="index.html#contact" class="nav-cta" data-i18n="nav.cta">Zapytaj o projekt</a>
+    <div class="lang-switcher" style="display:flex;gap:4px;align-items:center">
+      <button class="lang-btn" data-lang="pl">PL</button>
+      <button class="lang-btn" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="tr">TR</button>
+      <button class="lang-btn" data-lang="ar">AR</button>
+    </div>
     <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
   </div>
 </nav>
 
 <div class="blog-page">
   <div class="blog-header reveal">
-    <div class="section-tag">Wiedza techniczna</div>
-    <h1 class="section-title" style="text-align:left;margin-bottom:10px">Blog</h1>
-    <p style="color:var(--muted);font-size:0.95rem;max-width:600px">Artykuły o automatyce przemysłowej, programowaniu PLC, SCADA/HMI, robotach UR i zastosowaniach AI w produkcji.</p>
+    <div class="section-tag" data-i18n="blog.tag">Wiedza techniczna</div>
+    <h1 class="section-title" style="text-align:left;margin-bottom:10px" data-i18n="blog.title">Blog</h1>
+    <p style="color:var(--muted);font-size:0.95rem;max-width:600px" data-i18n="blog.desc">Artykuły o automatyce przemysłowej, programowaniu PLC, SCADA/HMI, robotach UR i zastosowaniach AI w produkcji.</p>
   </div>
 
   <div class="blog-grid">
     <a href="blog/ai-predictive-maintenance.html" class="blog-card reveal">
       <div class="blog-card-inner">
-        <div class="blog-card-tag">AI · Utrzymanie ruchu</div>
-        <div class="blog-card-title">Predykcyjne utrzymanie ruchu z AI: jak zmniejszyć przestoje o 40%</div>
-        <div class="blog-card-excerpt">Jak integracja algorytmów uczenia maszynowego z danymi z czujników PLC pozwala przewidywać awarie zanim do nich dojdzie. Praktyczny przewodnik z przykładami wdrożeń.</div>
-        <div class="blog-card-meta"><span>Tomasz Urbański</span><span>Czerwiec 2025</span><span>8 min czytania</span></div>
+        <div class="blog-card-tag" data-i18n="a1.tag">AI · Utrzymanie ruchu</div>
+        <div class="blog-card-title" data-i18n="a1.title">Predykcyjne utrzymanie ruchu z AI: jak zmniejszyć przestoje o 40%</div>
+        <div class="blog-card-excerpt" data-i18n="a1.excerpt">Jak integracja algorytmów uczenia maszynowego z danymi z czujników PLC pozwala przewidywać awarie zanim do nich dojdzie. Praktyczny przewodnik z przykładami wdrożeń.</div>
+        <div class="blog-card-meta"><span>Tomasz Urbański</span><span data-i18n="a1.date">Czerwiec 2025</span><span data-i18n="a1.read">8 min czytania</span></div>
       </div>
     </a>
 
     <a href="blog/migracja-s5-s7.html" class="blog-card reveal">
       <div class="blog-card-inner">
-        <div class="blog-card-tag">Siemens · Migracja</div>
-        <div class="blog-card-title">Migracja Siemens S5 → S7-1500 bez zatrzymania produkcji</div>
-        <div class="blog-card-excerpt">Krok po kroku: jak zaplanować i przeprowadzić migrację sterownika S5 na nowoczesny S7-1500 z TIA Portal. Pułapki, na które trzeba uważać, i sprawdzone rozwiązania.</div>
-        <div class="blog-card-meta"><span>Tomasz Urbański</span><span>Maj 2025</span><span>10 min czytania</span></div>
+        <div class="blog-card-tag" data-i18n="a2.tag">Siemens · Migracja</div>
+        <div class="blog-card-title" data-i18n="a2.title">Migracja Siemens S5 → S7-1500 bez zatrzymania produkcji</div>
+        <div class="blog-card-excerpt" data-i18n="a2.excerpt">Krok po kroku: jak zaplanować i przeprowadzić migrację sterownika S5 na nowoczesny S7-1500 z TIA Portal. Pułapki, na które trzeba uważać, i sprawdzone rozwiązania.</div>
+        <div class="blog-card-meta"><span>Tomasz Urbański</span><span data-i18n="a2.date">Maj 2025</span><span data-i18n="a2.read">10 min czytania</span></div>
       </div>
     </a>
 
     <a href="blog/urcap-development.html" class="blog-card reveal">
       <div class="blog-card-inner">
-        <div class="blog-card-tag">Universal Robots · URCap</div>
-        <div class="blog-card-title">Tworzenie URCaps: od zera do wdrożenia na robocie UR</div>
-        <div class="blog-card-excerpt">Kompletny przewodnik po tworzeniu rozszerzeń URCap — od konfiguracji środowiska deweloperskiego po wdrożenie na tablecie UR. Zawiera przykładowy kod integracji z Modbus TCP.</div>
-        <div class="blog-card-meta"><span>Tomasz Urbański</span><span>Kwiecień 2025</span><span>12 min czytania</span></div>
+        <div class="blog-card-tag" data-i18n="a3.tag">Universal Robots · URCap</div>
+        <div class="blog-card-title" data-i18n="a3.title">Tworzenie URCaps: od zera do wdrożenia na robocie UR</div>
+        <div class="blog-card-excerpt" data-i18n="a3.excerpt">Kompletny przewodnik po tworzeniu rozszerzeń URCap — od konfiguracji środowiska deweloperskiego po wdrożenie na tablecie UR. Zawiera przykładowy kod integracji z Modbus TCP.</div>
+        <div class="blog-card-meta"><span>Tomasz Urbański</span><span data-i18n="a3.date">Kwiecień 2025</span><span data-i18n="a3.read">12 min czytania</span></div>
       </div>
     </a>
 
     <a href="blog/scada-hmi-wybor.html" class="blog-card reveal">
       <div class="blog-card-inner">
-        <div class="blog-card-tag">SCADA · HMI · Wizualizacja</div>
-        <div class="blog-card-title">SCADA czy HMI? Jak wybrać właściwą wizualizację dla Twojego zakładu</div>
-        <div class="blog-card-excerpt">Porównanie systemów SCADA i HMI — kiedy wystarczy panel operatorski, a kiedy potrzebujesz pełnego systemu nadzoru. Analiza WinCC, Ignition, FactoryTalk i innych platform.</div>
-        <div class="blog-card-meta"><span>Tomasz Urbański</span><span>Marzec 2025</span><span>7 min czytania</span></div>
+        <div class="blog-card-tag" data-i18n="a4.tag">SCADA · HMI · Wizualizacja</div>
+        <div class="blog-card-title" data-i18n="a4.title">SCADA czy HMI? Jak wybrać właściwą wizualizację dla Twojego zakładu</div>
+        <div class="blog-card-excerpt" data-i18n="a4.excerpt">Porównanie systemów SCADA i HMI — kiedy wystarczy panel operatorski, a kiedy potrzebujesz pełnego systemu nadzoru. Analiza WinCC, Ignition, FactoryTalk i innych platform.</div>
+        <div class="blog-card-meta"><span>Tomasz Urbański</span><span data-i18n="a4.date">Marzec 2025</span><span data-i18n="a4.read">7 min czytania</span></div>
       </div>
     </a>
   </div>
@@ -77,27 +91,201 @@
   <div class="footer-inner">
     <div>
       <div class="footer-logo">TU<span>Automation</span></div>
-      <div class="footer-tagline">Automatyka przemysłowa · Tomasz Urbański</div>
+      <div class="footer-tagline" data-i18n="footer.tagline">Automatyka przemysłowa · Tomasz Urbański</div>
     </div>
     <div class="footer-links">
-      <a href="index.html">Strona główna</a>
-      <a href="index.html#contact">Kontakt</a>
+      <a href="index.html" data-i18n="footer.home">Strona główna</a>
+      <a href="index.html#contact" data-i18n="nav.contact">Kontakt</a>
       <a href="impressum.html">Impressum</a>
-      <a href="privacy.html">Polityka prywatności</a>
+      <a href="privacy.html" data-i18n="footer.privacy">Polityka prywatności</a>
     </div>
     <div class="footer-location">
-      <div>Deutschland · Europa · Świat</div>
+      <div data-i18n="footer.location">Deutschland · Europa · Świat</div>
       <div>© 2025 <span>TU Automation</span></div>
     </div>
   </div>
 </footer>
+
 <script>
-const nav=document.getElementById('nav');
-window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});
-document.getElementById('hamburger').addEventListener('click',()=>document.querySelector('.nav-links').classList.toggle('open'));
-const reveals=document.querySelectorAll('.reveal');
-new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);new IntersectionObserver(()=>{}).observe(e.target);}});},{threshold:0.1}).observe=function(el){reveals.forEach(r=>new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*60);}});},{threshold:0.1}).observe(r));};
-reveals.forEach(r=>new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1}).observe(r));
+(function () {
+  const TRANSLATIONS = {
+    pl: {
+      'nav.services': 'Usługi', 'nav.projects': 'Projekty', 'nav.blog': 'Blog',
+      'nav.contact': 'Kontakt', 'nav.cta': 'Zapytaj o projekt',
+      'blog.tag': 'Wiedza techniczna', 'blog.title': 'Blog',
+      'blog.desc': 'Artykuły o automatyce przemysłowej, programowaniu PLC, SCADA/HMI, robotach UR i zastosowaniach AI w produkcji.',
+      'a1.tag': 'AI · Utrzymanie ruchu',
+      'a1.title': 'Predykcyjne utrzymanie ruchu z AI: jak zmniejszyć przestoje o 40%',
+      'a1.excerpt': 'Jak integracja algorytmów uczenia maszynowego z danymi z czujników PLC pozwala przewidywać awarie zanim do nich dojdzie. Praktyczny przewodnik z przykładami wdrożeń.',
+      'a1.date': 'Czerwiec 2025', 'a1.read': '8 min czytania',
+      'a2.tag': 'Siemens · Migracja',
+      'a2.title': 'Migracja Siemens S5 → S7-1500 bez zatrzymania produkcji',
+      'a2.excerpt': 'Krok po kroku: jak zaplanować i przeprowadzić migrację sterownika S5 na nowoczesny S7-1500 z TIA Portal. Pułapki, na które trzeba uważać, i sprawdzone rozwiązania.',
+      'a2.date': 'Maj 2025', 'a2.read': '10 min czytania',
+      'a3.tag': 'Universal Robots · URCap',
+      'a3.title': 'Tworzenie URCaps: od zera do wdrożenia na robocie UR',
+      'a3.excerpt': 'Kompletny przewodnik po tworzeniu rozszerzeń URCap — od konfiguracji środowiska deweloperskiego po wdrożenie na tablecie UR. Zawiera przykładowy kod integracji z Modbus TCP.',
+      'a3.date': 'Kwiecień 2025', 'a3.read': '12 min czytania',
+      'a4.tag': 'SCADA · HMI · Wizualizacja',
+      'a4.title': 'SCADA czy HMI? Jak wybrać właściwą wizualizację dla Twojego zakładu',
+      'a4.excerpt': 'Porównanie systemów SCADA i HMI — kiedy wystarczy panel operatorski, a kiedy potrzebujesz pełnego systemu nadzoru. Analiza WinCC, Ignition, FactoryTalk i innych platform.',
+      'a4.date': 'Marzec 2025', 'a4.read': '7 min czytania',
+      'footer.tagline': 'Automatyka przemysłowa · Tomasz Urbański',
+      'footer.home': 'Strona główna', 'footer.privacy': 'Polityka prywatności',
+      'footer.location': 'Deutschland · Europa · Świat',
+    },
+    de: {
+      'nav.services': 'Leistungen', 'nav.projects': 'Projekte', 'nav.blog': 'Blog',
+      'nav.contact': 'Kontakt', 'nav.cta': 'Projekt anfragen',
+      'blog.tag': 'Technisches Wissen', 'blog.title': 'Blog',
+      'blog.desc': 'Fachartikel über industrielle Automatisierung, SPS-Programmierung, SCADA/HMI, UR-Roboter und KI-Anwendungen in der Produktion.',
+      'a1.tag': 'KI · Instandhaltung',
+      'a1.title': 'Predictive Maintenance mit KI: Ausfallzeiten um 40 % reduzieren',
+      'a1.excerpt': 'Wie die Integration von Machine-Learning-Algorithmen mit PLC-Sensordaten Störungen vorhersagt, bevor sie auftreten. Praxisleitfaden mit Implementierungsbeispielen.',
+      'a1.date': 'Juni 2025', 'a1.read': '8 min Lesezeit',
+      'a2.tag': 'Siemens · Migration',
+      'a2.title': 'Siemens S5 → S7-1500 Migration ohne Produktionsstopp',
+      'a2.excerpt': 'Schritt für Schritt: Planung und Durchführung der Migration von S5 auf modernes S7-1500 mit TIA Portal. Häufige Fallstricke und bewährte Lösungen.',
+      'a2.date': 'Mai 2025', 'a2.read': '10 min Lesezeit',
+      'a3.tag': 'Universal Robots · URCap',
+      'a3.title': 'URCaps erstellen: von Null bis zur Inbetriebnahme am UR-Roboter',
+      'a3.excerpt': 'Vollständiger Leitfaden zur URCap-Entwicklung — von der Einrichtung der Entwicklungsumgebung bis zur Bereitstellung auf dem UR-Tablet. Mit Beispielcode für Modbus-TCP-Integration.',
+      'a3.date': 'April 2025', 'a3.read': '12 min Lesezeit',
+      'a4.tag': 'SCADA · HMI · Visualisierung',
+      'a4.title': 'SCADA oder HMI? Die richtige Visualisierung für Ihre Anlage wählen',
+      'a4.excerpt': 'Vergleich von SCADA- und HMI-Systemen — wann ein Bedienterminal ausreicht und wann Sie ein vollständiges Überwachungssystem benötigen. Analyse von WinCC, Ignition, FactoryTalk und weiteren Plattformen.',
+      'a4.date': 'März 2025', 'a4.read': '7 min Lesezeit',
+      'footer.tagline': 'Industrieautomation · Tomasz Urbański',
+      'footer.home': 'Startseite', 'footer.privacy': 'Datenschutz',
+      'footer.location': 'Deutschland · Europa · Welt',
+    },
+    en: {
+      'nav.services': 'Services', 'nav.projects': 'Projects', 'nav.blog': 'Blog',
+      'nav.contact': 'Contact', 'nav.cta': 'Request a quote',
+      'blog.tag': 'Technical knowledge', 'blog.title': 'Blog',
+      'blog.desc': 'Articles on industrial automation, PLC programming, SCADA/HMI, UR robots, and AI applications in manufacturing.',
+      'a1.tag': 'AI · Maintenance',
+      'a1.title': 'Predictive Maintenance with AI: Reducing Downtime by 40%',
+      'a1.excerpt': 'How integrating machine learning algorithms with PLC sensor data predicts failures before they occur. A practical guide with real implementation examples.',
+      'a1.date': 'June 2025', 'a1.read': '8 min read',
+      'a2.tag': 'Siemens · Migration',
+      'a2.title': 'Siemens S5 → S7-1500 Migration Without Stopping Production',
+      'a2.excerpt': 'Step by step: planning and executing the migration from S5 to modern S7-1500 with TIA Portal. Common pitfalls and proven solutions.',
+      'a2.date': 'May 2025', 'a2.read': '10 min read',
+      'a3.tag': 'Universal Robots · URCap',
+      'a3.title': 'Building URCaps: From Scratch to Deployment on a UR Robot',
+      'a3.excerpt': 'Complete guide to URCap development — from setting up the development environment to deploying on the UR tablet. Includes sample Modbus TCP integration code.',
+      'a3.date': 'April 2025', 'a3.read': '12 min read',
+      'a4.tag': 'SCADA · HMI · Visualization',
+      'a4.title': 'SCADA or HMI? Choosing the Right Visualization for Your Plant',
+      'a4.excerpt': 'Comparison of SCADA and HMI systems — when a panel is enough and when you need a full supervisory system. Analysis of WinCC, Ignition, FactoryTalk and other platforms.',
+      'a4.date': 'March 2025', 'a4.read': '7 min read',
+      'footer.tagline': 'Industrial Automation · Tomasz Urbański',
+      'footer.home': 'Home', 'footer.privacy': 'Privacy Policy',
+      'footer.location': 'Germany · Europe · World',
+    },
+    tr: {
+      'nav.services': 'Hizmetler', 'nav.projects': 'Projeler', 'nav.blog': 'Blog',
+      'nav.contact': 'İletişim', 'nav.cta': 'Proje Sor',
+      'blog.tag': 'Teknik Bilgi', 'blog.title': 'Blog',
+      'blog.desc': 'Endüstriyel otomasyon, PLC programlama, SCADA/HMI, UR robotlar ve üretimde yapay zeka uygulamaları hakkında teknik makaleler.',
+      'a1.tag': 'Yapay Zeka · Bakım',
+      'a1.title': 'Yapay Zeka ile Öngörücü Bakım: Duruş Sürelerini %40 Azaltın',
+      'a1.excerpt': 'Makine öğrenimi algoritmalarının PLC sensör verileriyle entegrasyonu arızaları olmadan önce tahmin ediyor. Uygulama örnekleriyle pratik rehber.',
+      'a1.date': 'Haziran 2025', 'a1.read': '8 dk okuma',
+      'a2.tag': 'Siemens · Göç',
+      'a2.title': 'Siemens S5 → S7-1500 Üretimi Durdurmadan Geçiş',
+      'a2.excerpt': 'Adım adım: TIA Portal ile S5\'ten modern S7-1500\'e geçişin planlanması ve uygulanması. Sık yapılan hatalar ve kanıtlanmış çözümler.',
+      'a2.date': 'Mayıs 2025', 'a2.read': '10 dk okuma',
+      'a3.tag': 'Universal Robots · URCap',
+      'a3.title': 'URCap Geliştirme: Sıfırdan UR Robota Kuruluma',
+      'a3.excerpt': 'URCap geliştirme için eksiksiz rehber — geliştirme ortamı kurulumundan UR tabletine dağıtıma kadar. Modbus TCP entegrasyon örnek kodu dahil.',
+      'a3.date': 'Nisan 2025', 'a3.read': '12 dk okuma',
+      'a4.tag': 'SCADA · HMI · Görselleştirme',
+      'a4.title': 'SCADA mı HMI mi? Tesisiniz İçin Doğru Görselleştirmeyi Seçin',
+      'a4.excerpt': 'SCADA ve HMI sistemlerinin karşılaştırması — operatör paneli ne zaman yeterlidir ve ne zaman tam gözetim sistemine ihtiyacınız var? WinCC, Ignition, FactoryTalk analizi.',
+      'a4.date': 'Mart 2025', 'a4.read': '7 dk okuma',
+      'footer.tagline': 'Endüstriyel Otomasyon · Tomasz Urbański',
+      'footer.home': 'Ana Sayfa', 'footer.privacy': 'Gizlilik Politikası',
+      'footer.location': 'Almanya · Avrupa · Dünya',
+    },
+    ar: {
+      'nav.services': 'الخدمات', 'nav.projects': 'المشاريع', 'nav.blog': 'مدونة',
+      'nav.contact': 'اتصل بنا', 'nav.cta': 'اطلب عرض سعر',
+      'blog.tag': 'المعرفة التقنية', 'blog.title': 'مدونة',
+      'blog.desc': 'مقالات حول الأتمتة الصناعية وبرمجة PLC وSCADA/HMI وروبوتات UR وتطبيقات الذكاء الاصطناعي في التصنيع.',
+      'a1.tag': 'الذكاء الاصطناعي · الصيانة',
+      'a1.title': 'الصيانة التنبؤية بالذكاء الاصطناعي: تقليل التوقفات بنسبة 40٪',
+      'a1.excerpt': 'كيف يتنبأ دمج خوارزميات التعلم الآلي مع بيانات حساسات PLC بالأعطال قبل حدوثها. دليل عملي مع أمثلة التنفيذ.',
+      'a1.date': 'يونيو 2025', 'a1.read': '8 دقائق قراءة',
+      'a2.tag': 'سيمنز · ترحيل',
+      'a2.title': 'ترحيل Siemens S5 → S7-1500 دون إيقاف الإنتاج',
+      'a2.excerpt': 'خطوة بخطوة: تخطيط وتنفيذ الترحيل من S5 إلى S7-1500 الحديث مع TIA Portal. المزالق الشائعة والحلول المجربة.',
+      'a2.date': 'مايو 2025', 'a2.read': '10 دقائق قراءة',
+      'a3.tag': 'Universal Robots · URCap',
+      'a3.title': 'بناء URCaps: من الصفر حتى النشر على روبوت UR',
+      'a3.excerpt': 'دليل شامل لتطوير URCap — من إعداد بيئة التطوير حتى النشر على لوحة UR. يتضمن نموذج كود لتكامل Modbus TCP.',
+      'a3.date': 'أبريل 2025', 'a3.read': '12 دقيقة قراءة',
+      'a4.tag': 'SCADA · HMI · التصور',
+      'a4.title': 'SCADA أم HMI؟ اختيار التصور المناسب لمنشأتك',
+      'a4.excerpt': 'مقارنة بين أنظمة SCADA وHMI — متى يكفي لوح التشغيل ومتى تحتاج نظام إشراف كامل. تحليل WinCC وIgnition وFactoryTalk وغيرها.',
+      'a4.date': 'مارس 2025', 'a4.read': '7 دقائق قراءة',
+      'footer.tagline': 'أتمتة صناعية · Tomasz Urbański',
+      'footer.home': 'الرئيسية', 'footer.privacy': 'سياسة الخصوصية',
+      'footer.location': 'ألمانيا · أوروبا · العالم',
+    }
+  };
+
+  function detectLang() {
+    const l = navigator.language.toLowerCase();
+    if (l.startsWith('de')) return 'de';
+    if (l.startsWith('pl')) return 'pl';
+    if (l.startsWith('tr')) return 'tr';
+    if (l.startsWith('ar')) return 'ar';
+    return 'en';
+  }
+
+  function applyLang(lang) {
+    const t = TRANSLATIONS[lang] || TRANSLATIONS.pl;
+    localStorage.setItem('tu-lang', lang);
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (t[key]) el.textContent = t[key];
+    });
+    document.querySelectorAll('.lang-btn').forEach(b => {
+      b.classList.toggle('active', b.dataset.lang === lang);
+    });
+    if (lang === 'ar' && !document.getElementById('arabic-font')) {
+      const lnk = document.createElement('link');
+      lnk.id = 'arabic-font';
+      lnk.rel = 'stylesheet';
+      lnk.href = 'https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap';
+      document.head.appendChild(lnk);
+    }
+  }
+
+  const initLang = localStorage.getItem('tu-lang') || detectLang();
+  applyLang(initLang);
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', () => applyLang(btn.dataset.lang));
+  });
+})();
+
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.style.background = window.scrollY > 50 ? 'rgba(8,12,20,0.97)' : 'rgba(8,12,20,0.85)';
+}, { passive: true });
+document.getElementById('hamburger').addEventListener('click', () => {
+  document.getElementById('navLinks').classList.toggle('open');
+});
+document.querySelectorAll('.reveal').forEach(r =>
+  new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 }).observe(r)
+);
 </script>
 </body>
 </html>
