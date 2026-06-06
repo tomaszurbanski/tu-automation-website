@@ -1113,7 +1113,7 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
   let ac, masterGain, dly;
   let leadOsc, leadGain, bassOsc, bassGain;
   const padOscs = [];
-  let playing = false, schedTimer;
+  let playing = false, schedTimer, suspendTimer;
   let nextTime, seqStep;
 
   const BPM = 80;
@@ -1212,6 +1212,7 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
 
   btn.addEventListener('click', () => {
     if (!playing) {
+      clearTimeout(suspendTimer);
       if (!ac) build();
       if (ac.state === 'suspended') ac.resume();
       masterGain.gain.cancelScheduledValues(ac.currentTime);
@@ -1228,7 +1229,7 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
       masterGain.gain.cancelScheduledValues(ac.currentTime);
       masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime);
       masterGain.gain.linearRampToValueAtTime(0.0001, ac.currentTime + 2.5);
-      setTimeout(() => { if (ac) ac.suspend(); }, 3000);
+      suspendTimer = setTimeout(() => { if (ac && !playing) ac.suspend(); }, 3000);
       playing = false; window._tuMusicPlaying = false;
       btn.classList.remove('playing');
       btn.querySelector('.icon-play').style.display = '';
