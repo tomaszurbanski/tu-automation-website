@@ -665,28 +665,56 @@ footer {
 .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
 .reveal.visible { opacity: 1; transform: translateY(0); }
 
-/* ── MOBILE NAV ── */
+/* ── MOBILE ── */
 @media (max-width: 768px) {
+  /* nav: only logo + hamburger, no CTA */
   .nav-links { display: none; }
   .hamburger { display: flex; }
-  .nav-right { gap: 8px; }
-  .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 64px; left: 0; right: 0; background: rgba(8,12,20,0.98); padding: 20px 5%; border-bottom: 1px solid var(--border); gap: 16px; }
-  .hero-visual { display: none; }
-  .hero-stats { flex-wrap: wrap; gap: 20px; }
-  .contact-wrapper { grid-template-columns: 1fr; }
-  .form-row { grid-template-columns: 1fr; }
-  .footer-inner { flex-direction: column; text-align: center; }
-  .footer-location { text-align: center; }
+  .nav-cta { display: none; }
+  .nav-right { gap: 0; }
   .lang-switcher { display: none; }
   .nav-lang-row { display: flex !important; }
+  .nav-links.open { display: flex; flex-direction: column; position: fixed; top: 64px; left: 0; right: 0; background: rgba(8,12,20,0.98); padding: 24px 5% 22px; border-bottom: 1px solid var(--border); gap: 18px; z-index: 99; }
+  /* hero */
+  #hero { padding: 90px 5% 56px; }
+  .hero-visual { display: none; }
+  .hero-stats { flex-wrap: wrap; gap: 20px; }
+  /* sections — 100px→64px vertical padding on mobile */
+  #services, #tech, #clients, #apps, #process, #why, #projects, #contact { padding: 64px 5%; }
+  #calculator { padding: 64px 5%; }
+  .section-header { margin-bottom: 36px; }
+  /* layout */
+  .contact-wrapper { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .footer-inner { flex-direction: column; text-align: center; gap: 20px; }
+  .footer-location { text-align: center; }
+  /* fixed bottom buttons — smaller, closer to edge */
+  .wa-btn { bottom: 18px; right: 14px; width: 48px; height: 48px; }
+  .music-btn { bottom: 18px; left: 14px; width: 48px; height: 48px; }
+  /* code terminal off on mobile — it overlays scrollable content */
+  .code-term { display: none; }
+  /* apps section: force 2-col grid so 6 items don't become a very long list */
+  .apps-grid { grid-template-columns: repeat(2, 1fr); }
+  .apps-dashboard { padding: 16px; }
+  .apps-intro { margin-bottom: 28px; }
 }
 @media (max-width: 480px) {
+  #hero { padding: 78px 4% 44px; }
+  .hero-subtitle { font-size: 0.93rem; margin-bottom: 28px; }
+  .hero-title { margin-bottom: 14px; }
+  .hero-stats { margin-top: 28px; padding-top: 20px; }
   .hero-btns { flex-direction: column; }
   .btn-primary, .btn-outline { text-align: center; }
+  .stat-num { font-size: 1.75rem; }
+  .stat-label { font-size: 0.7rem; }
+  #services, #tech, #clients, #apps, #process, #why, #projects, #contact { padding: 52px 4%; }
+  #calculator { padding: 52px 4%; }
 }
 
-/* ── MOBILE NAV LANG ROW ── */
-.nav-lang-row { display: none; gap: 4px; flex-wrap: wrap; padding-top: 8px; border-top: 1px solid var(--border); margin-top: 4px; list-style: none; }
+/* ── MOBILE NAV EXTRAS ── */
+.nav-cta-mob { display: none; }
+@media (max-width: 768px) { .nav-cta-mob { display: block; } .nav-cta-mob .btn-primary { display: block; text-align: center; } }
+.nav-lang-row { display: none; gap: 6px; flex-wrap: wrap; padding-top: 10px; border-top: 1px solid var(--border); margin-top: 4px; list-style: none; }
 
 /* ── ARABIC RTL ── */
 [lang="ar"] { font-family: 'Cairo', 'Tahoma', 'Arial Unicode MS', sans-serif; }
