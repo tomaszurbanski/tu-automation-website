@@ -619,7 +619,7 @@ document.querySelectorAll('.btn-prev').forEach(btn => btn.addEventListener('clic
 }));
 document.querySelectorAll('.check-item').forEach(item => {
   item.addEventListener('click', function(e) {
-    if (e.target.tagName === 'A') return;
+    e.preventDefault();
     const input = this.querySelector('input');
     if (!input) return;
     if (input.type === 'radio') {
@@ -627,8 +627,8 @@ document.querySelectorAll('.check-item').forEach(item => {
       this.classList.add('selected');
       input.checked = true;
     } else {
-      this.classList.toggle('selected');
-      input.checked = this.classList.contains('selected');
+      input.checked = !input.checked;
+      this.classList.toggle('selected', input.checked);
     }
   });
 });
@@ -688,6 +688,7 @@ const newKeys = {
     'calc.disclaimer': 'Kalkulacja ma charakter orientacyjny. Dokładna wycena po analizie specyfikacji projektu.',
     'wizard.s1': 'Branża', 'wizard.s2': 'Projekt', 'wizard.s3': 'Kontakt',
     'wizard.industry': 'Branża klienta', 'wizard.other': 'Inna',
+    'wizard.ur': 'Universal Robots / URCap',
     'wizard.next': 'Dalej →', 'wizard.prev': '← Wstecz',
     'contact.linkedin': 'LinkedIn',
     'footer.impressum': 'Impressum',
@@ -707,6 +708,7 @@ const newKeys = {
     'calc.disclaimer': 'This is an indicative estimate. Accurate pricing requires project specification review.',
     'wizard.s1': 'Industry', 'wizard.s2': 'Project', 'wizard.s3': 'Contact',
     'wizard.industry': 'Client industry', 'wizard.other': 'Other',
+    'wizard.ur': 'Universal Robots / URCap',
     'wizard.next': 'Next →', 'wizard.prev': '← Back',
     'contact.linkedin': 'LinkedIn',
     'footer.impressum': 'Impressum',
@@ -726,6 +728,7 @@ const newKeys = {
     'calc.disclaimer': 'Diese Kalkulation ist ein Richtwert. Genaue Preise erfordern eine Projektspezifikationsanalyse.',
     'wizard.s1': 'Branche', 'wizard.s2': 'Projekt', 'wizard.s3': 'Kontakt',
     'wizard.industry': 'Kundenbranche', 'wizard.other': 'Sonstige',
+    'wizard.ur': 'Universal Robots / URCap',
     'wizard.next': 'Weiter →', 'wizard.prev': '← Zurück',
     'contact.linkedin': 'LinkedIn',
     'footer.impressum': 'Impressum',
