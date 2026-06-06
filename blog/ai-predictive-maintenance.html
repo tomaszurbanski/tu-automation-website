@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Predykcyjne utrzymanie ruchu z AI – TU Automation Blog</title>
+  <meta name="description" content="Jak integracja algorytmów AI z danymi PLC pozwala przewidywać awarie maszyn przed ich wystąpieniem. Praktyczny przewodnik z przykładami."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style.css"/>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav id="nav" style="position:fixed">
+  <div class="nav-logo">TU<span>Automation</span></div>
+  <div class="nav-right">
+    <a href="../blog.html" class="nav-cta" style="font-size:0.75rem">← Blog</a>
+  </div>
+</nav>
+
+<div class="article-page">
+  <div class="article-hero">
+    <div class="article-tag">AI · Utrzymanie ruchu · IIoT</div>
+    <h1 class="article-title">Predykcyjne utrzymanie ruchu z AI: jak zmniejszyć przestoje o 40%</h1>
+    <div class="article-meta">
+      <span>Tomasz Urbański</span>
+      <span>Czerwiec 2025</span>
+      <span>8 min czytania</span>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <p>Awarie maszyn kosztują przemysł produkcyjny miliardy euro rocznie. Tradycyjne podejście — reaktywne lub prewencyjne (przeglądy co X godzin) — jest kosztowne i nieefektywne. Predykcyjne utrzymanie ruchu (ang. <strong>Predictive Maintenance, PdM</strong>) z wykorzystaniem sztucznej inteligencji pozwala przewidywać awarie na podstawie danych z czujników, zanim do nich dojdzie.</p>
+
+    <div class="article-callout">
+      <p>Kluczowe pytanie: czy maszyna <em>będzie</em> uszkodzona za 48 godzin? Nie — czy <em>jest</em> uszkodzona teraz. To fundamentalna zmiana podejścia.</p>
+    </div>
+
+    <h2>Jak to działa technicznie</h2>
+    <p>System PdM składa się z czterech warstw:</p>
+    <ol>
+      <li><strong>Warstwa danych</strong> — czujniki zbierają dane: wibracje, temperatura, prąd, ciśnienie, dźwięk. Dane trafiają do sterownika PLC lub bezpośrednio przez Modbus TCP/MQTT do systemu nadrzędnego.</li>
+      <li><strong>Warstwa przetwarzania</strong> — dane są normalizowane, filtrowane i segmentowane w czasie. Python + biblioteki Pandas/NumPy na edge computerze (Raspberry Pi, przemysłowy PC) lub w chmurze.</li>
+      <li><strong>Warstwa AI</strong> — algorytmy uczenia maszynowego: Isolation Forest (wykrywanie anomalii), LSTM (prognozowanie trendów), Random Forest (klasyfikacja stanu). Model jest trenowany na historycznych danych z okresu normalnej pracy.</li>
+      <li><strong>Warstwa alertów</strong> — wyniki trafiają do SCADA, aplikacji mobilnej lub SMS. Operator widzi: <code>ŁOŻYSKO WRZECIONA #3 — degradacja 73% — zalecana wymiana w ciągu 48h</code>.</li>
+    </ol>
+
+    <h2>Przykład: monitoring maszyny dziewiarskiej</h2>
+    <p>W projekcie LineMind AI wdrożonym dla zakładu tekstylnego zastosowałem następujący stos technologiczny:</p>
+    <ul>
+      <li>Czujniki drgań piezoelektryczne na wrzecionach (próbkowanie 1kHz)</li>
+      <li>Temperatury łożysk PT100 podłączone do S7-1200</li>
+      <li>Prąd silników przez przekładniki prądowe 4-20mA</li>
+      <li>Komunikacja: Modbus TCP → FastAPI → SQLite → PWA dashboard</li>
+    </ul>
+    <p>Model wykrywania anomalii (Isolation Forest) osiągnął <strong>94% dokładność</strong> wykrywania degradacji łożysk z 72-godzinnym wyprzedzeniem. Średni czas zatrzymania nieplanowanego zredukowano z 4,2h do 0,8h miesięcznie.</p>
+
+    <h2>Jakie dane zbierać</h2>
+    <p>Nie każdy parametr jest równie wartościowy. Hierarchia przydatności (od najważniejszego):</p>
+    <ol>
+      <li>Wibracje (FFT) — najlepszy wskaźnik stanu mechanicznego</li>
+      <li>Temperatura łożysk i silnika</li>
+      <li>Prąd silnika (wykrywa przeciążenia, zużycie szczotek)</li>
+      <li>Ciśnienie hydrauliczne / pneumatyczne</li>
+      <li>Liczba cykli / przepracowane godziny</li>
+    </ol>
+
+    <h2>Minimalne wymagania do startu</h2>
+    <p>Nie potrzebujesz od razu pełnego systemu. Minimum viable product (MVP) dla PdM:</p>
+    <ul>
+      <li>Istniejący PLC z wolnymi wejściami analogowymi — wystarczy 2-3 kanały</li>
+      <li>Raspberry Pi 4 lub przemysłowy mini-PC z Linuksem</li>
+      <li>Python 3.10 + scikit-learn + influxdb</li>
+      <li>Czas wdrożenia: 2-3 tygodnie dla jednej maszyny</li>
+    </ul>
+
+    <div class="article-callout">
+      <p>Największa pułapka: próba zbudowania kompletnego systemu od razu. Zacznij od jednej maszyny, jednego parametru. Gdy model działa — skaluj.</p>
+    </div>
+
+    <h2>ROI: kiedy się zwraca</h2>
+    <p>Typowy zwrot z inwestycji w PdM dla maszyny produkcyjnej o wartości 200 000€:</p>
+    <ul>
+      <li>Koszt wdrożenia: 8 000 – 15 000€ (sprzęt + software + uruchomienie)</li>
+      <li>Jedna uniknięta awaria katastrofalna: oszczędność 30 000 – 80 000€ (naprawa + przestój)</li>
+      <li>ROI: zwrot w ciągu 3-6 miesięcy przy 2 unikniętych awariach rocznie</li>
+    </ul>
+
+    <div class="article-cta">
+      <h3>Wdrożyć PdM w Twoim zakładzie?</h3>
+      <p>Przeprowadzam bezpłatną analizę potencjału — sprawdzam, które maszyny są najlepszymi kandydatami do predykcyjnego monitoringu i przygotowuję plan wdrożenia MVP.</p>
+      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Umów konsultację</a>
+    </div>
+  </div>
+
+  <div class="article-nav">
+    <a href="../blog.html">← Wszystkie artykuły</a>
+    <a href="migracja-s5-s7.html">Migracja S5 → S7 →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo">TU<span>Automation</span></div></div>
+    <div class="footer-links">
+      <a href="../index.html">Strona główna</a>
+      <a href="../blog.html">Blog</a>
+      <a href="../index.html#contact">Kontakt</a>
+      <a href="../impressum.html">Impressum</a>
+    </div>
+    <div class="footer-location"><div>© 2025 TU Automation</div></div>
+  </div>
+</footer>
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});
+</script>
+</body>
+</html>

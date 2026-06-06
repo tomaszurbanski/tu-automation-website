@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog – Automatyka Przemysłowa | TU Automation</title>
+  <meta name="description" content="Artykuły techniczne o automatyce przemysłowej: PLC Siemens, SCADA, HMI, roboty Universal Robots, AI w produkcji."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+<nav id="nav" style="position:fixed">
+  <div class="nav-logo">TU<span>Automation</span></div>
+  <ul class="nav-links">
+    <li><a href="index.html#services">Usługi</a></li>
+    <li><a href="index.html#projects">Projekty</a></li>
+    <li><a href="blog.html" style="color:var(--cyan)">Blog</a></li>
+    <li><a href="index.html#contact">Kontakt</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="index.html#contact" class="nav-cta">Zapytaj o projekt</a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<div class="blog-page">
+  <div class="blog-header reveal">
+    <div class="section-tag">Wiedza techniczna</div>
+    <h1 class="section-title" style="text-align:left;margin-bottom:10px">Blog</h1>
+    <p style="color:var(--muted);font-size:0.95rem;max-width:600px">Artykuły o automatyce przemysłowej, programowaniu PLC, SCADA/HMI, robotach UR i zastosowaniach AI w produkcji.</p>
+  </div>
+
+  <div class="blog-grid">
+    <a href="blog/ai-predictive-maintenance.html" class="blog-card reveal">
+      <div class="blog-card-inner">
+        <div class="blog-card-tag">AI · Utrzymanie ruchu</div>
+        <div class="blog-card-title">Predykcyjne utrzymanie ruchu z AI: jak zmniejszyć przestoje o 40%</div>
+        <div class="blog-card-excerpt">Jak integracja algorytmów uczenia maszynowego z danymi z czujników PLC pozwala przewidywać awarie zanim do nich dojdzie. Praktyczny przewodnik z przykładami wdrożeń.</div>
+        <div class="blog-card-meta"><span>Tomasz Urbański</span><span>Czerwiec 2025</span><span>8 min czytania</span></div>
+      </div>
+    </a>
+
+    <a href="blog/migracja-s5-s7.html" class="blog-card reveal">
+      <div class="blog-card-inner">
+        <div class="blog-card-tag">Siemens · Migracja</div>
+        <div class="blog-card-title">Migracja Siemens S5 → S7-1500 bez zatrzymania produkcji</div>
+        <div class="blog-card-excerpt">Krok po kroku: jak zaplanować i przeprowadzić migrację sterownika S5 na nowoczesny S7-1500 z TIA Portal. Pułapki, na które trzeba uważać, i sprawdzone rozwiązania.</div>
+        <div class="blog-card-meta"><span>Tomasz Urbański</span><span>Maj 2025</span><span>10 min czytania</span></div>
+      </div>
+    </a>
+
+    <a href="blog/urcap-development.html" class="blog-card reveal">
+      <div class="blog-card-inner">
+        <div class="blog-card-tag">Universal Robots · URCap</div>
+        <div class="blog-card-title">Tworzenie URCaps: od zera do wdrożenia na robocie UR</div>
+        <div class="blog-card-excerpt">Kompletny przewodnik po tworzeniu rozszerzeń URCap — od konfiguracji środowiska deweloperskiego po wdrożenie na tablecie UR. Zawiera przykładowy kod integracji z Modbus TCP.</div>
+        <div class="blog-card-meta"><span>Tomasz Urbański</span><span>Kwiecień 2025</span><span>12 min czytania</span></div>
+      </div>
+    </a>
+
+    <a href="blog/scada-hmi-wybor.html" class="blog-card reveal">
+      <div class="blog-card-inner">
+        <div class="blog-card-tag">SCADA · HMI · Wizualizacja</div>
+        <div class="blog-card-title">SCADA czy HMI? Jak wybrać właściwą wizualizację dla Twojego zakładu</div>
+        <div class="blog-card-excerpt">Porównanie systemów SCADA i HMI — kiedy wystarczy panel operatorski, a kiedy potrzebujesz pełnego systemu nadzoru. Analiza WinCC, Ignition, FactoryTalk i innych platform.</div>
+        <div class="blog-card-meta"><span>Tomasz Urbański</span><span>Marzec 2025</span><span>7 min czytania</span></div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div>
+      <div class="footer-logo">TU<span>Automation</span></div>
+      <div class="footer-tagline">Automatyka przemysłowa · Tomasz Urbański</div>
+    </div>
+    <div class="footer-links">
+      <a href="index.html">Strona główna</a>
+      <a href="index.html#contact">Kontakt</a>
+      <a href="impressum.html">Impressum</a>
+      <a href="privacy.html">Polityka prywatności</a>
+    </div>
+    <div class="footer-location">
+      <div>Deutschland · Europa · Świat</div>
+      <div>© 2025 <span>TU Automation</span></div>
+    </div>
+  </div>
+</footer>
+<script>
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});
+document.getElementById('hamburger').addEventListener('click',()=>document.querySelector('.nav-links').classList.toggle('open'));
+const reveals=document.querySelectorAll('.reveal');
+new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*80);new IntersectionObserver(()=>{}).observe(e.target);}});},{threshold:0.1}).observe=function(el){reveals.forEach(r=>new IntersectionObserver((entries)=>{entries.forEach((e,i)=>{if(e.isIntersecting){setTimeout(()=>e.target.classList.add('visible'),i*60);}});},{threshold:0.1}).observe(r));};
+reveals.forEach(r=>new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1}).observe(r));
+</script>
+</body>
+</html>

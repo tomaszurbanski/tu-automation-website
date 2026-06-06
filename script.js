@@ -414,6 +414,140 @@ cookieDecline.addEventListener('click', () => {
   banner.classList.remove('visible');
 });
 
+// ── WIZARD ──
+let wizardStep = 1;
+function wizardGoTo(step) {
+  document.querySelectorAll('.wizard-panel').forEach((p, i) => p.classList.toggle('active', i + 1 === step));
+  document.querySelectorAll('.wizard-step-item').forEach((s, i) => {
+    s.classList.toggle('active', i + 1 === step);
+    s.classList.toggle('done', i + 1 < step);
+  });
+  wizardStep = step;
+}
+document.querySelectorAll('.btn-next').forEach(btn => btn.addEventListener('click', () => {
+  if (wizardStep < 3) wizardGoTo(wizardStep + 1);
+}));
+document.querySelectorAll('.btn-prev').forEach(btn => btn.addEventListener('click', () => {
+  if (wizardStep > 1) wizardGoTo(wizardStep - 1);
+}));
+document.querySelectorAll('.check-item').forEach(item => {
+  item.addEventListener('click', function(e) {
+    if (e.target.tagName === 'A') return;
+    const input = this.querySelector('input');
+    if (!input) return;
+    if (input.type === 'radio') {
+      document.querySelectorAll(`input[name="${input.name}"]`).forEach(r => r.closest('.check-item').classList.remove('selected'));
+      this.classList.add('selected');
+      input.checked = true;
+    } else {
+      this.classList.toggle('selected');
+      input.checked = this.classList.contains('selected');
+    }
+  });
+});
+
+// ── CALCULATOR ──
+const calcCfg = {
+  plc:     { 1: 3000,  2: 5500,  3: 9000,  4: 14000 },
+  hmi:     { 0: 0,     1: 900,   2: 1800,  3: 3200  },
+  net:     { 1: 1.0,   2: 1.35,  3: 1.75  },
+  urgency: { 1: 1.0,   2: 1.3,   3: 1.65  },
+  weeks:   { 1: [3,4], 2: [5,7], 3: [8,12], 4: [12,18] },
+  netW:    { 1: 0,     2: 1,     3: 3     },
+  urgDiv:  { 1: 1.0,   2: 0.7,   3: 0.5   }
+};
+let cs = { plc: 1, hmi: 0, net: 1, urgency: 1 };
+function updateCalc() {
+  const raw = (calcCfg.plc[cs.plc] + calcCfg.hmi[cs.hmi]) * calcCfg.net[cs.net] * calcCfg.urgency[cs.urgency];
+  const lo = Math.round(raw * 0.75 / 500) * 500;
+  const hi = Math.round(raw * 1.35 / 500) * 500;
+  const fmt = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  const priceEl = document.getElementById('calcPrice');
+  if (priceEl) priceEl.textContent = `${fmt(lo)} – ${fmt(hi)} €`;
+  const bw = calcCfg.weeks[cs.plc];
+  const ne = calcCfg.netW[cs.net];
+  const ud = calcCfg.urgDiv[cs.urgency];
+  const tl = Math.max(1, Math.round((bw[0] + ne) * ud));
+  const th = Math.max(2, Math.round((bw[1] + ne) * ud));
+  const wk = (T[currentLang] || T.pl)['calc.weeks'] || 'tyg.';
+  const timeEl = document.getElementById('calcTime');
+  if (timeEl) timeEl.textContent = `${tl}–${th} ${wk}`;
+}
+document.querySelectorAll('.calc-options').forEach(grp => {
+  grp.querySelectorAll('.calc-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      grp.querySelectorAll('.calc-opt').forEach(b => b.classList.remove('selected'));
+      btn.classList.add('selected');
+      cs[grp.dataset.calc] = parseInt(btn.dataset.val, 10);
+      updateCalc();
+    });
+  });
+});
+
+// ── ADD NEW I18N KEYS ──
+const newKeys = {
+  pl: {
+    'nav.blog': 'Blog',
+    'certs.label': 'Technologie partnerskie:',
+    'sec.calc.tag': 'Wycena orientacyjna', 'sec.calc.title': 'Kalkulator projektu',
+    'sec.calc.desc': 'Dobierz parametry projektu, aby otrzymać przybliżony koszt i czas realizacji.',
+    'calc.plc': 'Liczba sterowników PLC', 'calc.hmi': 'Panele HMI / SCADA',
+    'calc.network': 'Sieć i integracje', 'calc.urgency': 'Pilność realizacji',
+    'calc.none': 'Brak', 'calc.simple': 'Prosta', 'calc.medium': 'Średnia', 'calc.complex': 'Złożona',
+    'calc.std': 'Standardowa', 'calc.fast': 'Przyspieszona', 'calc.urgent': 'Pilna',
+    'calc.estimate': 'Szacowany budżet', 'calc.net': 'netto, orientacyjnie',
+    'calc.timeline': 'Czas realizacji:', 'calc.weeks': 'tyg.',
+    'calc.cta': 'Omów szczegóły →',
+    'calc.disclaimer': 'Kalkulacja ma charakter orientacyjny. Dokładna wycena po analizie specyfikacji projektu.',
+    'wizard.s1': 'Branża', 'wizard.s2': 'Projekt', 'wizard.s3': 'Kontakt',
+    'wizard.industry': 'Branża klienta', 'wizard.other': 'Inna',
+    'wizard.next': 'Dalej →', 'wizard.prev': '← Wstecz',
+    'contact.linkedin': 'LinkedIn',
+    'footer.impressum': 'Impressum',
+  },
+  en: {
+    'nav.blog': 'Blog',
+    'certs.label': 'Partner technologies:',
+    'sec.calc.tag': 'Cost estimate', 'sec.calc.title': 'Project calculator',
+    'sec.calc.desc': 'Configure your project parameters to get an indicative cost and timeline.',
+    'calc.plc': 'Number of PLCs', 'calc.hmi': 'HMI / SCADA panels',
+    'calc.network': 'Network & integrations', 'calc.urgency': 'Timeline urgency',
+    'calc.none': 'None', 'calc.simple': 'Simple', 'calc.medium': 'Medium', 'calc.complex': 'Complex',
+    'calc.std': 'Standard', 'calc.fast': 'Accelerated', 'calc.urgent': 'Urgent',
+    'calc.estimate': 'Estimated budget', 'calc.net': 'net, indicative',
+    'calc.timeline': 'Timeline:', 'calc.weeks': 'wks.',
+    'calc.cta': 'Discuss details →',
+    'calc.disclaimer': 'This is an indicative estimate. Accurate pricing requires project specification review.',
+    'wizard.s1': 'Industry', 'wizard.s2': 'Project', 'wizard.s3': 'Contact',
+    'wizard.industry': 'Client industry', 'wizard.other': 'Other',
+    'wizard.next': 'Next →', 'wizard.prev': '← Back',
+    'contact.linkedin': 'LinkedIn',
+    'footer.impressum': 'Impressum',
+  },
+  de: {
+    'nav.blog': 'Blog',
+    'certs.label': 'Partnertechnologien:',
+    'sec.calc.tag': 'Kostenabschätzung', 'sec.calc.title': 'Projektkalkulator',
+    'sec.calc.desc': 'Konfigurieren Sie Ihre Projektparameter für eine Richtkostenschätzung.',
+    'calc.plc': 'Anzahl SPS-Steuerungen', 'calc.hmi': 'HMI / SCADA-Panels',
+    'calc.network': 'Netzwerk & Integrationen', 'calc.urgency': 'Dringlichkeit',
+    'calc.none': 'Keine', 'calc.simple': 'Einfach', 'calc.medium': 'Mittel', 'calc.complex': 'Komplex',
+    'calc.std': 'Standard', 'calc.fast': 'Beschleunigt', 'calc.urgent': 'Dringend',
+    'calc.estimate': 'Geschätztes Budget', 'calc.net': 'netto, Richtwert',
+    'calc.timeline': 'Realisierungsdauer:', 'calc.weeks': 'Wo.',
+    'calc.cta': 'Details besprechen →',
+    'calc.disclaimer': 'Diese Kalkulation ist ein Richtwert. Genaue Preise erfordern eine Projektspezifikationsanalyse.',
+    'wizard.s1': 'Branche', 'wizard.s2': 'Projekt', 'wizard.s3': 'Kontakt',
+    'wizard.industry': 'Kundenbranche', 'wizard.other': 'Sonstige',
+    'wizard.next': 'Weiter →', 'wizard.prev': '← Zurück',
+    'contact.linkedin': 'LinkedIn',
+    'footer.impressum': 'Impressum',
+  }
+};
+// Merge new keys into T
+Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKeys[lang]); });
+
 // ── INIT ──
 applyLang(currentLang);
 type();
+updateCalc();

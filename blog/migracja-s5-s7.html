@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Migracja Siemens S5 na S7 bez zatrzymania produkcji – TU Automation Blog</title>
+  <meta name="description" content="Jak przeprowadzić migrację sterownika Siemens S5 na S7-1500 z TIA Portal krok po kroku, bez przerywania produkcji. Sprawdzone metody i pułapki."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style.css"/>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav id="nav" style="position:fixed">
+  <div class="nav-logo">TU<span>Automation</span></div>
+  <div class="nav-right"><a href="../blog.html" class="nav-cta" style="font-size:0.75rem">← Blog</a></div>
+</nav>
+
+<div class="article-page">
+  <div class="article-hero">
+    <div class="article-tag">Siemens · PLC · Migracja · TIA Portal</div>
+    <h1 class="article-title">Migracja Siemens S5 → S7-1500 bez zatrzymania produkcji</h1>
+    <div class="article-meta"><span>Tomasz Urbański</span><span>Maj 2025</span><span>10 min czytania</span></div>
+  </div>
+
+  <div class="article-body">
+    <p>Sterowniki Siemens S5 były produkowane od lat 70. do 2001 roku. Dziś wiele zakładów nadal je eksploatuje — i słusznie, bo są niezwykle trwałe. Problem pojawia się gdy: brakuje części zamiennych, producent maszyny wycofał wsparcie, albo klient wymaga integracji z nowoczesnymi systemami SCADA przez Profinet/OPC UA.</p>
+
+    <div class="article-callout">
+      <p>Migracja S5 → S7 to nie jest proste „przepisanie kodu". To przeprojektowanie logiki sterownika przy zachowaniu wszystkich funkcji technologicznych maszyny.</p>
+    </div>
+
+    <h2>Różnice, o których musisz wiedzieć</h2>
+    <p>Przed migracją trzeba zrozumieć fundamentalne różnice między platformami:</p>
+    <ul>
+      <li><strong>Języki programowania:</strong> S5 — STEP 5 (AWL, KOP, FUP). S7 — STEP 7 / TIA Portal (LAD, FBD, SCL, STL, GRAPH). Kod nie jest bezpośrednio kompatybilny.</li>
+      <li><strong>Adresowanie:</strong> S5 używa adresowania absolutnego (np. <code>E 1.0</code>). S7 preferuje zmienne symboliczne w blokach DB.</li>
+      <li><strong>Czasy skanowania:</strong> S5 ma stały czas cyklu. S7 może pracować z OB czasowymi różnych priorytetów — trzeba dostosować logikę zależną od czasu.</li>
+      <li><strong>Interfejsy:</strong> S5 — Profibus DP, AS-Interface, RS-232. S7-1500 — Profinet, Profibus (przez CP), OPC UA natywnie.</li>
+      <li><strong>Pamięć:</strong> S5 ma ograniczoną pamięć programu (często 8-64kB). S7-1500 — megabajty. To wolność, ale też pokusa złego programowania.</li>
+    </ul>
+
+    <h2>Fazy migracji — sprawdzony plan</h2>
+
+    <h3>Faza 1: Dokumentacja i analiza (2-4 tygodnie)</h3>
+    <p>Zanim napiszesz jedną linię kodu nowego programu:</p>
+    <ul>
+      <li>Zbierz <em>aktualną</em> wersję programu S5 — nie wersję z segregatora, ale backup z działającego sterownika (narzędzie STEP 5 lub PG 702)</li>
+      <li>Udokumentuj wszystkie wejścia/wyjścia: adres S5 → opis technologiczny → odpowiednik w nowej konfiguracji</li>
+      <li>Zidentyfikuj bloki specjalne: FB/FC z logiką technologiczną, timery, liczniki</li>
+      <li>Usuń martwy kod — typowe programy S5 mają 20-30% nieużywanej logiki</li>
+    </ul>
+
+    <h3>Faza 2: Projektowanie nowego systemu</h3>
+    <ul>
+      <li>Dobierz moduły S7-1500 odpowiadające istniejącym modułom I/O S5</li>
+      <li>Zaplanuj nową szafę sterowniczą (możliwość montażu obok istniejącej)</li>
+      <li>Napisz program w TIA Portal — logika funkcjonalnie równoważna, nie literalne tłumaczenie</li>
+      <li>Symulacja w S7-PLCSIM Advanced przed podłączeniem do maszyny</li>
+    </ul>
+
+    <h3>Faza 3: Uruchomienie równoległe (kluczowa faza)</h3>
+    <p>To serce strategii "bez zatrzymania produkcji":</p>
+    <ul>
+      <li>Nowy S7-1500 jest fizycznie podłączony równolegle do S5 — oba sterują wejściami (tylko odczyt), wyjścia steruje S5</li>
+      <li>Przez kilka zmian produkcyjnych porównujesz zachowanie obu sterowników — S7 "śledzi" decyzje S5</li>
+      <li>Gdy logika jest zgodna w 100% — przełączasz wyjścia na S7 (jedno lub kilka naraz, zaczynając od nieistotnych)</li>
+      <li>S5 pozostaje w stanie hot-standby przez tydzień po pełnym przełączeniu</li>
+    </ul>
+
+    <div class="article-callout">
+      <p>Nigdy nie migruj "jednym cięciem" w piątek po południu. Uruchomienie równoległe to jedyna profesjonalna metoda.</p>
+    </div>
+
+    <h3>Faza 4: Weryfikacja i odbiór (SAT)</h3>
+    <ul>
+      <li>Test wszystkich trybów pracy: auto, ręczny, serwisowy</li>
+      <li>Testy alarmów — symulacja każdej usterki</li>
+      <li>Testy graniczne — maksymalna prędkość, minimalne i maksymalne wartości parametrów</li>
+      <li>24h obserwacja w warunkach produkcyjnych z technikiem na miejscu</li>
+    </ul>
+
+    <h2>Najczęstsze problemy i rozwiązania</h2>
+    <ul>
+      <li><strong>Timer S5 vs S7:</strong> Timery S5 (np. SE, SI) mają inne zachowanie przy utracie zasilania niż TON/TOF w S7. Sprawdź każdy timer osobno.</li>
+      <li><strong>Dane procesowe z S5-DB:</strong> Bloki danych S5 mają inną strukturę. Konwertuj przez tymczasowy DB buforowy.</li>
+      <li><strong>Profibus z urządzeniami S5:</strong> Stare urządzenia Profibus-DP mogą nie być kompatybilne z S7-1500 CM Profibus — sprawdź GSD files.</li>
+      <li><strong>Czas cyklu:</strong> Jeśli S5 miał czas cyklu 50ms i logika była zbudowana "na tym", S7 o cyklu 5ms może zachowywać się inaczej. Dodaj ograniczniki cyklu.</li>
+    </ul>
+
+    <div class="article-cta">
+      <h3>Masz Siemens S5 do modernizacji?</h3>
+      <p>Przeprowadzam bezpłatną ocenę ryzyka migracji — analizuję program S5, sprzęt i plan produkcji, a następnie proponuję harmonogram minimalizujący ryzyko zatrzymania.</p>
+      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Skontaktuj się</a>
+    </div>
+  </div>
+
+  <div class="article-nav">
+    <a href="../blog.html">← Wszystkie artykuły</a>
+    <a href="urcap-development.html">Tworzenie URCaps →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo">TU<span>Automation</span></div></div>
+    <div class="footer-links"><a href="../index.html">Strona główna</a><a href="../blog.html">Blog</a><a href="../index.html#contact">Kontakt</a><a href="../impressum.html">Impressum</a></div>
+    <div class="footer-location"><div>© 2025 TU Automation</div></div>
+  </div>
+</footer>
+<script>const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});</script>
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tworzenie URCaps dla Universal Robots – TU Automation Blog</title>
+  <meta name="description" content="Kompletny przewodnik po tworzeniu rozszerzeń URCap dla robotów Universal Robots. Od konfiguracji środowiska po wdrożenie na tablecie UR."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style.css"/>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav id="nav" style="position:fixed">
+  <div class="nav-logo">TU<span>Automation</span></div>
+  <div class="nav-right"><a href="../blog.html" class="nav-cta" style="font-size:0.75rem">← Blog</a></div>
+</nav>
+
+<div class="article-page">
+  <div class="article-hero">
+    <div class="article-tag">Universal Robots · URCap · Java · URScript</div>
+    <h1 class="article-title">Tworzenie URCaps: od zera do wdrożenia na robocie UR</h1>
+    <div class="article-meta"><span>Tomasz Urbański</span><span>Kwiecień 2025</span><span>12 min czytania</span></div>
+  </div>
+
+  <div class="article-body">
+    <p>URCap (Universal Robots Capability) to rozszerzenie oprogramowania robota Universal Robots, które dodaje nowe funkcje do tabletu Polyscope. Dzięki URCaps możesz zintegrować chwytaki, czujniki, kamery, sterowniki PLC — bezpośrednio z interfejsu robota, bez potrzeby pisania kodu przez operatora.</p>
+
+    <div class="article-callout">
+      <p>URCap to różnica między "robotem, którego obsługuje inżynier" a "robotem, którego obsługuje operator na hali". To inwestycja w ergonomię i bezpieczeństwo wdrożenia.</p>
+    </div>
+
+    <h2>Architektura URCap</h2>
+    <p>URCap składa się z dwóch warstw:</p>
+    <ul>
+      <li><strong>Warstwa UI (Polyscope):</strong> komponenty Java/OSGi wyświetlane w tablecie — okna konfiguracji, węzły programu, panele instalacji</li>
+      <li><strong>Warstwa daemon:</strong> serwer (Python, Java lub inny) działający na robocie w tle — obsługuje komunikację z zewnętrznymi urządzeniami, logikę biznesową</li>
+    </ul>
+    <p>Komunikacja między UI a daemonem odbywa się przez XML-RPC (domyślnie) lub REST API.</p>
+
+    <h2>Środowisko deweloperskie</h2>
+    <p>Wymagania:</p>
+    <ul>
+      <li>Java JDK 8 (nie nowszy — Polyscope 5.x bazuje na Java 8)</li>
+      <li>Maven 3.x</li>
+      <li>URSim — symulator Polyscope (wirtualna maszyna VMware/VirtualBox)</li>
+      <li>SDK URCap — pobierz z <code>plus.universal-robots.com</code></li>
+      <li>Eclipse IDE lub IntelliJ IDEA</li>
+    </ul>
+    <p>Instalacja URSim na Windows przez VMware Player jest najprostszym podejściem. Zalecam snapshot VM przed każdą instalacją URCap — łatwy rollback przy błędach.</p>
+
+    <h2>Struktura projektu</h2>
+    <p>Typowy projekt URCap Maven:</p>
+    <ul>
+      <li><code>src/main/java/</code> — komponenty OSGi (Activator, NodeContribution, InstallationNodeContribution, ProgramNodeService)</li>
+      <li><code>src/main/resources/</code> — pliki FXML (UI) lub HTML5 (nowe SDK)</li>
+      <li><code>com.tu.urcap.daemon/</code> — katalog daemona (Python lub Java)</li>
+      <li><code>pom.xml</code> — zależności Maven + plugin URCap</li>
+    </ul>
+
+    <h2>Przykład: integracja z Modbus TCP</h2>
+    <p>Prosty URCap sterujący chwytakiem przez Modbus TCP:</p>
+    <p><strong>1. Daemon Python (xmlrpc_server.py):</strong></p>
+    <ul>
+      <li>Serwer XML-RPC na porcie 40405</li>
+      <li>Funkcje: <code>open_gripper(force)</code>, <code>close_gripper(force)</code>, <code>get_status()</code></li>
+      <li>Wewnętrznie — połączenie Modbus TCP do sterownika chwytaka</li>
+    </ul>
+    <p><strong>2. Komponent Java (ProgramNodeContribution):</strong></p>
+    <ul>
+      <li>UI z suwakiem siły chwytu (0-100%)</li>
+      <li>Tryb: otwórz / zamknij / pozycja</li>
+      <li>Generuje URScript: <code>socket_send_string("grip:50", "gripper_socket")</code></li>
+    </ul>
+    <p><strong>3. Instalacja na robocie:</strong></p>
+    <ul>
+      <li>Kompilacja: <code>mvn install</code> → plik <code>.urcap</code></li>
+      <li>Przeniesienie na pendrive lub przez SSH</li>
+      <li>Instalacja w Polyscope: System → URCaps → ładowanie pliku</li>
+      <li>Restart robota — URCap gotowy</li>
+    </ul>
+
+    <h2>URScript vs URCap — kiedy co wybrać</h2>
+    <ul>
+      <li><strong>URScript:</strong> szybkie prototypowanie, jeden robot, prosty skrypt, programista piszący kod</li>
+      <li><strong>URCap:</strong> wielokrotne wdrożenie, obsługa przez operatorów bez znajomości programowania, integracja ze złożonymi urządzeniami zewnętrznymi</li>
+      <li><strong>PolyScope XML:</strong> gdy chcesz podzielić się programem bez zależności od daemona</li>
+    </ul>
+
+    <h2>Najczęstsze błędy przy tworzeniu URCaps</h2>
+    <ul>
+      <li><strong>Blokowanie wątku UI:</strong> Nigdy nie wykonuj długich operacji sieciowych w wątku Swing. Zawsze użyj SwingWorker lub wywołania asynchronicznego.</li>
+      <li><strong>Brak obsługi błędów sieci:</strong> Daemon może być niedostępny. URCap musi gracefully degradować — robot nie może się zatrzymać przez timeout.</li>
+      <li><strong>Zakodowane IP na stałe:</strong> Zawsze pozwól operatorowi skonfigurować adres IP urządzenia w sekcji Installation Node.</li>
+      <li><strong>Ignorowanie wersji Polyscope:</strong> API zmienia się między wersjami 3.x, 5.x i 5.11+. Testuj na docelowej wersji firmware.</li>
+    </ul>
+
+    <div class="article-cta">
+      <h3>Potrzebujesz URCap dla swojego robota UR?</h3>
+      <p>Tworzę dedykowane URCaps integrujące Twoje urządzenia — chwytaki, czujniki siły, wizję maszynową, systemy PLC. Dostawa z dokumentacją i szkoleniem operatorów.</p>
+      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Zapytaj o wycenę</a>
+    </div>
+  </div>
+
+  <div class="article-nav">
+    <a href="migracja-s5-s7.html">← Migracja S5 → S7</a>
+    <a href="scada-hmi-wybor.html">SCADA czy HMI? →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo">TU<span>Automation</span></div></div>
+    <div class="footer-links"><a href="../index.html">Strona główna</a><a href="../blog.html">Blog</a><a href="../index.html#contact">Kontakt</a><a href="../impressum.html">Impressum</a></div>
+    <div class="footer-location"><div>© 2025 TU Automation</div></div>
+  </div>
+</footer>
+<script>const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});</script>
+</body>
+</html>

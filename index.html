@@ -27,6 +27,7 @@
     <li><a href="#projects" data-i18n="nav.projects">Projekty</a></li>
     <li><a href="#process" data-i18n="nav.process">Proces</a></li>
     <li><a href="#contact" data-i18n="nav.contact">Kontakt</a></li>
+    <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
   </ul>
   <div class="nav-right">
     <div class="lang-switcher">
@@ -169,6 +170,22 @@
     <span class="tech-tag">Linux</span>
     <span class="tech-tag">Raspberry Pi</span>
     <span class="tech-tag">AI / ML</span>
+  </div>
+</section>
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="certs-inner">
+    <div class="certs-label" data-i18n="certs.label">Technologie partnerskie:</div>
+    <div class="certs-badges">
+      <div class="cert-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Siemens TIA Portal</div>
+      <div class="cert-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Siemens S5 / S7</div>
+      <div class="cert-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>Universal Robots</div>
+      <div class="cert-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>WinCC / Ignition</div>
+      <div class="cert-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>AI / Machine Learning</div>
+      <div class="cert-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>GDPR / DSGVO</div>
+      <div class="cert-badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg>DE · PL · EU · World</div>
+    </div>
   </div>
 </section>
 
@@ -380,6 +397,66 @@
   </div>
 </section>
 
+<!-- CALCULATOR -->
+<section id="calculator">
+  <div class="section-header reveal">
+    <div class="section-tag" data-i18n="sec.calc.tag">Wycena orientacyjna</div>
+    <h2 class="section-title" data-i18n="sec.calc.title">Kalkulator projektu</h2>
+    <p class="section-desc" data-i18n="sec.calc.desc">Dobierz parametry projektu, aby otrzymać przybliżony koszt i czas realizacji.</p>
+  </div>
+  <div class="calc-wrapper">
+    <div class="calc-grid reveal">
+      <div class="calc-controls">
+        <div class="calc-group">
+          <label data-i18n="calc.plc">Liczba sterowników PLC</label>
+          <div class="calc-options" data-calc="plc">
+            <button type="button" class="calc-opt selected" data-val="1">1</button>
+            <button type="button" class="calc-opt" data-val="2">2–3</button>
+            <button type="button" class="calc-opt" data-val="3">4–10</button>
+            <button type="button" class="calc-opt" data-val="4">10+</button>
+          </div>
+        </div>
+        <div class="calc-group">
+          <label data-i18n="calc.hmi">Panele HMI / SCADA</label>
+          <div class="calc-options" data-calc="hmi">
+            <button type="button" class="calc-opt selected" data-val="0" data-i18n="calc.none">Brak</button>
+            <button type="button" class="calc-opt" data-val="1">1</button>
+            <button type="button" class="calc-opt" data-val="2">2–3</button>
+            <button type="button" class="calc-opt" data-val="3">4+</button>
+          </div>
+        </div>
+        <div class="calc-group">
+          <label data-i18n="calc.network">Sieć i integracje</label>
+          <div class="calc-options" data-calc="net">
+            <button type="button" class="calc-opt selected" data-val="1" data-i18n="calc.simple">Prosta</button>
+            <button type="button" class="calc-opt" data-val="2" data-i18n="calc.medium">Średnia</button>
+            <button type="button" class="calc-opt" data-val="3" data-i18n="calc.complex">Złożona</button>
+          </div>
+        </div>
+        <div class="calc-group">
+          <label data-i18n="calc.urgency">Pilność realizacji</label>
+          <div class="calc-options" data-calc="urgency">
+            <button type="button" class="calc-opt selected" data-val="1" data-i18n="calc.std">Standardowa</button>
+            <button type="button" class="calc-opt" data-val="2" data-i18n="calc.fast">Przyspieszona</button>
+            <button type="button" class="calc-opt" data-val="3" data-i18n="calc.urgent">Pilna</button>
+          </div>
+        </div>
+      </div>
+      <div class="calc-result">
+        <div class="calc-result-label" data-i18n="calc.estimate">Szacowany budżet</div>
+        <div class="calc-price" id="calcPrice">3 000 – 5 000 €</div>
+        <div class="calc-price-sub" data-i18n="calc.net">netto, orientacyjnie</div>
+        <div class="calc-timeline">
+          <svg class="calc-timeline-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span data-i18n="calc.timeline">Czas realizacji:</span>&nbsp;<span class="calc-timeline-val" id="calcTime">3–4 tyg.</span>
+        </div>
+        <a href="#contact" class="calc-cta" data-i18n="calc.cta">Omów szczegóły →</a>
+        <p class="calc-disclaimer" data-i18n="calc.disclaimer">Kalkulacja ma charakter orientacyjny. Dokładna wycena po analizie specyfikacji projektu.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- CONTACT -->
 <section id="contact">
   <div class="section-header reveal">
@@ -402,46 +479,93 @@
         <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
         <span data-i18n="contact.location">Deutschland · Cała Europa · Cały świat</span>
       </div>
+      <div class="contact-detail">
+        <svg class="contact-detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+        <a href="https://linkedin.com/in/tomasz-urbanski-automation" target="_blank" rel="noopener" data-i18n="contact.linkedin">LinkedIn</a>
+      </div>
     </div>
-    <form class="contact-form reveal" id="contactForm">
-      <div class="form-row">
-        <div class="form-group">
-          <label for="fname" data-i18n="form.name">Imię i nazwisko</label>
-          <input type="text" id="fname" data-i18n-p="form.name.ph" placeholder="Jan Kowalski" required/>
+    <form class="contact-form reveal" id="contactForm" action="https://formspree.io/f/YOUR_ID" method="POST">
+      <!-- Wizard steps -->
+      <div class="wizard-steps">
+        <div class="wizard-step-item active" data-wstep="1">
+          <span class="wizard-step-num">1</span>
+          <span data-i18n="wizard.s1">Branża</span>
         </div>
-        <div class="form-group">
-          <label for="fcompany" data-i18n="form.company">Firma</label>
-          <input type="text" id="fcompany" data-i18n-p="form.company.ph" placeholder="Nazwa firmy"/>
+        <div class="wizard-step-item" data-wstep="2">
+          <span class="wizard-step-num">2</span>
+          <span data-i18n="wizard.s2">Projekt</span>
         </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label for="femail" data-i18n="form.email">E-mail</label>
-          <input type="email" id="femail" placeholder="jan@firma.pl" required/>
-        </div>
-        <div class="form-group">
-          <label for="fphone" data-i18n="form.phone">Telefon</label>
-          <input type="tel" id="fphone" placeholder="+49 ..."/>
+        <div class="wizard-step-item" data-wstep="3">
+          <span class="wizard-step-num">3</span>
+          <span data-i18n="wizard.s3">Kontakt</span>
         </div>
       </div>
-      <div class="form-group">
-        <label for="fservice" data-i18n="form.service">Rodzaj usługi</label>
-        <select id="fservice">
-          <option value="" data-i18n="form.service.opt0">Wybierz...</option>
-          <option data-i18n="form.service.opt1">Programowanie PLC / Siemens</option>
-          <option data-i18n="form.service.opt2">System SCADA / HMI</option>
-          <option data-i18n="form.service.opt3">Aplikacja URCap / Universal Robots</option>
-          <option data-i18n="form.service.opt4">Modernizacja / migracja systemu</option>
-          <option data-i18n="form.service.opt5">Sieci przemysłowe</option>
-          <option data-i18n="form.service.opt6">Aplikacja IoT / mobilna</option>
-          <option data-i18n="form.service.opt7">Inne</option>
-        </select>
+      <!-- Panel 1: Industry + Service -->
+      <div class="wizard-panel active" data-panel="1">
+        <div class="form-group">
+          <label data-i18n="wizard.industry">Branża</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="checkbox" name="industry" value="textile"/><span class="check-dot"></span><span data-i18n="c1.title">Przemysł tekstylny</span></label>
+            <label class="check-item"><input type="checkbox" name="industry" value="mfg"/><span class="check-dot"></span><span data-i18n="c2.title">Produkcja i montaż</span></label>
+            <label class="check-item"><input type="checkbox" name="industry" value="food"/><span class="check-dot"></span><span data-i18n="c3.title">Spożywczy / farmacja</span></label>
+            <label class="check-item"><input type="checkbox" name="industry" value="energy"/><span class="check-dot"></span><span data-i18n="c4.title">Energetyka</span></label>
+            <label class="check-item"><input type="checkbox" name="industry" value="water"/><span class="check-dot"></span><span data-i18n="c5.title">Wodociągi</span></label>
+            <label class="check-item"><input type="checkbox" name="industry" value="other"/><span class="check-dot"></span><span data-i18n="wizard.other">Inna</span></label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label data-i18n="form.service">Rodzaj usługi</label>
+          <div class="check-grid">
+            <label class="check-item"><input type="radio" name="service" value="plc"/><span class="check-dot"></span><span data-i18n="s1.title">PLC</span></label>
+            <label class="check-item"><input type="radio" name="service" value="scada"/><span class="check-dot"></span><span data-i18n="s2.title">SCADA / HMI</span></label>
+            <label class="check-item"><input type="radio" name="service" value="ur"/><span class="check-dot"></span><span data-i18n="s3.title">UR Robots</span></label>
+            <label class="check-item"><input type="radio" name="service" value="modern"/><span class="check-dot"></span><span data-i18n="s5.title">Modernizacja</span></label>
+            <label class="check-item"><input type="radio" name="service" value="network"/><span class="check-dot"></span><span data-i18n="s4.title">Sieci</span></label>
+            <label class="check-item"><input type="radio" name="service" value="ai"/><span class="check-dot"></span><span data-i18n="s6.title">AI / IoT</span></label>
+          </div>
+        </div>
+        <div class="wizard-nav">
+          <button type="button" class="btn-next" data-i18n="wizard.next">Dalej →</button>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="fmessage" data-i18n="form.message">Opis projektu</label>
-        <textarea id="fmessage" data-i18n-p="form.message.ph" placeholder="Opisz czego potrzebujesz..." required></textarea>
+      <!-- Panel 2: Description -->
+      <div class="wizard-panel" data-panel="2">
+        <div class="form-group">
+          <label for="fmessage" data-i18n="form.message">Opis projektu</label>
+          <textarea id="fmessage" name="message" data-i18n-p="form.message.ph" placeholder="Opisz czego potrzebujesz..." required></textarea>
+        </div>
+        <div class="wizard-nav">
+          <button type="button" class="btn-prev" data-i18n="wizard.prev">← Wstecz</button>
+          <button type="button" class="btn-next" data-i18n="wizard.next">Dalej →</button>
+        </div>
       </div>
-      <button type="submit" class="btn-submit" id="submitBtn" data-i18n="form.submit">Wyślij zapytanie</button>
+      <!-- Panel 3: Contact details -->
+      <div class="wizard-panel" data-panel="3">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="fname" data-i18n="form.name">Imię i nazwisko</label>
+            <input type="text" id="fname" name="name" data-i18n-p="form.name.ph" placeholder="Jan Kowalski" required/>
+          </div>
+          <div class="form-group">
+            <label for="fcompany" data-i18n="form.company">Firma</label>
+            <input type="text" id="fcompany" name="company" data-i18n-p="form.company.ph" placeholder="Nazwa firmy"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="femail" data-i18n="form.email">E-mail</label>
+            <input type="email" id="femail" name="email" placeholder="jan@firma.pl" required/>
+          </div>
+          <div class="form-group">
+            <label for="fphone" data-i18n="form.phone">Telefon / WhatsApp</label>
+            <input type="tel" id="fphone" name="phone" placeholder="+49 ..."/>
+          </div>
+        </div>
+        <div class="wizard-nav">
+          <button type="button" class="btn-prev" data-i18n="wizard.prev">← Wstecz</button>
+          <button type="submit" class="btn-submit" id="submitBtn" data-i18n="form.submit">Wyślij zapytanie</button>
+        </div>
+      </div>
     </form>
   </div>
 </section>
@@ -455,9 +579,10 @@
     </div>
     <div class="footer-links">
       <a href="#services" data-i18n="nav.services">Usługi</a>
-      <a href="#tech" data-i18n="nav.tech">Technologie</a>
       <a href="#projects" data-i18n="nav.projects">Projekty</a>
+      <a href="blog.html" data-i18n="nav.blog">Blog</a>
       <a href="#contact" data-i18n="nav.contact">Kontakt</a>
+      <a href="impressum.html" data-i18n="footer.impressum">Impressum</a>
       <a href="privacy.html" data-i18n="footer.privacy">Polityka prywatności</a>
     </div>
     <div class="footer-location">
@@ -466,6 +591,12 @@
     </div>
   </div>
 </footer>
+
+<!-- WHATSAPP -->
+<a href="https://wa.me/4915756290902" class="wa-btn" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  <span class="wa-tooltip">WhatsApp</span>
+</a>
 
 <!-- COOKIE BANNER -->
 <div class="cookie-banner" id="cookieBanner">
@@ -482,5 +613,7 @@
 </div>
 
 <script src="script.js"></script>
+<!-- Crisp Chat – replace YOUR_WEBSITE_ID with your Crisp.chat website ID -->
+<!-- <script>window.$crisp=[];window.CRISP_WEBSITE_ID="YOUR_WEBSITE_ID";(function(){var d=document;var s=d.createElement("script");s.src="https://client.crisp.chat/l.js";s.async=1;d.getElementsByTagName("head")[0].appendChild(s);})();</script> -->
 </body>
 </html>
