@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SCADA czy HMI? Jak wybrać wizualizację dla zakładu – TU Automation Blog</title>
-  <meta name="description" content="Porównanie SCADA i HMI: kiedy wystarczy panel operatorski, a kiedy potrzebujesz pełnego systemu nadzoru. WinCC, Ignition, FactoryTalk."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <title>SCADA czy HMI? Jak wybraÄ‡ wizualizacjÄ™ dla zakĹ‚adu â€“ TU Automation Blog</title>
+  <meta name="description" content="PorĂłwnanie SCADA i HMI: kiedy wystarczy panel operatorski, a kiedy potrzebujesz peĹ‚nego systemu nadzoru. WinCC, Ignition, FactoryTalk."/>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml"/>`n  <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../style.css"/>
 </head>
@@ -13,96 +13,97 @@
 <div class="grid-bg"></div>
 <nav id="nav" style="position:fixed">
   <div class="nav-logo">TU<span>Automation</span></div>
-  <div class="nav-right"><a href="../blog.html" class="nav-cta" style="font-size:0.75rem">← Blog</a></div>
+  <div class="nav-right"><a href="../blog.html" class="nav-cta" style="font-size:0.75rem">â† Blog</a></div>
 </nav>
 
 <div class="article-page">
   <div class="article-hero">
-    <div class="article-tag">SCADA · HMI · Wizualizacja · WinCC · Ignition</div>
-    <h1 class="article-title">SCADA czy HMI? Jak wybrać właściwą wizualizację dla Twojego zakładu</h1>
-    <div class="article-meta"><span>Tomasz Urbański</span><span>Marzec 2025</span><span>7 min czytania</span></div>
+    <div class="article-tag">SCADA Â· HMI Â· Wizualizacja Â· WinCC Â· Ignition</div>
+    <h1 class="article-title">SCADA czy HMI? Jak wybraÄ‡ wĹ‚aĹ›ciwÄ… wizualizacjÄ™ dla Twojego zakĹ‚adu</h1>
+    <div class="article-meta"><span>Tomasz UrbaĹ„ski</span><span>Marzec 2025</span><span>7 min czytania</span></div>
   </div>
 
   <div class="article-body">
-    <p>Klienci często pytają: "potrzebujemy wizualizacji dla naszej linii — co zainstalować?" Odpowiedź zależy od skali, budżetu i wymagań. HMI i SCADA to nie "to samo, ale droższe" — to fundamentalnie różne podejścia do nadzoru procesu.</p>
+    <p>Klienci czÄ™sto pytajÄ…: "potrzebujemy wizualizacji dla naszej linii â€” co zainstalowaÄ‡?" OdpowiedĹş zaleĹĽy od skali, budĹĽetu i wymagaĹ„. HMI i SCADA to nie "to samo, ale droĹĽsze" â€” to fundamentalnie rĂłĹĽne podejĹ›cia do nadzoru procesu.</p>
 
-    <h2>HMI — panel operatorski przy maszynie</h2>
-    <p><strong>HMI (Human-Machine Interface)</strong> to dedykowane urządzenie (panel dotykowy, wyświetlacz) zamontowane przy maszynie lub linii. Wyświetla aktualny stan, przyjmuje polecenia operatora, sygnalizuje alarmy.</p>
+    <h2>HMI â€” panel operatorski przy maszynie</h2>
+    <p><strong>HMI (Human-Machine Interface)</strong> to dedykowane urzÄ…dzenie (panel dotykowy, wyĹ›wietlacz) zamontowane przy maszynie lub linii. WyĹ›wietla aktualny stan, przyjmuje polecenia operatora, sygnalizuje alarmy.</p>
     <p>Typowe HMI: Siemens SIMATIC HMI (TP700, KTP1200), Weintek, Mitsubishi GT, Allen-Bradley PanelView.</p>
     <p><strong>Kiedy HMI wystarczy:</strong></p>
     <ul>
-      <li>Jedna maszyna lub krótka linia</li>
+      <li>Jedna maszyna lub krĂłtka linia</li>
       <li>Operator pracuje fizycznie przy maszynie</li>
-      <li>Nie potrzebujesz danych historycznych ani raportów</li>
-      <li>Budżet poniżej 5 000€ na wizualizację</li>
-      <li>Prosta logika: "start/stop, temperatura, prędkość"</li>
+      <li>Nie potrzebujesz danych historycznych ani raportĂłw</li>
+      <li>BudĹĽet poniĹĽej 5 000â‚¬ na wizualizacjÄ™</li>
+      <li>Prosta logika: "start/stop, temperatura, prÄ™dkoĹ›Ä‡"</li>
     </ul>
 
-    <h2>SCADA — nadzór nad całym zakładem</h2>
-    <p><strong>SCADA (Supervisory Control and Data Acquisition)</strong> to system informatyczny działający na serwerze lub PC, komunikujący się z wieloma sterownikami jednocześnie. Gromadzi dane historyczne, generuje raporty, zarządza alarmami z wielu źródeł.</p>
+    <h2>SCADA â€” nadzĂłr nad caĹ‚ym zakĹ‚adem</h2>
+    <p><strong>SCADA (Supervisory Control and Data Acquisition)</strong> to system informatyczny dziaĹ‚ajÄ…cy na serwerze lub PC, komunikujÄ…cy siÄ™ z wieloma sterownikami jednoczeĹ›nie. Gromadzi dane historyczne, generuje raporty, zarzÄ…dza alarmami z wielu ĹşrĂłdeĹ‚.</p>
     <p><strong>Kiedy potrzebujesz SCADA:</strong></p>
     <ul>
-      <li>Wiele sterowników PLC w zakładzie</li>
-      <li>Potrzebujesz raportów produkcyjnych i wykresów historycznych (trendy)</li>
-      <li>Zarządzanie z kilku stanowisk (biuro technologa, hala, mobilnie)</li>
+      <li>Wiele sterownikĂłw PLC w zakĹ‚adzie</li>
+      <li>Potrzebujesz raportĂłw produkcyjnych i wykresĂłw historycznych (trendy)</li>
+      <li>ZarzÄ…dzanie z kilku stanowisk (biuro technologa, hala, mobilnie)</li>
       <li>Integracja z ERP/MES przez OPC UA lub SQL</li>
-      <li>Wymagania branżowe: farmacja (21 CFR Part 11), energia, wodociągi</li>
+      <li>Wymagania branĹĽowe: farmacja (21 CFR Part 11), energia, wodociÄ…gi</li>
     </ul>
 
-    <h2>Porównanie platform SCADA</h2>
+    <h2>PorĂłwnanie platform SCADA</h2>
 
     <h3>Siemens WinCC / WinCC OA</h3>
-    <p>Najlepsza integracja z S7. WinCC (wbudowany w TIA Portal) to wybór dla mniejszych instalacji. WinCC OA (dawniej PVSS) — potężny system dla dużych zakładów, wodociągów, energetyki. Licencje są drogie, ale ekosystem Siemens to jedność.</p>
+    <p>Najlepsza integracja z S7. WinCC (wbudowany w TIA Portal) to wybĂłr dla mniejszych instalacji. WinCC OA (dawniej PVSS) â€” potÄ™ĹĽny system dla duĹĽych zakĹ‚adĂłw, wodociÄ…gĂłw, energetyki. Licencje sÄ… drogie, ale ekosystem Siemens to jednoĹ›Ä‡.</p>
 
     <h3>Ignition (Inductive Automation)</h3>
-    <p>Rewolucja w branży: licencja per-serwer, nieograniczona liczba klientów i tagów. Oparty na webowych technologiach (HTML5), dostępny na każdym urządzeniu. Najlepszy wybór dla nowych instalacji z budżetem powyżej 10 000€ na serwer. Ogromna społeczność i moduły (alarmy, raporty, OEE, wizualizacja 3D).</p>
+    <p>Rewolucja w branĹĽy: licencja per-serwer, nieograniczona liczba klientĂłw i tagĂłw. Oparty na webowych technologiach (HTML5), dostÄ™pny na kaĹĽdym urzÄ…dzeniu. Najlepszy wybĂłr dla nowych instalacji z budĹĽetem powyĹĽej 10 000â‚¬ na serwer. Ogromna spoĹ‚ecznoĹ›Ä‡ i moduĹ‚y (alarmy, raporty, OEE, wizualizacja 3D).</p>
 
     <h3>Rockwell FactoryTalk</h3>
-    <p>Naturalny wybór dla instalacji z PLC Allen-Bradley. Ścisła integracja z ekosystemem Rockwell. Drogie licencje, ale niezawodne w środowiskach produkcyjnych USA/Kanada.</p>
+    <p>Naturalny wybĂłr dla instalacji z PLC Allen-Bradley. ĹšcisĹ‚a integracja z ekosystemem Rockwell. Drogie licencje, ale niezawodne w Ĺ›rodowiskach produkcyjnych USA/Kanada.</p>
 
     <h3>AVEVA (Wonderware)</h3>
-    <p>Jeden z najstarszych i najpowszechniejszych systemów SCADA. Dobry dla dużych instalacji z potrzebą historianów i raportowania. Wysoki koszt wdrożenia i utrzymania.</p>
+    <p>Jeden z najstarszych i najpowszechniejszych systemĂłw SCADA. Dobry dla duĹĽych instalacji z potrzebÄ… historianĂłw i raportowania. Wysoki koszt wdroĹĽenia i utrzymania.</p>
 
-    <h2>Wybór w praktyce — moja rekomendacja</h2>
+    <h2>WybĂłr w praktyce â€” moja rekomendacja</h2>
     <ul>
-      <li><strong>Jedna maszyna, mały budżet:</strong> Panel HMI Siemens TP/KTP z WinCC (TIA Portal) — wszystko w jednym środowisku</li>
-      <li><strong>Kilka maszyn Siemens, istniejące S7:</strong> WinCC SCADA Runtime — minimalna integracja, jeden dostawca</li>
-      <li><strong>Nowa instalacja, różnorodny sprzęt:</strong> Ignition — elastyczność, dobre ceny, web-based</li>
-      <li><strong>Duża instalacja przemysłowa, wodociągi, energetyka:</strong> WinCC OA lub AVEVA — branżowe certyfikaty, redundancja</li>
+      <li><strong>Jedna maszyna, maĹ‚y budĹĽet:</strong> Panel HMI Siemens TP/KTP z WinCC (TIA Portal) â€” wszystko w jednym Ĺ›rodowisku</li>
+      <li><strong>Kilka maszyn Siemens, istniejÄ…ce S7:</strong> WinCC SCADA Runtime â€” minimalna integracja, jeden dostawca</li>
+      <li><strong>Nowa instalacja, rĂłĹĽnorodny sprzÄ™t:</strong> Ignition â€” elastycznoĹ›Ä‡, dobre ceny, web-based</li>
+      <li><strong>DuĹĽa instalacja przemysĹ‚owa, wodociÄ…gi, energetyka:</strong> WinCC OA lub AVEVA â€” branĹĽowe certyfikaty, redundancja</li>
     </ul>
 
     <div class="article-callout">
-      <p>Najdroższa decyzja w wyborze SCADA to ta, którą trzeba cofnąć po 2 latach. Wybieraj platformę z myślą o 10-letnim horyzoncie eksploatacji.</p>
+      <p>NajdroĹĽsza decyzja w wyborze SCADA to ta, ktĂłrÄ… trzeba cofnÄ…Ä‡ po 2 latach. Wybieraj platformÄ™ z myĹ›lÄ… o 10-letnim horyzoncie eksploatacji.</p>
     </div>
 
-    <h2>Koszt wdrożenia</h2>
+    <h2>Koszt wdroĹĽenia</h2>
     <ul>
-      <li>HMI panel przy maszynie: 1 500 – 4 000€ (sprzęt + programowanie)</li>
-      <li>WinCC (TIA Portal, do 512 tagów): 3 000 – 8 000€</li>
-      <li>Ignition serwer + wdrożenie (1 000 tagów): 8 000 – 18 000€</li>
-      <li>WinCC OA dla zakładu: 25 000 – 80 000€+</li>
+      <li>HMI panel przy maszynie: 1 500 â€“ 4 000â‚¬ (sprzÄ™t + programowanie)</li>
+      <li>WinCC (TIA Portal, do 512 tagĂłw): 3 000 â€“ 8 000â‚¬</li>
+      <li>Ignition serwer + wdroĹĽenie (1 000 tagĂłw): 8 000 â€“ 18 000â‚¬</li>
+      <li>WinCC OA dla zakĹ‚adu: 25 000 â€“ 80 000â‚¬+</li>
     </ul>
 
     <div class="article-cta">
-      <h3>Nie wiesz co wybrać dla swojego zakładu?</h3>
-      <p>Przeprowadzam bezpłatną konsultację — analizuję Twoją infrastrukturę, potrzeby i budżet, a następnie rekomenduje konkretne rozwiązanie z uzasadnieniem technicznym i ekonomicznym.</p>
-      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Umów konsultację</a>
+      <h3>Nie wiesz co wybraÄ‡ dla swojego zakĹ‚adu?</h3>
+      <p>Przeprowadzam bezpĹ‚atnÄ… konsultacjÄ™ â€” analizujÄ™ TwojÄ… infrastrukturÄ™, potrzeby i budĹĽet, a nastÄ™pnie rekomenduje konkretne rozwiÄ…zanie z uzasadnieniem technicznym i ekonomicznym.</p>
+      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">UmĂłw konsultacjÄ™</a>
     </div>
   </div>
 
   <div class="article-nav">
-    <a href="urcap-development.html">← Tworzenie URCaps</a>
-    <a href="../blog.html">Wszystkie artykuły →</a>
+    <a href="urcap-development.html">â† Tworzenie URCaps</a>
+    <a href="../blog.html">Wszystkie artykuĹ‚y â†’</a>
   </div>
 </div>
 
 <footer>
   <div class="footer-inner">
     <div><div class="footer-logo">TU<span>Automation</span></div></div>
-    <div class="footer-links"><a href="../index.html">Strona główna</a><a href="../blog.html">Blog</a><a href="../index.html#contact">Kontakt</a><a href="../impressum.html">Impressum</a></div>
-    <div class="footer-location"><div>© 2025 TU Automation</div></div>
+    <div class="footer-links"><a href="../index.html">Strona gĹ‚Ăłwna</a><a href="../blog.html">Blog</a><a href="../index.html#contact">Kontakt</a><a href="../impressum.html">Impressum</a></div>
+    <div class="footer-location"><div>Â© 2025 TU Automation</div></div>
   </div>
 </footer>
 <script>const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});</script>
 </body>
 </html>
+

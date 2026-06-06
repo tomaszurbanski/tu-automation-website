@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Predykcyjne utrzymanie ruchu z AI – TU Automation Blog</title>
-  <meta name="description" content="Jak integracja algorytmów AI z danymi PLC pozwala przewidywać awarie maszyn przed ich wystąpieniem. Praktyczny przewodnik z przykładami."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <title>Predykcyjne utrzymanie ruchu z AI â€“ TU Automation Blog</title>
+  <meta name="description" content="Jak integracja algorytmĂłw AI z danymi PLC pozwala przewidywaÄ‡ awarie maszyn przed ich wystÄ…pieniem. Praktyczny przewodnik z przykĹ‚adami."/>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml"/>`n  <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../style.css"/>
 </head>
@@ -14,88 +14,88 @@
 <nav id="nav" style="position:fixed">
   <div class="nav-logo">TU<span>Automation</span></div>
   <div class="nav-right">
-    <a href="../blog.html" class="nav-cta" style="font-size:0.75rem">← Blog</a>
+    <a href="../blog.html" class="nav-cta" style="font-size:0.75rem">â† Blog</a>
   </div>
 </nav>
 
 <div class="article-page">
   <div class="article-hero">
-    <div class="article-tag">AI · Utrzymanie ruchu · IIoT</div>
-    <h1 class="article-title">Predykcyjne utrzymanie ruchu z AI: jak zmniejszyć przestoje o 40%</h1>
+    <div class="article-tag">AI Â· Utrzymanie ruchu Â· IIoT</div>
+    <h1 class="article-title">Predykcyjne utrzymanie ruchu z AI: jak zmniejszyÄ‡ przestoje o 40%</h1>
     <div class="article-meta">
-      <span>Tomasz Urbański</span>
+      <span>Tomasz UrbaĹ„ski</span>
       <span>Czerwiec 2025</span>
       <span>8 min czytania</span>
     </div>
   </div>
 
   <div class="article-body">
-    <p>Awarie maszyn kosztują przemysł produkcyjny miliardy euro rocznie. Tradycyjne podejście — reaktywne lub prewencyjne (przeglądy co X godzin) — jest kosztowne i nieefektywne. Predykcyjne utrzymanie ruchu (ang. <strong>Predictive Maintenance, PdM</strong>) z wykorzystaniem sztucznej inteligencji pozwala przewidywać awarie na podstawie danych z czujników, zanim do nich dojdzie.</p>
+    <p>Awarie maszyn kosztujÄ… przemysĹ‚ produkcyjny miliardy euro rocznie. Tradycyjne podejĹ›cie â€” reaktywne lub prewencyjne (przeglÄ…dy co X godzin) â€” jest kosztowne i nieefektywne. Predykcyjne utrzymanie ruchu (ang. <strong>Predictive Maintenance, PdM</strong>) z wykorzystaniem sztucznej inteligencji pozwala przewidywaÄ‡ awarie na podstawie danych z czujnikĂłw, zanim do nich dojdzie.</p>
 
     <div class="article-callout">
-      <p>Kluczowe pytanie: czy maszyna <em>będzie</em> uszkodzona za 48 godzin? Nie — czy <em>jest</em> uszkodzona teraz. To fundamentalna zmiana podejścia.</p>
+      <p>Kluczowe pytanie: czy maszyna <em>bÄ™dzie</em> uszkodzona za 48 godzin? Nie â€” czy <em>jest</em> uszkodzona teraz. To fundamentalna zmiana podejĹ›cia.</p>
     </div>
 
-    <h2>Jak to działa technicznie</h2>
-    <p>System PdM składa się z czterech warstw:</p>
+    <h2>Jak to dziaĹ‚a technicznie</h2>
+    <p>System PdM skĹ‚ada siÄ™ z czterech warstw:</p>
     <ol>
-      <li><strong>Warstwa danych</strong> — czujniki zbierają dane: wibracje, temperatura, prąd, ciśnienie, dźwięk. Dane trafiają do sterownika PLC lub bezpośrednio przez Modbus TCP/MQTT do systemu nadrzędnego.</li>
-      <li><strong>Warstwa przetwarzania</strong> — dane są normalizowane, filtrowane i segmentowane w czasie. Python + biblioteki Pandas/NumPy na edge computerze (Raspberry Pi, przemysłowy PC) lub w chmurze.</li>
-      <li><strong>Warstwa AI</strong> — algorytmy uczenia maszynowego: Isolation Forest (wykrywanie anomalii), LSTM (prognozowanie trendów), Random Forest (klasyfikacja stanu). Model jest trenowany na historycznych danych z okresu normalnej pracy.</li>
-      <li><strong>Warstwa alertów</strong> — wyniki trafiają do SCADA, aplikacji mobilnej lub SMS. Operator widzi: <code>ŁOŻYSKO WRZECIONA #3 — degradacja 73% — zalecana wymiana w ciągu 48h</code>.</li>
+      <li><strong>Warstwa danych</strong> â€” czujniki zbierajÄ… dane: wibracje, temperatura, prÄ…d, ciĹ›nienie, dĹşwiÄ™k. Dane trafiajÄ… do sterownika PLC lub bezpoĹ›rednio przez Modbus TCP/MQTT do systemu nadrzÄ™dnego.</li>
+      <li><strong>Warstwa przetwarzania</strong> â€” dane sÄ… normalizowane, filtrowane i segmentowane w czasie. Python + biblioteki Pandas/NumPy na edge computerze (Raspberry Pi, przemysĹ‚owy PC) lub w chmurze.</li>
+      <li><strong>Warstwa AI</strong> â€” algorytmy uczenia maszynowego: Isolation Forest (wykrywanie anomalii), LSTM (prognozowanie trendĂłw), Random Forest (klasyfikacja stanu). Model jest trenowany na historycznych danych z okresu normalnej pracy.</li>
+      <li><strong>Warstwa alertĂłw</strong> â€” wyniki trafiajÄ… do SCADA, aplikacji mobilnej lub SMS. Operator widzi: <code>ĹOĹ»YSKO WRZECIONA #3 â€” degradacja 73% â€” zalecana wymiana w ciÄ…gu 48h</code>.</li>
     </ol>
 
-    <h2>Przykład: monitoring maszyny dziewiarskiej</h2>
-    <p>W projekcie LineMind AI wdrożonym dla zakładu tekstylnego zastosowałem następujący stos technologiczny:</p>
+    <h2>PrzykĹ‚ad: monitoring maszyny dziewiarskiej</h2>
+    <p>W projekcie LineMind AI wdroĹĽonym dla zakĹ‚adu tekstylnego zastosowaĹ‚em nastÄ™pujÄ…cy stos technologiczny:</p>
     <ul>
-      <li>Czujniki drgań piezoelektryczne na wrzecionach (próbkowanie 1kHz)</li>
-      <li>Temperatury łożysk PT100 podłączone do S7-1200</li>
-      <li>Prąd silników przez przekładniki prądowe 4-20mA</li>
-      <li>Komunikacja: Modbus TCP → FastAPI → SQLite → PWA dashboard</li>
+      <li>Czujniki drgaĹ„ piezoelektryczne na wrzecionach (prĂłbkowanie 1kHz)</li>
+      <li>Temperatury Ĺ‚oĹĽysk PT100 podĹ‚Ä…czone do S7-1200</li>
+      <li>PrÄ…d silnikĂłw przez przekĹ‚adniki prÄ…dowe 4-20mA</li>
+      <li>Komunikacja: Modbus TCP â†’ FastAPI â†’ SQLite â†’ PWA dashboard</li>
     </ul>
-    <p>Model wykrywania anomalii (Isolation Forest) osiągnął <strong>94% dokładność</strong> wykrywania degradacji łożysk z 72-godzinnym wyprzedzeniem. Średni czas zatrzymania nieplanowanego zredukowano z 4,2h do 0,8h miesięcznie.</p>
+    <p>Model wykrywania anomalii (Isolation Forest) osiÄ…gnÄ…Ĺ‚ <strong>94% dokĹ‚adnoĹ›Ä‡</strong> wykrywania degradacji Ĺ‚oĹĽysk z 72-godzinnym wyprzedzeniem. Ĺšredni czas zatrzymania nieplanowanego zredukowano z 4,2h do 0,8h miesiÄ™cznie.</p>
 
-    <h2>Jakie dane zbierać</h2>
-    <p>Nie każdy parametr jest równie wartościowy. Hierarchia przydatności (od najważniejszego):</p>
+    <h2>Jakie dane zbieraÄ‡</h2>
+    <p>Nie kaĹĽdy parametr jest rĂłwnie wartoĹ›ciowy. Hierarchia przydatnoĹ›ci (od najwaĹĽniejszego):</p>
     <ol>
-      <li>Wibracje (FFT) — najlepszy wskaźnik stanu mechanicznego</li>
-      <li>Temperatura łożysk i silnika</li>
-      <li>Prąd silnika (wykrywa przeciążenia, zużycie szczotek)</li>
-      <li>Ciśnienie hydrauliczne / pneumatyczne</li>
+      <li>Wibracje (FFT) â€” najlepszy wskaĹşnik stanu mechanicznego</li>
+      <li>Temperatura Ĺ‚oĹĽysk i silnika</li>
+      <li>PrÄ…d silnika (wykrywa przeciÄ…ĹĽenia, zuĹĽycie szczotek)</li>
+      <li>CiĹ›nienie hydrauliczne / pneumatyczne</li>
       <li>Liczba cykli / przepracowane godziny</li>
     </ol>
 
     <h2>Minimalne wymagania do startu</h2>
-    <p>Nie potrzebujesz od razu pełnego systemu. Minimum viable product (MVP) dla PdM:</p>
+    <p>Nie potrzebujesz od razu peĹ‚nego systemu. Minimum viable product (MVP) dla PdM:</p>
     <ul>
-      <li>Istniejący PLC z wolnymi wejściami analogowymi — wystarczy 2-3 kanały</li>
-      <li>Raspberry Pi 4 lub przemysłowy mini-PC z Linuksem</li>
+      <li>IstniejÄ…cy PLC z wolnymi wejĹ›ciami analogowymi â€” wystarczy 2-3 kanaĹ‚y</li>
+      <li>Raspberry Pi 4 lub przemysĹ‚owy mini-PC z Linuksem</li>
       <li>Python 3.10 + scikit-learn + influxdb</li>
-      <li>Czas wdrożenia: 2-3 tygodnie dla jednej maszyny</li>
+      <li>Czas wdroĹĽenia: 2-3 tygodnie dla jednej maszyny</li>
     </ul>
 
     <div class="article-callout">
-      <p>Największa pułapka: próba zbudowania kompletnego systemu od razu. Zacznij od jednej maszyny, jednego parametru. Gdy model działa — skaluj.</p>
+      <p>NajwiÄ™ksza puĹ‚apka: prĂłba zbudowania kompletnego systemu od razu. Zacznij od jednej maszyny, jednego parametru. Gdy model dziaĹ‚a â€” skaluj.</p>
     </div>
 
-    <h2>ROI: kiedy się zwraca</h2>
-    <p>Typowy zwrot z inwestycji w PdM dla maszyny produkcyjnej o wartości 200 000€:</p>
+    <h2>ROI: kiedy siÄ™ zwraca</h2>
+    <p>Typowy zwrot z inwestycji w PdM dla maszyny produkcyjnej o wartoĹ›ci 200 000â‚¬:</p>
     <ul>
-      <li>Koszt wdrożenia: 8 000 – 15 000€ (sprzęt + software + uruchomienie)</li>
-      <li>Jedna uniknięta awaria katastrofalna: oszczędność 30 000 – 80 000€ (naprawa + przestój)</li>
-      <li>ROI: zwrot w ciągu 3-6 miesięcy przy 2 unikniętych awariach rocznie</li>
+      <li>Koszt wdroĹĽenia: 8 000 â€“ 15 000â‚¬ (sprzÄ™t + software + uruchomienie)</li>
+      <li>Jedna unikniÄ™ta awaria katastrofalna: oszczÄ™dnoĹ›Ä‡ 30 000 â€“ 80 000â‚¬ (naprawa + przestĂłj)</li>
+      <li>ROI: zwrot w ciÄ…gu 3-6 miesiÄ™cy przy 2 unikniÄ™tych awariach rocznie</li>
     </ul>
 
     <div class="article-cta">
-      <h3>Wdrożyć PdM w Twoim zakładzie?</h3>
-      <p>Przeprowadzam bezpłatną analizę potencjału — sprawdzam, które maszyny są najlepszymi kandydatami do predykcyjnego monitoringu i przygotowuję plan wdrożenia MVP.</p>
-      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Umów konsultację</a>
+      <h3>WdroĹĽyÄ‡ PdM w Twoim zakĹ‚adzie?</h3>
+      <p>Przeprowadzam bezpĹ‚atnÄ… analizÄ™ potencjaĹ‚u â€” sprawdzam, ktĂłre maszyny sÄ… najlepszymi kandydatami do predykcyjnego monitoringu i przygotowujÄ™ plan wdroĹĽenia MVP.</p>
+      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">UmĂłw konsultacjÄ™</a>
     </div>
   </div>
 
   <div class="article-nav">
-    <a href="../blog.html">← Wszystkie artykuły</a>
-    <a href="migracja-s5-s7.html">Migracja S5 → S7 →</a>
+    <a href="../blog.html">â† Wszystkie artykuĹ‚y</a>
+    <a href="migracja-s5-s7.html">Migracja S5 â†’ S7 â†’</a>
   </div>
 </div>
 
@@ -103,12 +103,12 @@
   <div class="footer-inner">
     <div><div class="footer-logo">TU<span>Automation</span></div></div>
     <div class="footer-links">
-      <a href="../index.html">Strona główna</a>
+      <a href="../index.html">Strona gĹ‚Ăłwna</a>
       <a href="../blog.html">Blog</a>
       <a href="../index.html#contact">Kontakt</a>
       <a href="../impressum.html">Impressum</a>
     </div>
-    <div class="footer-location"><div>© 2025 TU Automation</div></div>
+    <div class="footer-location"><div>Â© 2025 TU Automation</div></div>
   </div>
 </footer>
 <script>
@@ -117,3 +117,4 @@ window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rg
 </script>
 </body>
 </html>
+

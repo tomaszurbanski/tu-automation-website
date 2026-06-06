@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404 – TU Automation</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css?v=2"/>
+  <style>
+    .err-page { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 5%; position: relative; z-index: 2; }
+    .err-code { font-family: 'Rajdhani', sans-serif; font-size: clamp(6rem, 20vw, 12rem); font-weight: 700; color: var(--cyan); text-shadow: var(--glow-strong); line-height: 1; margin-bottom: 0; }
+    .err-line { font-size: 0.72rem; color: var(--cyan); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 24px; opacity: 0.6; }
+    .err-title { font-family: 'Rajdhani', sans-serif; font-size: clamp(1.2rem, 3vw, 1.8rem); font-weight: 700; color: #fff; margin-bottom: 12px; }
+    .err-desc { font-size: 0.9rem; color: var(--muted); max-width: 420px; line-height: 1.8; margin-bottom: 36px; }
+    .err-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+    .err-code-line { font-family: 'Courier New', monospace; font-size: 0.78rem; color: rgba(0,212,255,0.35); margin-top: 56px; letter-spacing: 0.5px; }
+  </style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<canvas id="scl-bg" aria-hidden="true"></canvas>
+<div class="scanline"></div>
+
+<div class="err-page">
+  <div class="err-code">404</div>
+  <div class="err-line">// ERROR: PAGE_NOT_FOUND</div>
+  <h1 class="err-title">Strona nie istnieje</h1>
+  <p class="err-desc">Szukany adres nie został znaleziony. Możliwe że strona została przeniesiona lub nigdy nie istniała.</p>
+  <div class="err-btns">
+    <a href="index.html" class="btn-primary">Strona główna</a>
+    <a href="index.html#contact" class="btn-outline">Kontakt</a>
+  </div>
+  <div class="err-code-line">SequenceCode := W#16#0404; // PAGE_NOT_FOUND</div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

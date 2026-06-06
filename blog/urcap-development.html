@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pl">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tworzenie URCaps dla Universal Robots – TU Automation Blog</title>
-  <meta name="description" content="Kompletny przewodnik po tworzeniu rozszerzeń URCap dla robotów Universal Robots. Od konfiguracji środowiska po wdrożenie na tablecie UR."/>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <title>Tworzenie URCaps dla Universal Robots â€“ TU Automation Blog</title>
+  <meta name="description" content="Kompletny przewodnik po tworzeniu rozszerzeĹ„ URCap dla robotĂłw Universal Robots. Od konfiguracji Ĺ›rodowiska po wdroĹĽenie na tablecie UR."/>
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml"/>`n  <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="../style.css"/>
 </head>
@@ -13,108 +13,109 @@
 <div class="grid-bg"></div>
 <nav id="nav" style="position:fixed">
   <div class="nav-logo">TU<span>Automation</span></div>
-  <div class="nav-right"><a href="../blog.html" class="nav-cta" style="font-size:0.75rem">← Blog</a></div>
+  <div class="nav-right"><a href="../blog.html" class="nav-cta" style="font-size:0.75rem">â† Blog</a></div>
 </nav>
 
 <div class="article-page">
   <div class="article-hero">
-    <div class="article-tag">Universal Robots · URCap · Java · URScript</div>
-    <h1 class="article-title">Tworzenie URCaps: od zera do wdrożenia na robocie UR</h1>
-    <div class="article-meta"><span>Tomasz Urbański</span><span>Kwiecień 2025</span><span>12 min czytania</span></div>
+    <div class="article-tag">Universal Robots Â· URCap Â· Java Â· URScript</div>
+    <h1 class="article-title">Tworzenie URCaps: od zera do wdroĹĽenia na robocie UR</h1>
+    <div class="article-meta"><span>Tomasz UrbaĹ„ski</span><span>KwiecieĹ„ 2025</span><span>12 min czytania</span></div>
   </div>
 
   <div class="article-body">
-    <p>URCap (Universal Robots Capability) to rozszerzenie oprogramowania robota Universal Robots, które dodaje nowe funkcje do tabletu Polyscope. Dzięki URCaps możesz zintegrować chwytaki, czujniki, kamery, sterowniki PLC — bezpośrednio z interfejsu robota, bez potrzeby pisania kodu przez operatora.</p>
+    <p>URCap (Universal Robots Capability) to rozszerzenie oprogramowania robota Universal Robots, ktĂłre dodaje nowe funkcje do tabletu Polyscope. DziÄ™ki URCaps moĹĽesz zintegrowaÄ‡ chwytaki, czujniki, kamery, sterowniki PLC â€” bezpoĹ›rednio z interfejsu robota, bez potrzeby pisania kodu przez operatora.</p>
 
     <div class="article-callout">
-      <p>URCap to różnica między "robotem, którego obsługuje inżynier" a "robotem, którego obsługuje operator na hali". To inwestycja w ergonomię i bezpieczeństwo wdrożenia.</p>
+      <p>URCap to rĂłĹĽnica miÄ™dzy "robotem, ktĂłrego obsĹ‚uguje inĹĽynier" a "robotem, ktĂłrego obsĹ‚uguje operator na hali". To inwestycja w ergonomiÄ™ i bezpieczeĹ„stwo wdroĹĽenia.</p>
     </div>
 
     <h2>Architektura URCap</h2>
-    <p>URCap składa się z dwóch warstw:</p>
+    <p>URCap skĹ‚ada siÄ™ z dwĂłch warstw:</p>
     <ul>
-      <li><strong>Warstwa UI (Polyscope):</strong> komponenty Java/OSGi wyświetlane w tablecie — okna konfiguracji, węzły programu, panele instalacji</li>
-      <li><strong>Warstwa daemon:</strong> serwer (Python, Java lub inny) działający na robocie w tle — obsługuje komunikację z zewnętrznymi urządzeniami, logikę biznesową</li>
+      <li><strong>Warstwa UI (Polyscope):</strong> komponenty Java/OSGi wyĹ›wietlane w tablecie â€” okna konfiguracji, wÄ™zĹ‚y programu, panele instalacji</li>
+      <li><strong>Warstwa daemon:</strong> serwer (Python, Java lub inny) dziaĹ‚ajÄ…cy na robocie w tle â€” obsĹ‚uguje komunikacjÄ™ z zewnÄ™trznymi urzÄ…dzeniami, logikÄ™ biznesowÄ…</li>
     </ul>
-    <p>Komunikacja między UI a daemonem odbywa się przez XML-RPC (domyślnie) lub REST API.</p>
+    <p>Komunikacja miÄ™dzy UI a daemonem odbywa siÄ™ przez XML-RPC (domyĹ›lnie) lub REST API.</p>
 
-    <h2>Środowisko deweloperskie</h2>
+    <h2>Ĺšrodowisko deweloperskie</h2>
     <p>Wymagania:</p>
     <ul>
-      <li>Java JDK 8 (nie nowszy — Polyscope 5.x bazuje na Java 8)</li>
+      <li>Java JDK 8 (nie nowszy â€” Polyscope 5.x bazuje na Java 8)</li>
       <li>Maven 3.x</li>
-      <li>URSim — symulator Polyscope (wirtualna maszyna VMware/VirtualBox)</li>
-      <li>SDK URCap — pobierz z <code>plus.universal-robots.com</code></li>
+      <li>URSim â€” symulator Polyscope (wirtualna maszyna VMware/VirtualBox)</li>
+      <li>SDK URCap â€” pobierz z <code>plus.universal-robots.com</code></li>
       <li>Eclipse IDE lub IntelliJ IDEA</li>
     </ul>
-    <p>Instalacja URSim na Windows przez VMware Player jest najprostszym podejściem. Zalecam snapshot VM przed każdą instalacją URCap — łatwy rollback przy błędach.</p>
+    <p>Instalacja URSim na Windows przez VMware Player jest najprostszym podejĹ›ciem. Zalecam snapshot VM przed kaĹĽdÄ… instalacjÄ… URCap â€” Ĺ‚atwy rollback przy bĹ‚Ä™dach.</p>
 
     <h2>Struktura projektu</h2>
     <p>Typowy projekt URCap Maven:</p>
     <ul>
-      <li><code>src/main/java/</code> — komponenty OSGi (Activator, NodeContribution, InstallationNodeContribution, ProgramNodeService)</li>
-      <li><code>src/main/resources/</code> — pliki FXML (UI) lub HTML5 (nowe SDK)</li>
-      <li><code>com.tu.urcap.daemon/</code> — katalog daemona (Python lub Java)</li>
-      <li><code>pom.xml</code> — zależności Maven + plugin URCap</li>
+      <li><code>src/main/java/</code> â€” komponenty OSGi (Activator, NodeContribution, InstallationNodeContribution, ProgramNodeService)</li>
+      <li><code>src/main/resources/</code> â€” pliki FXML (UI) lub HTML5 (nowe SDK)</li>
+      <li><code>com.tu.urcap.daemon/</code> â€” katalog daemona (Python lub Java)</li>
+      <li><code>pom.xml</code> â€” zaleĹĽnoĹ›ci Maven + plugin URCap</li>
     </ul>
 
-    <h2>Przykład: integracja z Modbus TCP</h2>
-    <p>Prosty URCap sterujący chwytakiem przez Modbus TCP:</p>
+    <h2>PrzykĹ‚ad: integracja z Modbus TCP</h2>
+    <p>Prosty URCap sterujÄ…cy chwytakiem przez Modbus TCP:</p>
     <p><strong>1. Daemon Python (xmlrpc_server.py):</strong></p>
     <ul>
       <li>Serwer XML-RPC na porcie 40405</li>
       <li>Funkcje: <code>open_gripper(force)</code>, <code>close_gripper(force)</code>, <code>get_status()</code></li>
-      <li>Wewnętrznie — połączenie Modbus TCP do sterownika chwytaka</li>
+      <li>WewnÄ™trznie â€” poĹ‚Ä…czenie Modbus TCP do sterownika chwytaka</li>
     </ul>
     <p><strong>2. Komponent Java (ProgramNodeContribution):</strong></p>
     <ul>
-      <li>UI z suwakiem siły chwytu (0-100%)</li>
-      <li>Tryb: otwórz / zamknij / pozycja</li>
+      <li>UI z suwakiem siĹ‚y chwytu (0-100%)</li>
+      <li>Tryb: otwĂłrz / zamknij / pozycja</li>
       <li>Generuje URScript: <code>socket_send_string("grip:50", "gripper_socket")</code></li>
     </ul>
     <p><strong>3. Instalacja na robocie:</strong></p>
     <ul>
-      <li>Kompilacja: <code>mvn install</code> → plik <code>.urcap</code></li>
+      <li>Kompilacja: <code>mvn install</code> â†’ plik <code>.urcap</code></li>
       <li>Przeniesienie na pendrive lub przez SSH</li>
-      <li>Instalacja w Polyscope: System → URCaps → ładowanie pliku</li>
-      <li>Restart robota — URCap gotowy</li>
+      <li>Instalacja w Polyscope: System â†’ URCaps â†’ Ĺ‚adowanie pliku</li>
+      <li>Restart robota â€” URCap gotowy</li>
     </ul>
 
-    <h2>URScript vs URCap — kiedy co wybrać</h2>
+    <h2>URScript vs URCap â€” kiedy co wybraÄ‡</h2>
     <ul>
-      <li><strong>URScript:</strong> szybkie prototypowanie, jeden robot, prosty skrypt, programista piszący kod</li>
-      <li><strong>URCap:</strong> wielokrotne wdrożenie, obsługa przez operatorów bez znajomości programowania, integracja ze złożonymi urządzeniami zewnętrznymi</li>
-      <li><strong>PolyScope XML:</strong> gdy chcesz podzielić się programem bez zależności od daemona</li>
+      <li><strong>URScript:</strong> szybkie prototypowanie, jeden robot, prosty skrypt, programista piszÄ…cy kod</li>
+      <li><strong>URCap:</strong> wielokrotne wdroĹĽenie, obsĹ‚uga przez operatorĂłw bez znajomoĹ›ci programowania, integracja ze zĹ‚oĹĽonymi urzÄ…dzeniami zewnÄ™trznymi</li>
+      <li><strong>PolyScope XML:</strong> gdy chcesz podzieliÄ‡ siÄ™ programem bez zaleĹĽnoĹ›ci od daemona</li>
     </ul>
 
-    <h2>Najczęstsze błędy przy tworzeniu URCaps</h2>
+    <h2>NajczÄ™stsze bĹ‚Ä™dy przy tworzeniu URCaps</h2>
     <ul>
-      <li><strong>Blokowanie wątku UI:</strong> Nigdy nie wykonuj długich operacji sieciowych w wątku Swing. Zawsze użyj SwingWorker lub wywołania asynchronicznego.</li>
-      <li><strong>Brak obsługi błędów sieci:</strong> Daemon może być niedostępny. URCap musi gracefully degradować — robot nie może się zatrzymać przez timeout.</li>
-      <li><strong>Zakodowane IP na stałe:</strong> Zawsze pozwól operatorowi skonfigurować adres IP urządzenia w sekcji Installation Node.</li>
-      <li><strong>Ignorowanie wersji Polyscope:</strong> API zmienia się między wersjami 3.x, 5.x i 5.11+. Testuj na docelowej wersji firmware.</li>
+      <li><strong>Blokowanie wÄ…tku UI:</strong> Nigdy nie wykonuj dĹ‚ugich operacji sieciowych w wÄ…tku Swing. Zawsze uĹĽyj SwingWorker lub wywoĹ‚ania asynchronicznego.</li>
+      <li><strong>Brak obsĹ‚ugi bĹ‚Ä™dĂłw sieci:</strong> Daemon moĹĽe byÄ‡ niedostÄ™pny. URCap musi gracefully degradowaÄ‡ â€” robot nie moĹĽe siÄ™ zatrzymaÄ‡ przez timeout.</li>
+      <li><strong>Zakodowane IP na staĹ‚e:</strong> Zawsze pozwĂłl operatorowi skonfigurowaÄ‡ adres IP urzÄ…dzenia w sekcji Installation Node.</li>
+      <li><strong>Ignorowanie wersji Polyscope:</strong> API zmienia siÄ™ miÄ™dzy wersjami 3.x, 5.x i 5.11+. Testuj na docelowej wersji firmware.</li>
     </ul>
 
     <div class="article-cta">
       <h3>Potrzebujesz URCap dla swojego robota UR?</h3>
-      <p>Tworzę dedykowane URCaps integrujące Twoje urządzenia — chwytaki, czujniki siły, wizję maszynową, systemy PLC. Dostawa z dokumentacją i szkoleniem operatorów.</p>
-      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Zapytaj o wycenę</a>
+      <p>TworzÄ™ dedykowane URCaps integrujÄ…ce Twoje urzÄ…dzenia â€” chwytaki, czujniki siĹ‚y, wizjÄ™ maszynowÄ…, systemy PLC. Dostawa z dokumentacjÄ… i szkoleniem operatorĂłw.</p>
+      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Zapytaj o wycenÄ™</a>
     </div>
   </div>
 
   <div class="article-nav">
-    <a href="migracja-s5-s7.html">← Migracja S5 → S7</a>
-    <a href="scada-hmi-wybor.html">SCADA czy HMI? →</a>
+    <a href="migracja-s5-s7.html">â† Migracja S5 â†’ S7</a>
+    <a href="scada-hmi-wybor.html">SCADA czy HMI? â†’</a>
   </div>
 </div>
 
 <footer>
   <div class="footer-inner">
     <div><div class="footer-logo">TU<span>Automation</span></div></div>
-    <div class="footer-links"><a href="../index.html">Strona główna</a><a href="../blog.html">Blog</a><a href="../index.html#contact">Kontakt</a><a href="../impressum.html">Impressum</a></div>
-    <div class="footer-location"><div>© 2025 TU Automation</div></div>
+    <div class="footer-links"><a href="../index.html">Strona gĹ‚Ăłwna</a><a href="../blog.html">Blog</a><a href="../index.html#contact">Kontakt</a><a href="../impressum.html">Impressum</a></div>
+    <div class="footer-location"><div>Â© 2025 TU Automation</div></div>
   </div>
 </footer>
 <script>const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});</script>
 </body>
 </html>
+
