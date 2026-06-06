@@ -547,6 +547,259 @@ const newKeys = {
 // Merge new keys into T
 Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKeys[lang]); });
 
+// ── SCL BACKGROUND ANIMATION ──
+(function initSCLBg() {
+  if (window.innerWidth < 768) return;
+  const canvas = document.getElementById('scl-bg');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const FS = 10, LH = 15, CW = 270;
+
+  const L = [
+    'FUNCTION_BLOCK "FB_PillowCheck_4Cameras"',
+    '{ S7_Optimized_Access := TRUE }',
+    'VERSION : 1.0',
+    '',
+    'VAR_INPUT',
+    '  LineOn          : Bool;',
+    '  LineRun         : Bool;',
+    '  StartKontroli   : Bool;',
+    '  KoniecKontroli  : Bool;',
+    '  Reset           : Bool;',
+    '  IncompleteAsNOK : Bool := TRUE;',
+    '  FaultAsNOK      : Bool := TRUE;',
+    '  Cam1_Enable     : Bool;',
+    '  Cam1_Done       : Bool;',
+    '  Cam1_OK         : Bool;',
+    '  Cam1_NOK        : Bool;',
+    '  Cam1_Fault      : Bool;',
+    '  Cam1_State      : Int;',
+    '  Cam1_FaultCode  : Word;',
+    '  Cam2_Enable     : Bool;',
+    '  Cam2_Done       : Bool;',
+    '  Cam2_OK         : Bool;',
+    '  Cam2_NOK        : Bool;',
+    '  Cam2_Fault      : Bool;',
+    '  Cam3_Enable     : Bool;',
+    '  Cam3_Done       : Bool;',
+    '  Cam3_OK         : Bool;',
+    '  Cam3_NOK        : Bool;',
+    '  Cam3_Fault      : Bool;',
+    '  Cam4_Enable     : Bool;',
+    '  Cam4_Done       : Bool;',
+    '  Cam4_OK         : Bool;',
+    '  Cam4_NOK        : Bool;',
+    '  Cam4_Fault      : Bool;',
+    'END_VAR',
+    '',
+    'VAR_OUTPUT',
+    '  PillowDone      : Bool;',
+    '  ResultValid     : Bool;',
+    '  PoduszkaOK      : Bool;',
+    '  PoduszkaNOK     : Bool;',
+    '  Incomplete      : Bool;',
+    '  KontrolaAktywna : Bool;',
+    '  AnyCamNG_Live   : Bool;',
+    '  AnyCamBad       : Bool;',
+    '  ReceivedCount   : Int;',
+    '  RequiredCount   : Int;',
+    '  FirstBadCamera  : Int;',
+    '  LastDoneCamera  : Int;',
+    '  Cam1_Required   : Bool;',
+    '  Cam2_Required   : Bool;',
+    '  Cam1_Received   : Bool;',
+    '  Cam2_Received   : Bool;',
+    '  Cam1_ResultNOK  : Bool;',
+    '  Cam2_ResultNOK  : Bool;',
+    '  Cam1_FaultLatched : Bool;',
+    '  Cam2_FaultLatched : Bool;',
+    '  Cam1_Missing    : Bool;',
+    '  Cam2_Missing    : Bool;',
+    '  Cam1_Bad        : Bool;',
+    '  Cam2_Bad        : Bool;',
+    '  Cam1_LastFaultCode : Word;',
+    '  Cam2_LastFaultCode : Word;',
+    '  SequenceError   : Bool;',
+    '  SequenceCode    : Word;',
+    'END_VAR',
+    '',
+    'VAR',
+    '  rTrigStart      : R_TRIG;',
+    '  rTrigEnd        : R_TRIG;',
+    '  rTrigReset      : R_TRIG;',
+    '  rTrigCam1Done   : R_TRIG;',
+    '  rTrigCam2Done   : R_TRIG;',
+    '  rTrigCam3Done   : R_TRIG;',
+    '  rTrigCam4Done   : R_TRIG;',
+    'END_VAR',
+    '',
+    'BEGIN',
+    '  rTrigStart(CLK := StartKontroli);',
+    '  rTrigEnd(CLK := KoniecKontroli);',
+    '  rTrigReset(CLK := Reset);',
+    '  rTrigCam1Done(CLK := Cam1_Done);',
+    '  rTrigCam2Done(CLK := Cam2_Done);',
+    '  PillowDone := FALSE;',
+    '  AnyCamNG_Live :=',
+    '    (Cam1_Enable AND Cam1_NOK) OR',
+    '    (Cam2_Enable AND Cam2_NOK) OR',
+    '    (Cam3_Enable AND Cam3_NOK) OR',
+    '    (Cam4_Enable AND Cam4_NOK);',
+    '  IF rTrigReset.Q OR (NOT LineOn) THEN',
+    '    KontrolaAktywna := FALSE;',
+    '    ResultValid := FALSE;',
+    '    PoduszkaOK := FALSE;',
+    '    PoduszkaNOK := FALSE;',
+    '    Incomplete := FALSE;',
+    '    AnyCamBad := FALSE;',
+    '    ReceivedCount := 0;',
+    '    RequiredCount := 0;',
+    '    FirstBadCamera := 0;',
+    '    LastDoneCamera := 0;',
+    '    Cam1_Required := FALSE;',
+    '    Cam1_Received := FALSE;',
+    '    Cam1_ResultNOK := FALSE;',
+    '    Cam1_FaultLatched := FALSE;',
+    '    Cam1_Missing := FALSE;',
+    '    Cam1_Bad := FALSE;',
+    '    Cam1_LastFaultCode := W#16#0000;',
+    '    SequenceError := FALSE;',
+    '    SequenceCode := W#16#0000;',
+    '    RETURN;',
+    '  END_IF;',
+    '  IF rTrigStart.Q THEN',
+    '    KontrolaAktywna := TRUE;',
+    '    ResultValid := FALSE;',
+    '    RequiredCount := 0;',
+    '    Cam1_Required := Cam1_Enable;',
+    '    Cam2_Required := Cam2_Enable;',
+    '    Cam3_Required := Cam3_Enable;',
+    '    Cam4_Required := Cam4_Enable;',
+    '    IF Cam1_Enable THEN',
+    '      RequiredCount := RequiredCount + 1;',
+    '    END_IF;',
+    '    IF Cam2_Enable THEN',
+    '      RequiredCount := RequiredCount + 1;',
+    '    END_IF;',
+    '    Cam1_Received := FALSE;',
+    '    Cam1_ResultNOK := FALSE;',
+    '    Cam1_FaultLatched := FALSE;',
+    '  END_IF;',
+    '  IF rTrigEnd.Q AND (NOT KontrolaAktywna) THEN',
+    '    SequenceError := TRUE;',
+    '    SequenceCode := W#16#A001;',
+    '  END_IF;',
+    '  IF KontrolaAktywna THEN',
+    '    IF Cam1_Required AND Cam1_Fault THEN',
+    '      Cam1_FaultLatched := TRUE;',
+    '      Cam1_LastFaultCode := Cam1_FaultCode;',
+    '    END_IF;',
+    '    IF Cam2_Required AND Cam2_Fault THEN',
+    '      Cam2_FaultLatched := TRUE;',
+    '      Cam2_LastFaultCode := Cam2_FaultCode;',
+    '    END_IF;',
+    '  END_IF;',
+    '  IF KontrolaAktywna THEN',
+    '    IF Cam1_Required AND rTrigCam1Done.Q',
+    '       AND (NOT Cam1_Received) THEN',
+    '      Cam1_Received := TRUE;',
+    '      LastDoneCamera := 1;',
+    '      ReceivedCount := ReceivedCount + 1;',
+    '      Cam1_ResultNOK := Cam1_NOK OR',
+    '        (Cam1_Fault AND FaultAsNOK) OR',
+    '        ((NOT Cam1_OK) AND (NOT Cam1_NOK));',
+    '    END_IF;',
+    '    IF Cam2_Required AND rTrigCam2Done.Q',
+    '       AND (NOT Cam2_Received) THEN',
+    '      Cam2_Received := TRUE;',
+    '      LastDoneCamera := 2;',
+    '      ReceivedCount := ReceivedCount + 1;',
+    '    END_IF;',
+    '  END_IF;',
+    '  IF KontrolaAktywna AND rTrigEnd.Q THEN',
+    '    Cam1_Missing := Cam1_Required AND',
+    '                    (NOT Cam1_Received);',
+    '    Cam2_Missing := Cam2_Required AND',
+    '                    (NOT Cam2_Received);',
+    '    Incomplete := Cam1_Missing OR',
+    '                  Cam2_Missing;',
+    '    Cam1_Bad := Cam1_ResultNOK OR',
+    '      (Cam1_FaultLatched AND FaultAsNOK) OR',
+    '      (Cam1_Missing AND IncompleteAsNOK);',
+    '    Cam2_Bad := Cam2_ResultNOK OR',
+    '      (Cam2_FaultLatched AND FaultAsNOK) OR',
+    '      (Cam2_Missing AND IncompleteAsNOK);',
+    '    AnyCamBad := Cam1_Bad OR Cam2_Bad;',
+    '    FirstBadCamera := 0;',
+    '    IF Cam1_Bad THEN',
+    '      FirstBadCamera := 1;',
+    '    ELSIF Cam2_Bad THEN',
+    '      FirstBadCamera := 2;',
+    '    ELSIF Cam3_Bad THEN',
+    '      FirstBadCamera := 3;',
+    '    ELSIF Cam4_Bad THEN',
+    '      FirstBadCamera := 4;',
+    '    END_IF;',
+    '    IF AnyCamBad THEN',
+    '      PoduszkaOK := FALSE;',
+    '      PoduszkaNOK := TRUE;',
+    '    ELSE',
+    '      PoduszkaOK := TRUE;',
+    '      PoduszkaNOK := FALSE;',
+    '    END_IF;',
+    '    ResultValid := TRUE;',
+    '    PillowDone := TRUE;',
+    '    KontrolaAktywna := FALSE;',
+    '  END_IF;',
+    'END_FUNCTION_BLOCK',
+    '',
+  ];
+
+  let cols = [], raf, resizeTimer;
+
+  function setup() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    if (window.innerWidth < 768) { cancelAnimationFrame(raf); return; }
+    const n = Math.ceil(canvas.width / CW) + 1;
+    cols = Array.from({ length: n }, (_, i) => ({
+      x: i * CW + Math.round(Math.random() * 24 - 12),
+      offset: Math.floor(Math.random() * L.length),
+      speed: 0.16 + Math.random() * 0.24,
+      scroll: Math.random() * L.length * LH
+    }));
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.font = `${FS}px 'Courier New', monospace`;
+    ctx.fillStyle = 'rgba(0,212,255,0.062)';
+    const totalH = L.length * LH;
+    cols.forEach(c => {
+      c.scroll = (c.scroll + c.speed) % totalH;
+      const first = Math.floor(c.scroll / LH);
+      const sub = c.scroll % LH;
+      const vis = Math.ceil(canvas.height / LH) + 2;
+      for (let i = 0; i < vis; i++) {
+        ctx.fillText(L[(c.offset + first + i) % L.length], c.x, i * LH - sub);
+      }
+    });
+    raf = requestAnimationFrame(draw);
+  }
+
+  setup();
+  draw();
+
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(setup, 150);
+  });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(raf);
+    else { raf = requestAnimationFrame(draw); }
+  });
+})();
+
 // ── INIT ──
 applyLang(currentLang);
 type();
