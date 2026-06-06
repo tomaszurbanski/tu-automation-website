@@ -945,7 +945,7 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
     '',
   ];
 
-  let cols = [], raf, resizeTimer;
+  let cols = [], flakes = [], raf, resizeTimer;
 
   function setup() {
     canvas.width = window.innerWidth;
@@ -957,6 +957,16 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
       offset: Math.floor(Math.random() * L.length),
       speed: 0.16 + Math.random() * 0.24,
       scroll: Math.random() * L.length * LH
+    }));
+    flakes = Array.from({ length: 50 }, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: 0.8 + Math.random() * 1.6,
+      speed: 0.2 + Math.random() * 0.65,
+      drift: Math.random() * Math.PI * 2,
+      driftSpeed: 0.003 + Math.random() * 0.006,
+      driftAmp: 0.25 + Math.random() * 0.6,
+      opacity: 0.18 + Math.random() * 0.42
     }));
   }
 
@@ -974,6 +984,20 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
         ctx.fillText(L[(c.offset + first + i) % L.length], c.x, i * LH - sub);
       }
     });
+    if (flakes.length) {
+      flakes.forEach(f => {
+        f.drift += f.driftSpeed;
+        f.x += Math.sin(f.drift) * f.driftAmp;
+        f.y += f.speed;
+        if (f.y > canvas.height + 4) { f.y = -4; f.x = Math.random() * canvas.width; }
+        if (f.x < -4) f.x = canvas.width + 4;
+        else if (f.x > canvas.width + 4) f.x = -4;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(180,235,255,${f.opacity})`;
+        ctx.fill();
+      });
+    }
     raf = requestAnimationFrame(draw);
   }
 
@@ -987,6 +1011,157 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) cancelAnimationFrame(raf);
     else { raf = requestAnimationFrame(draw); }
+  });
+})();
+
+// ── GLITCH EFFECT ──
+(function initGlitch() {
+  const glitch = document.getElementById('glitch-canvas');
+  if (!glitch) return;
+  const gc = glitch.getContext('2d');
+  let glitchRaf;
+
+  function resize() { glitch.width = window.innerWidth; glitch.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function drawBars() {
+    gc.clearRect(0, 0, glitch.width, glitch.height);
+    const count = 8 + Math.floor(Math.random() * 18);
+    for (let i = 0; i < count; i++) {
+      const y = Math.random() * glitch.height;
+      const h = 1 + Math.random() * 7;
+      const w = (0.15 + Math.random() * 0.85) * glitch.width;
+      const x = Math.random() * (glitch.width - w);
+      if (Math.random() > 0.45) {
+        gc.fillStyle = `rgba(0,212,255,${0.25 + Math.random() * 0.5})`;
+      } else {
+        gc.fillStyle = `rgba(${Math.floor(Math.random()*90)},0,${Math.floor(170+Math.random()*85)},${0.35 + Math.random() * 0.4})`;
+      }
+      gc.fillRect(x, y, w, h);
+      if (Math.random() > 0.72) {
+        gc.fillStyle = `rgba(0,212,255,${0.15 + Math.random() * 0.3})`;
+        gc.fillRect(0, y + h + 1, glitch.width, 1);
+      }
+    }
+  }
+
+  function runGlitch() {
+    cancelAnimationFrame(glitchRaf);
+    let tick = 0;
+    const hold = 10;
+    const fade = 14;
+    function step() {
+      tick++;
+      if (tick <= hold) {
+        drawBars();
+        glitch.style.opacity = '1';
+        glitchRaf = requestAnimationFrame(step);
+      } else if (tick <= hold + fade) {
+        drawBars();
+        glitch.style.opacity = (1 - (tick - hold) / fade).toFixed(3);
+        glitchRaf = requestAnimationFrame(step);
+      } else {
+        gc.clearRect(0, 0, glitch.width, glitch.height);
+        glitch.style.opacity = '0';
+        schedule();
+        // short white-noise burst if music is on
+        if (window._tuAudioCtx && window._tuMusicPlaying) {
+          const ac = window._tuAudioCtx;
+          const dur = 0.28;
+          const buf = ac.createBuffer(1, ac.sampleRate * dur, ac.sampleRate);
+          const d = buf.getChannelData(0);
+          for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * 0.12;
+          const src = ac.createBufferSource();
+          src.buffer = buf;
+          const ng = ac.createGain();
+          ng.gain.setValueAtTime(0.25, ac.currentTime);
+          ng.gain.exponentialRampToValueAtTime(0.001, ac.currentTime + dur);
+          src.connect(ng);
+          ng.connect(ac.destination);
+          src.start();
+          src.stop(ac.currentTime + dur);
+        }
+      }
+    }
+    step();
+  }
+
+  function schedule() {
+    setTimeout(() => {
+      if (!document.hidden) runGlitch(); else schedule();
+    }, 28000 + Math.random() * 24000);
+  }
+
+  schedule();
+})();
+
+// ── AMBIENT MUSIC ──
+(function initAmbientMusic() {
+  const btn = document.getElementById('music-btn');
+  if (!btn) return;
+  let ac, masterGain, playing = false;
+  const oscs = [], lfos = [];
+
+  function build() {
+    ac = new (window.AudioContext || window.webkitAudioContext)();
+    window._tuAudioCtx = ac;
+    masterGain = ac.createGain();
+    masterGain.gain.setValueAtTime(0.001, ac.currentTime);
+    masterGain.connect(ac.destination);
+
+    const dl1 = ac.createDelay(4); dl1.delayTime.value = 2.1;
+    const fb1 = ac.createGain(); fb1.gain.value = 0.44;
+    dl1.connect(fb1); fb1.connect(dl1); dl1.connect(masterGain);
+
+    const dl2 = ac.createDelay(3); dl2.delayTime.value = 1.35;
+    const fb2 = ac.createGain(); fb2.gain.value = 0.37;
+    dl2.connect(fb2); fb2.connect(dl2); dl2.connect(masterGain);
+
+    const voices = [
+      { freq: 55,     gain: 0.21, type: 'sine'     },
+      { freq: 82.41,  gain: 0.13, type: 'sine'     },
+      { freq: 110,    gain: 0.17, type: 'triangle' },
+      { freq: 164.81, gain: 0.07, type: 'sine'     },
+      { freq: 220,    gain: 0.09, type: 'sine'     },
+    ];
+    voices.forEach((v, i) => {
+      const osc = ac.createOscillator();
+      osc.type = v.type; osc.frequency.value = v.freq;
+      const og = ac.createGain(); og.gain.value = v.gain;
+      const lfo = ac.createOscillator();
+      lfo.frequency.value = 0.04 + Math.random() * 0.11;
+      const lg = ac.createGain(); lg.gain.value = v.gain * 0.3;
+      lfo.connect(lg); lg.connect(og.gain);
+      osc.connect(og);
+      og.connect(i % 2 === 0 ? dl1 : dl2);
+      og.connect(masterGain);
+      osc.start(); lfo.start();
+      oscs.push(osc); lfos.push(lfo);
+    });
+  }
+
+  btn.addEventListener('click', () => {
+    if (!playing) {
+      if (!ac) build();
+      if (ac.state === 'suspended') ac.resume();
+      masterGain.gain.cancelScheduledValues(ac.currentTime);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.26, ac.currentTime + 3.5);
+      playing = true; window._tuMusicPlaying = true;
+      btn.classList.add('playing');
+      btn.querySelector('.icon-play').style.display = 'none';
+      btn.querySelector('.icon-pause').style.display = '';
+    } else {
+      masterGain.gain.cancelScheduledValues(ac.currentTime);
+      masterGain.gain.setValueAtTime(masterGain.gain.value, ac.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.001, ac.currentTime + 2.5);
+      setTimeout(() => { if (ac) ac.suspend(); }, 2600);
+      playing = false; window._tuMusicPlaying = false;
+      btn.classList.remove('playing');
+      btn.querySelector('.icon-play').style.display = '';
+      btn.querySelector('.icon-pause').style.display = 'none';
+    }
   });
 })();
 

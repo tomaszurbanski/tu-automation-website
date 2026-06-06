@@ -796,6 +796,23 @@ footer {
 .wa-btn:hover .wa-tooltip { opacity: 1; }
 @keyframes wa-pulse { 0%,100%{box-shadow:0 4px 20px rgba(37,211,102,0.4)} 50%{box-shadow:0 4px 30px rgba(37,211,102,0.65)} }
 
+/* ── GLITCH CANVAS ── */
+#glitch-canvas { position: fixed; inset: 0; z-index: 150; pointer-events: none; opacity: 0; }
+
+/* ── MUSIC BTN ── */
+.music-btn {
+  position: fixed; bottom: 28px; left: 28px; z-index: 200;
+  width: 54px; height: 54px; border-radius: 50%;
+  background: rgba(8,12,20,0.85); border: 1.5px solid rgba(0,212,255,0.45);
+  color: var(--cyan); display: flex; align-items: center; justify-content: center;
+  cursor: pointer; box-shadow: 0 4px 18px rgba(0,212,255,0.12);
+  transition: all 0.2s; padding: 0;
+}
+.music-btn:hover { border-color: var(--cyan); background: rgba(0,212,255,0.08); box-shadow: 0 4px 28px rgba(0,212,255,0.38); }
+.music-btn.playing { border-color: var(--cyan); background: rgba(0,212,255,0.07); animation: music-pulse 2.5s ease-in-out infinite; }
+.music-btn svg { width: 20px; height: 20px; }
+@keyframes music-pulse { 0%,100%{box-shadow:0 4px 18px rgba(0,212,255,0.25)} 50%{box-shadow:0 4px 35px rgba(0,212,255,0.65)} }
+
 /* ── BLOG / ARTICLE ── */
 .blog-page { padding-top: 80px; position: relative; z-index: 2; }
 .blog-header { padding: 60px 5% 40px; max-width: 1100px; margin: 0 auto; }
