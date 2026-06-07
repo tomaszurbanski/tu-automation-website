@@ -1018,31 +1018,53 @@ Object.keys(newKeys).forEach(lang => { if (T[lang]) Object.assign(T[lang], newKe
         gc.clearRect(0, 0, glitch.width, glitch.height);
         glitch.style.opacity = '0';
         schedule();
-        // Interference sound – always plays once AudioContext is available
+        // Interference sound – EMI crackle simulation
         const sfxCtx = window._tuAudioCtx;
         if (sfxCtx && sfxCtx.state === 'running') {
           const t = sfxCtx.currentTime;
-          const dur = 0.42;
-          // White-noise static
-          const buf = sfxCtx.createBuffer(1, Math.ceil(sfxCtx.sampleRate * dur), sfxCtx.sampleRate);
+          const dur = 0.6;
+          const sr = sfxCtx.sampleRate;
+
+          // Crackle noise — sparse random spikes in buffer (electrical discharge feel)
+          const buf = sfxCtx.createBuffer(1, Math.ceil(sr * dur), sr);
           const d = buf.getChannelData(0);
-          for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+          for (let i = 0; i < d.length; i++) {
+            d[i] = Math.random() < 0.04
+              ? (Math.random() * 2 - 1) * (0.8 + Math.random() * 0.8)
+              : (Math.random() * 2 - 1) * 0.04;
+          }
           const ns = sfxCtx.createBufferSource(); ns.buffer = buf;
-          const nf = sfxCtx.createBiquadFilter(); nf.type = 'bandpass'; nf.frequency.value = 2800; nf.Q.value = 0.5;
+          const nfHi = sfxCtx.createBiquadFilter(); nfHi.type = 'bandpass'; nfHi.frequency.value = 4200; nfHi.Q.value = 1.8;
+          const nfLo = sfxCtx.createBiquadFilter(); nfLo.type = 'bandpass'; nfLo.frequency.value = 900;  nfLo.Q.value = 1.2;
           const ng = sfxCtx.createGain();
-          ng.gain.setValueAtTime(0.22, t);
+          ng.gain.setValueAtTime(0, t);
+          ng.gain.linearRampToValueAtTime(0.38, t + 0.008);
+          ng.gain.setValueAtTime(0.25, t + 0.06);
+          ng.gain.setValueAtTime(0.32, t + 0.14);
+          ng.gain.setValueAtTime(0.10, t + 0.28);
           ng.gain.exponentialRampToValueAtTime(0.001, t + dur);
-          ns.connect(nf); nf.connect(ng); ng.connect(sfxCtx.destination);
-          ns.start(); ns.stop(t + dur);
-          // EMI buzz (sawtooth sweep – classic PLC interference sound)
-          const bz = sfxCtx.createOscillator(); bz.type = 'sawtooth';
-          bz.frequency.setValueAtTime(120, t);
-          bz.frequency.exponentialRampToValueAtTime(52, t + dur * 0.65);
-          const bg = sfxCtx.createGain();
-          bg.gain.setValueAtTime(0.10, t + 0.004);
-          bg.gain.exponentialRampToValueAtTime(0.001, t + dur * 0.78);
-          bz.connect(bg); bg.connect(sfxCtx.destination);
-          bz.start(); bz.stop(t + dur);
+          ns.connect(nfHi); ns.connect(nfLo);
+          nfHi.connect(ng); nfLo.connect(ng);
+          ng.connect(sfxCtx.destination);
+          ns.start(t); ns.stop(t + dur);
+
+          // Mains-frequency buzz — 50 Hz harmonics (classic PLC/electrical panel EMI)
+          [50, 100, 150, 250].forEach((freq, i) => {
+            const osc = sfxCtx.createOscillator();
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(freq + Math.random() * 4 - 2, t);
+            osc.frequency.setValueAtTime(freq + Math.random() * 8 - 4, t + 0.08);
+            osc.frequency.setValueAtTime(freq + Math.random() * 4 - 2, t + 0.22);
+            const og = sfxCtx.createGain();
+            const vol = [0.07, 0.05, 0.03, 0.02][i];
+            og.gain.setValueAtTime(0, t);
+            og.gain.linearRampToValueAtTime(vol, t + 0.012);
+            og.gain.setValueAtTime(vol * 1.4, t + 0.10);
+            og.gain.setValueAtTime(vol * 0.6, t + 0.25);
+            og.gain.exponentialRampToValueAtTime(0.0001, t + dur * 0.85);
+            osc.connect(og); og.connect(sfxCtx.destination);
+            osc.start(t); osc.stop(t + dur);
+          });
         }
       }
     }
