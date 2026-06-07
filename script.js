@@ -494,17 +494,33 @@ counters.forEach(el => counterObserver.observe(el));
 const form = document.getElementById('contactForm');
 const submitBtn = document.getElementById('submitBtn');
 if (form) {
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
     const t = T[currentLang];
     submitBtn.textContent = '...';
     submitBtn.disabled = true;
-    setTimeout(() => {
-      submitBtn.textContent = t['form.sent'] || '✓ Sent';
-      submitBtn.dataset.sent = 'true';
-      submitBtn.style.background = '#10B981';
-      submitBtn.style.clipPath = 'none';
-    }, 1000);
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        submitBtn.textContent = t['form.sent'] || '✓ Sent';
+        submitBtn.dataset.sent = 'true';
+        submitBtn.style.background = '#10B981';
+        submitBtn.style.clipPath = 'none';
+        form.reset();
+      } else {
+        submitBtn.textContent = '✗ Błąd — spróbuj ponownie';
+        submitBtn.disabled = false;
+        submitBtn.style.background = '#DC2626';
+      }
+    } catch {
+      submitBtn.textContent = '✗ Błąd — spróbuj ponownie';
+      submitBtn.disabled = false;
+      submitBtn.style.background = '#DC2626';
+    }
   });
 }
 
