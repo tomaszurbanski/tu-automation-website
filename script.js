@@ -497,6 +497,12 @@ if (form) {
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const t = T[currentLang];
+    const turnstileEl = form.querySelector('[name="cf-turnstile-response"]');
+    if (!turnstileEl || !turnstileEl.value) {
+      const widget = form.querySelector('.cf-turnstile');
+      if (widget) { widget.style.outline = '1px solid #f87171'; widget.style.borderRadius = '4px'; }
+      return;
+    }
     submitBtn.textContent = '...';
     submitBtn.disabled = true;
     try {
