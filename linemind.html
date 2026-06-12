@@ -289,7 +289,7 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 <body>
 <canvas id="canvas"></canvas>
 <div id="progress"></div>
-<div id="slideNum">01 / 13</div>
+<div id="slideNum">01 / 14</div>
 <button id="langToggle" onclick="toggleLang()">🌐 EN</button>
 <div id="hint">← → &nbsp;/&nbsp; SPACE<br>click dots below</div>
 
@@ -760,6 +760,67 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
     data-en="Estimates based on pilot deployments in the textile industry (carders, nonwovens)">
     Szacunki na podstawie pilotażowych wdrożeń w przemyśle włókienniczym
   </p>
+</div>
+
+<!-- ═══ SLIDE — SECURITY & BACKUP ═══ -->
+<div class="slide" id="s_security">
+  <div class="label" data-pl="BEZPIECZEŃSTWO" data-en="SECURITY">BEZPIECZEŃSTWO</div>
+  <h2 class="title"
+    data-pl="Dane produkcyjne pod ochroną"
+    data-en="Production data — fully protected">
+    Dane produkcyjne pod ochroną
+  </h2>
+  <p class="sub"
+    data-pl="LineMind AI działa lokalnie w zakładzie — dane nie wychodzą bez Twojej zgody. Automatyczny backup zapewnia ciągłość w każdym scenariuszu awarii."
+    data-en="LineMind AI runs locally on-site — data never leaves without your consent. Automatic backup ensures continuity in any failure scenario.">
+    LineMind AI działa lokalnie — dane nie wychodzą bez Twojej zgody. Backup zapewnia ciągłość działania.
+  </p>
+  <div class="int-grid">
+    <div class="int-item">
+      <div class="int-icon">🔒</div>
+      <div>
+        <div class="int-title" data-pl="Izolacja sieci" data-en="Network isolation">Izolacja sieci</div>
+        <div class="int-desc"
+          data-pl="System działa w oddzielonej sieci VLAN. Komunikacja z PLC wyłącznie read-only — LineMind nigdy nie zapisuje do sterownika. HTTPS szyfruje cały ruch."
+          data-en="System runs in a separate VLAN. PLC communication is read-only — LineMind never writes to the controller. HTTPS encrypts all traffic.">
+          Osobna VLAN, komunikacja z PLC wyłącznie read-only. HTTPS szyfruje cały ruch.
+        </div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">💾</div>
+      <div>
+        <div class="int-title" data-pl="Backup lokalny — NAS" data-en="Local backup — NAS">Backup lokalny — NAS</div>
+        <div class="int-desc"
+          data-pl="Automatyczna kopia bazy danych co godzinę na serwer NAS w sieci zakładowej. 30 dni historii + 12 miesięcznych snapshotów. Restore po awarii hardware: poniżej 1 godziny."
+          data-en="Automatic database copy every hour to NAS server on the plant network. 30 days of history + 12 monthly snapshots. Restore after hardware failure: under 1 hour.">
+          Kopia co godzinę na NAS. 30 dni historii + snapshoty miesięczne. Restore &lt; 1 godziny.
+        </div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">☁️</div>
+      <div>
+        <div class="int-title" data-pl="Backup cloud — szyfrowany" data-en="Cloud backup — encrypted">Backup cloud — szyfrowany</div>
+        <div class="int-desc"
+          data-pl="Opcjonalny backup do chmury (Backblaze / AWS S3) szyfrowany po stronie klienta przed uploadem. Dane w chmurze są nieczytelne bez klucza zakładu."
+          data-en="Optional cloud backup (Backblaze / AWS S3) encrypted client-side before upload. Cloud data is unreadable without the plant key.">
+          Opcjonalny backup chmurowy, szyfrowany przed uploadem. Dane nieczytelne bez klucza klienta.
+        </div>
+      </div>
+    </div>
+    <div class="int-item" style="background:rgba(16,185,129,.06);border-color:rgba(16,185,129,.3)">
+      <div class="int-icon" style="background:rgba(16,185,129,.15)">✅</div>
+      <div>
+        <div class="int-title">GDPR / DSGVO</div>
+        <div class="int-desc"
+          data-pl="System nie przetwarza danych osobowych. Dane produkcyjne (sygnały maszyn, alarmy) są własnością klienta i pozostają w jego infrastrukturze. Pełna zgodność z wymogami europejskimi."
+          data-en="The system does not process personal data. Production data (machine signals, alarms) is the client's property and stays within their infrastructure. Full compliance with European requirements.">
+          Brak danych osobowych. Dane produkcyjne to własność klienta — zostają w jego infrastrukturze.
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- ═══ SLIDE 11 — CTA ═══ -->
