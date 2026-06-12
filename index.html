@@ -354,6 +354,12 @@
         <h3 data-i18n="proj2.title">Modernizacja linii dziewiarskiej – S5 → S7</h3>
         <p data-i18n="proj2.desc">Migracja sterowania automatów dziewiarskich ze Siemens S5 na S7-1500 z TIA Portal. Zachowanie wszystkich funkcji technologicznych, nowy panel HMI, zdalna diagnostyka przez PROFINET — bez zatrzymania produkcji.</p>
         <div class="project-tags"><span class="project-tag">Siemens S5</span><span class="project-tag">S7-1500</span><span class="project-tag">TIA Portal</span><span class="project-tag">HMI</span><span class="project-tag">Profinet</span></div>
+        <div class="project-actions">
+          <button class="btn-pres" onclick="openMigModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Prezentacja
+          </button>
+        </div>
       </div>
     </div>
     <div class="project-card reveal">
@@ -599,6 +605,36 @@
     </div>
   </div>
 </div>
+
+<!-- MIGRACJA MODAL -->
+<div class="pres-modal-overlay" id="migModal" onclick="if(event.target===this)closeMigModal()">
+  <div class="pres-modal-box">
+    <button class="pres-modal-close" onclick="closeMigModal()">✕</button>
+    <div class="pres-modal-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/></svg>
+    </div>
+    <h3 class="pres-modal-title">Modernizacja PLC — Prezentacja</h3>
+    <p class="pres-modal-sub" id="migModalSub">Wpisz hasło dostępu, aby otworzyć prezentację interaktywną.</p>
+    <div class="pres-modal-form" id="migForm">
+      <input class="pres-modal-input" type="password" id="migPass" placeholder="Hasło dostępu…" onkeydown="if(event.key==='Enter')checkMigPass()"/>
+      <button class="btn-pres-submit" onclick="checkMigPass()">Otwórz</button>
+    </div>
+    <p class="pres-modal-noaccess" id="migNoAccess" style="display:none">
+      Nie masz hasła? <a href="mailto:info@tuautomation.de?subject=Prośba o prezentację – Modernizacja PLC">Napisz do mnie</a> — odpiszę w 24h.
+    </p>
+  </div>
+</div>
+
+<script>
+function openMigModal(){document.getElementById('migModal').classList.add('active');setTimeout(()=>document.getElementById('migPass').focus(),200);}
+function closeMigModal(){document.getElementById('migModal').classList.remove('active');document.getElementById('migPass').value='';document.getElementById('migModalSub').textContent='Wpisz hasło dostępu, aby otworzyć prezentację interaktywną.';document.getElementById('migModalSub').classList.remove('pres-error');document.getElementById('migForm').style.display='flex';document.getElementById('migNoAccess').style.display='none';}
+function checkMigPass(){
+  var p=document.getElementById('migPass').value.trim();
+  if(p==='LineMind2025'){window.open('migration.html','_blank');closeMigModal();}
+  else if(p===''){document.getElementById('migModalSub').textContent='Pole hasła nie może być puste.';document.getElementById('migModalSub').classList.add('pres-error');}
+  else{document.getElementById('migModalSub').textContent='Nieprawidłowe hasło.';document.getElementById('migModalSub').classList.add('pres-error');document.getElementById('migNoAccess').style.display='block';}
+}
+</script>
 
 <!-- PREZENTACJA MODAL -->
 <div class="pres-modal-overlay" id="presModal" onclick="if(event.target===this)closePresModal()">

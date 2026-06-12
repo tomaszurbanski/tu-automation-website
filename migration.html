@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Modernizacja PLC – TU Automation</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#080C14;--bg2:#0D1220;--bg3:#111827;
+  --cyan:#00D4FF;--orange:#F97316;--green:#10B981;--red:#EF4444;--yellow:#FBBF24;
+  --text:#E2E8F0;--muted:#64748B;--border:rgba(0,212,255,0.15);
+  --glow:0 0 24px rgba(0,212,255,0.35);
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif}
+canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:14px 40px;border-bottom:1px solid var(--border);background:rgba(8,12,20,.85);backdrop-filter:blur(12px)}
+.nav-logo{font-family:'Rajdhani',sans-serif;font-size:1.15rem;font-weight:700;letter-spacing:2px;color:#fff}
+.nav-logo span{color:var(--cyan)}
+.nav-tag{font-family:'Rajdhani',sans-serif;font-size:.75rem;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+.nav-counter{font-family:'Rajdhani',sans-serif;font-size:.85rem;color:var(--muted);letter-spacing:2px}
+.nav-counter span{color:var(--cyan)}
+.nav-back{font-family:'Rajdhani',sans-serif;font-size:.8rem;letter-spacing:2px;color:var(--muted);text-decoration:none;transition:color .2s}
+.nav-back:hover{color:var(--cyan)}
+
+/* SLIDES */
+.slides{position:relative;z-index:1;width:100%;height:100vh;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:90px 60px 60px;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s;transform:translateY(30px)}
+.slide.active{opacity:1;pointer-events:all;transform:translateY(0)}
+
+/* CONTROLS */
+.ctrl{position:fixed;bottom:30px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:18px}
+.ctrl-btn{width:44px;height:44px;border:1px solid var(--border);background:rgba(13,18,32,.9);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.ctrl-btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:var(--glow)}
+.ctrl-dots{display:flex;gap:8px;align-items:center}
+.ctrl-dot{width:6px;height:6px;background:var(--muted);border-radius:50%;transition:all .3s;cursor:pointer}
+.ctrl-dot.active{background:var(--cyan);box-shadow:0 0 8px rgba(0,212,255,.6);transform:scale(1.3)}
+
+/* PROGRESS */
+.progress{position:fixed;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--cyan),#7c3aed);transition:width .5s;z-index:100}
+
+/* SHARED */
+.slide-tag{font-family:'Rajdhani',sans-serif;font-size:.7rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:12px}
+.slide-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.6rem,4vw,2.8rem);font-weight:700;color:#fff;line-height:1.15;margin-bottom:18px}
+.slide-title .hl{color:var(--cyan)}
+.slide-title .hl-o{color:var(--orange)}
+.slide-sub{font-size:.95rem;color:var(--muted);line-height:1.8;max-width:560px}
+.card{background:rgba(13,18,32,.7);border:1px solid var(--border);padding:20px 24px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+.tag-badge{display:inline-block;font-family:'Rajdhani',sans-serif;font-size:.7rem;letter-spacing:2px;padding:4px 10px;border:1px solid;text-transform:uppercase}
+.tag-old{border-color:var(--red);color:var(--red);background:rgba(239,68,68,.1)}
+.tag-new{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.08)}
+.tag-green{border-color:var(--green);color:var(--green);background:rgba(16,185,129,.08)}
+
+/* S1 - TITLE */
+#s1{text-align:center}
+#s1 .hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);padding:7px 18px;font-family:'Rajdhani',sans-serif;font-size:.75rem;letter-spacing:3px;color:var(--muted);margin-bottom:28px}
+#s1 .hero-badge span{width:6px;height:6px;background:var(--cyan);border-radius:50%;animation:pulse 1.5s infinite}
+#s1 h1{font-family:'Rajdhani',sans-serif;font-size:clamp(2rem,5vw,3.8rem);font-weight:700;line-height:1.1;margin-bottom:20px}
+#s1 .sub{font-size:1.05rem;color:var(--muted);max-width:640px;margin:0 auto 36px;line-height:1.8}
+#s1 .hero-meta{display:flex;gap:40px;justify-content:center}
+#s1 .hero-meta-item{text-align:center}
+#s1 .hero-meta-item .val{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--cyan)}
+#s1 .hero-meta-item .lbl{font-size:.75rem;color:var(--muted);letter-spacing:2px}
+.arrow-diagram{display:flex;align-items:center;gap:0;margin:32px auto;width:fit-content}
+.ad-box{display:flex;flex-direction:column;align-items:center;gap:6px}
+.ad-chip{font-family:'Rajdhani',sans-serif;font-size:.8rem;letter-spacing:1px;padding:8px 16px;border:1px solid}
+.ad-old .ad-chip{border-color:var(--red);color:var(--red);background:rgba(239,68,68,.1)}
+.ad-new .ad-chip{border-color:var(--cyan);color:var(--cyan);background:rgba(0,212,255,.08)}
+.ad-arrow{padding:0 24px;color:var(--orange);font-size:1.8rem;line-height:1}
+
+/* S2 - WHY */
+#s2 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;width:100%;max-width:900px;margin-top:24px}
+.problem-item{display:flex;gap:14px;align-items:flex-start;padding:16px 20px;background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.2);clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.problem-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid rgba(239,68,68,.3);color:var(--red)}
+.problem-text h4{font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;color:#fff;margin-bottom:4px}
+.problem-text p{font-size:.8rem;color:var(--muted);line-height:1.6}
+
+/* S3 - COMPARISON */
+#s3 .comp-wrap{width:100%;max-width:900px;margin-top:20px}
+.comp-header{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;margin-bottom:1px}
+.comp-h{padding:10px 16px;font-family:'Rajdhani',sans-serif;font-size:.8rem;letter-spacing:2px;text-align:center}
+.comp-h.old{background:rgba(239,68,68,.15);color:var(--red);border:1px solid rgba(239,68,68,.3)}
+.comp-h.cat{background:rgba(13,18,32,.8);color:var(--muted);border:1px solid var(--border)}
+.comp-h.new{background:rgba(0,212,255,.08);color:var(--cyan);border:1px solid var(--border)}
+.comp-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;margin-bottom:1px}
+.comp-cell{padding:12px 16px;font-size:.82rem;border:1px solid var(--border);text-align:center}
+.comp-cell.cat{color:var(--muted);font-family:'Rajdhani',sans-serif;letter-spacing:1px;background:rgba(13,18,32,.4);font-size:.78rem;text-align:left;padding-left:20px}
+.comp-cell.old{color:rgba(239,68,68,.85);background:rgba(239,68,68,.04)}
+.comp-cell.new{color:var(--cyan);background:rgba(0,212,255,.04)}
+
+/* S4 - METHODOLOGY */
+#s4 .steps{display:flex;flex-direction:column;gap:0;width:100%;max-width:800px;margin-top:20px}
+.step-row{display:flex;align-items:flex-start;gap:0}
+.step-line{display:flex;flex-direction:column;align-items:center;width:44px;flex-shrink:0}
+.step-num{width:36px;height:36px;border:1px solid var(--cyan);display:flex;align-items:center;justify-content:center;font-family:'Rajdhani',sans-serif;font-weight:700;color:var(--cyan);font-size:.9rem;flex-shrink:0}
+.step-connector{width:1px;height:32px;background:var(--border);margin:2px 0}
+.step-content{padding:0 0 28px 20px}
+.step-content h4{font-family:'Rajdhani',sans-serif;font-size:1rem;font-weight:700;color:#fff;margin-bottom:6px}
+.step-content p{font-size:.82rem;color:var(--muted);line-height:1.7}
+.step-content .step-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.step-tag{font-size:.7rem;font-family:'Rajdhani',sans-serif;letter-spacing:1px;padding:3px 9px;border:1px solid var(--border);color:var(--muted)}
+
+/* S5 - PLATFORMS */
+#s5 .platform-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;width:100%;max-width:900px;margin-top:24px}
+.plat-card{padding:20px;border:1px solid var(--border);background:rgba(13,18,32,.7);clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);transition:border-color .2s,box-shadow .2s}
+.plat-card:hover{border-color:rgba(0,212,255,.4);box-shadow:var(--glow)}
+.plat-icon{width:44px;height:44px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:14px;color:var(--cyan)}
+.plat-card h4{font-family:'Rajdhani',sans-serif;font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:8px}
+.plat-card p{font-size:.8rem;color:var(--muted);line-height:1.6}
+.plat-feat{margin-top:12px;display:flex;flex-direction:column;gap:4px}
+.plat-feat-item{font-size:.75rem;color:var(--muted);display:flex;align-items:center;gap:7px}
+.plat-feat-item::before{content:'';width:5px;height:1px;background:var(--cyan);flex-shrink:0}
+
+/* S6 - BEFORE AFTER SVG */
+#s6 .ba-wrap{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:center;width:100%;max-width:900px;margin-top:20px}
+.ba-side{border:1px solid;padding:20px}
+.ba-side.old-side{border-color:rgba(239,68,68,.3);background:rgba(239,68,68,.04)}
+.ba-side.new-side{border-color:var(--border);background:rgba(0,212,255,.04)}
+.ba-title{font-family:'Rajdhani',sans-serif;font-size:.75rem;letter-spacing:3px;margin-bottom:14px;text-transform:uppercase}
+.ba-side.old-side .ba-title{color:var(--red)}
+.ba-side.new-side .ba-title{color:var(--cyan)}
+.ba-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.8rem}
+.ba-row .k{color:var(--muted)}
+.ba-row .v-old{color:rgba(239,68,68,.9)}
+.ba-row .v-new{color:var(--green)}
+.ba-arrow-col{display:flex;align-items:center;justify-content:center;color:var(--orange)}
+
+/* S7 - RESULTS */
+#s7 .results-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;width:100%;max-width:900px;margin-top:20px}
+.res-card{padding:20px 16px;border:1px solid var(--border);background:rgba(13,18,32,.7);text-align:center;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.res-val{font-family:'Rajdhani',sans-serif;font-size:2.2rem;font-weight:700;color:var(--cyan);line-height:1}
+.res-val.green{color:var(--green)}
+.res-val.orange{color:var(--orange)}
+.res-lbl{font-size:.75rem;color:var(--muted);letter-spacing:1px;margin-top:6px;line-height:1.5}
+#s7 .testimonial{max-width:700px;margin-top:28px;padding:20px 28px;border-left:2px solid var(--cyan);background:rgba(0,212,255,.04)}
+#s7 .testimonial p{font-size:.9rem;color:var(--muted);line-height:1.8;font-style:italic}
+#s7 .testimonial cite{display:block;margin-top:10px;font-size:.75rem;color:var(--cyan);font-style:normal;font-family:'Rajdhani',sans-serif;letter-spacing:2px}
+
+/* S8 - CASE STUDY */
+#s8 .cs-wrap{display:grid;grid-template-columns:1fr 1fr;gap:28px;width:100%;max-width:900px;margin-top:20px;align-items:start}
+.cs-illustration{border:1px solid var(--border);background:rgba(13,18,32,.7);padding:24px;display:flex;align-items:center;justify-content:center}
+.cs-facts{display:flex;flex-direction:column;gap:14px}
+.cs-fact{display:flex;gap:14px;align-items:flex-start}
+.cs-fact-num{font-family:'Rajdhani',sans-serif;font-size:1.4rem;font-weight:700;color:var(--cyan);flex-shrink:0;min-width:36px}
+.cs-fact-text h4{font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:700;color:#fff;margin-bottom:3px}
+.cs-fact-text p{font-size:.78rem;color:var(--muted);line-height:1.6}
+
+/* S9 - CONTACT */
+#s9{text-align:center}
+#s9 .contact-grid{display:flex;gap:20px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+#s9 .c-item{padding:20px 28px;border:1px solid var(--border);background:rgba(13,18,32,.7);display:flex;align-items:center;gap:14px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+#s9 .c-item svg{color:var(--cyan);flex-shrink:0}
+#s9 .c-item .ci-lbl{font-size:.7rem;color:var(--muted);letter-spacing:2px;font-family:'Rajdhani',sans-serif;margin-bottom:3px}
+#s9 .c-item .ci-val{font-size:.9rem;color:#fff}
+#s9 .c-item a{color:#fff;text-decoration:none}
+#s9 .c-item a:hover{color:var(--cyan)}
+#s9 .cta-row{display:flex;gap:14px;justify-content:center;margin-top:28px}
+.btn-cta{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);transition:all .2s}
+.btn-cta.primary{background:var(--cyan);color:var(--bg)}
+.btn-cta.primary:hover{box-shadow:var(--glow)}
+.btn-cta.outline{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-cta.outline:hover{border-color:var(--cyan);color:var(--cyan)}
+
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.slide.active .slide-tag,.slide.active h1,.slide.active .slide-title,.slide.active .sub,.slide.active .slide-sub,.slide.active .two-col,.slide.active .comp-wrap,.slide.active .steps,.slide.active .platform-grid,.slide.active .ba-wrap,.slide.active .results-grid,.slide.active .testimonial,.slide.active .cs-wrap,.slide.active .contact-grid,.slide.active .cta-row,.slide.active .hero-meta,.slide.active .arrow-diagram{animation:fadeUp .5s ease both}
+.slide.active .hero-meta{animation-delay:.15s}
+.slide.active .arrow-diagram{animation-delay:.1s}
+.slide.active .two-col,.slide.active .comp-wrap,.slide.active .steps,.slide.active .platform-grid,.slide.active .ba-wrap,.slide.active .results-grid,.slide.active .contact-grid,.slide.active .cta-row{animation-delay:.2s}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="nav-logo">TU<span>Automation</span></div>
+  <div class="nav-tag">Modernizacja & Migracja PLC</div>
+  <div style="display:flex;align-items:center;gap:24px">
+    <div class="nav-counter">PROJEKT <span id="slideNum">01</span> / 09</div>
+    <a href="index.html#projects" class="nav-back">← Wróć do strony</a>
+  </div>
+</nav>
+
+<!-- SLIDES -->
+<div class="slides">
+
+<!-- S1: TITLE -->
+<div class="slide active" id="s1">
+  <div class="hero-badge"><span></span>TU AUTOMATION · PROJEKT #02</div>
+  <h1>Modernizacja <span style="color:var(--cyan)">Systemów PLC</span><br>& Migracja SCADA</h1>
+  <p class="sub">Kompleksowa migracja przestarzałych sterowników Siemens S5, S7-300 do nowoczesnej platformy S7-1500 / TIA Portal — bez zatrzymania produkcji.</p>
+  <div class="arrow-diagram">
+    <div class="ad-box ad-old">
+      <div class="ad-chip">Siemens S5</div>
+      <div class="ad-chip">S7-300 / S7-400</div>
+      <div class="ad-chip">WinCC Classic</div>
+      <div class="ad-chip">STEP 5 / 7</div>
+    </div>
+    <div class="ad-arrow">→</div>
+    <div class="ad-box ad-new">
+      <div class="ad-chip">Siemens S7-1500</div>
+      <div class="ad-chip">TIA Portal V18+</div>
+      <div class="ad-chip">WinCC Unified / SCADA</div>
+      <div class="ad-chip">CODESYS IEC 61131-3</div>
+    </div>
+  </div>
+  <div class="hero-meta">
+    <div class="hero-meta-item"><div class="val">15+</div><div class="lbl">Zrealizowanych migracji</div></div>
+    <div class="hero-meta-item"><div class="val">0h</div><div class="lbl">Nieplanowanych przestojów</div></div>
+    <div class="hero-meta-item"><div class="val">100%</div><div class="lbl">Zachowanych funkcji</div></div>
+  </div>
+</div>
+
+<!-- S2: WHY MIGRATE -->
+<div class="slide" id="s2">
+  <div class="slide-tag">Problem</div>
+  <div class="slide-title">Dlaczego stare systemy <span class="hl-o">to ryzyko</span>?</div>
+  <div class="slide-sub" style="margin-bottom:0">Przestarzała automatyka generuje ukryte koszty i realne zagrożenia dla ciągłości produkcji.</div>
+  <div class="two-col">
+    <div class="problem-item">
+      <div class="problem-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+      <div class="problem-text"><h4>Brak części zamiennych</h4><p>Moduły S5 i S7-300 wycofane z produkcji. Czas przestoju przy awarii: dni lub tygodnie.</p></div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+      <div class="problem-text"><h4>Brak cyberbezpieczeństwa</h4><p>Stare protokoły bez szyfrowania. Brak ochrony przed atakami sieciowymi i nieautoryzowanym dostępem.</p></div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+      <div class="problem-text"><h4>Brak zdalnego dostępu</h4><p>Diagnostyka wyłącznie on-site. Brak integracji z MES/ERP. Dane produkcyjne niedostępne w czasie rzeczywistym.</p></div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+      <div class="problem-text"><h4>Rosnące koszty utrzymania</h4><p>Używane moduły 5–10× droższe niż nowe. Brak wsparcia technicznego producenta od 2015 roku.</p></div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></div>
+      <div class="problem-text"><h4>Utrata wiedzy eksperckiej</h4><p>STEP 5 i klasyczny STL to wymierająca specjalizacja. Coraz trudniej znaleźć programistę do serwisu.</p></div>
+    </div>
+    <div class="problem-item">
+      <div class="problem-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+      <div class="problem-text"><h4>Brak rozbudowy</h4><p>Stare CPU nie obsługują OPC UA, IoT, AI. Pełna blokada możliwości modernizacji technologicznej.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- S3: COMPARISON TABLE -->
+<div class="slide" id="s3">
+  <div class="slide-tag">Analiza techniczna</div>
+  <div class="slide-title">Stary system <span class="hl-o">vs</span> Nowa platforma</div>
+  <div class="comp-wrap">
+    <div class="comp-header">
+      <div class="comp-h old">S5 / S7-300 / S7-400</div>
+      <div class="comp-h cat">Parametr</div>
+      <div class="comp-h new">S7-1500 / TIA Portal</div>
+    </div>
+    <div class="comp-row"><div class="comp-cell old">STEP 5 / STL / LAD</div><div class="comp-cell cat">Język programowania</div><div class="comp-cell new">LAD / FBD / SCL / ST / GRAPH</div></div>
+    <div class="comp-row"><div class="comp-cell old">Brak / MPI / DP</div><div class="comp-cell cat">Protokoły sieciowe</div><div class="comp-cell new">Profinet, OPC UA, MQTT, HTTP</div></div>
+    <div class="comp-row"><div class="comp-cell old">Niedostępna</div><div class="comp-cell cat">Zdalna diagnostyka</div><div class="comp-cell new">Web server, TIA Portal Online</div></div>
+    <div class="comp-row"><div class="comp-cell old">Brak</div><div class="comp-cell cat">Cybersecurity</div><div class="comp-cell new">TLS 1.3, certyfikaty, firewall CPU</div></div>
+    <div class="comp-row"><div class="comp-cell old">Wycofane</div><div class="comp-cell cat">Wsparcie producenta</div><div class="comp-cell new">Do 2033+ (aktywne)</div></div>
+    <div class="comp-row"><div class="comp-cell old">Brak</div><div class="comp-cell cat">Integracja MES/ERP</div><div class="comp-cell new">OPC UA, REST API, SQL connector</div></div>
+    <div class="comp-row"><div class="comp-cell old">Brak / SIMATIC WinCC v6</div><div class="comp-cell cat">SCADA / HMI</div><div class="comp-cell new">WinCC Unified, Ignition, CODESYS</div></div>
+    <div class="comp-row"><div class="comp-cell old" style="color:var(--red)">Niedostępne</div><div class="comp-cell cat">Czas dostawy modułu</div><div class="comp-cell new" style="color:var(--green)">1–3 dni robocze</div></div>
+  </div>
+</div>
+
+<!-- S4: METHODOLOGY -->
+<div class="slide" id="s4">
+  <div class="slide-tag">Metodologia</div>
+  <div class="slide-title">Migracja <span class="hl">krok po kroku</span><br>— zero ryzyka</div>
+  <div class="steps">
+    <div class="step-row">
+      <div class="step-line"><div class="step-num">01</div><div class="step-connector"></div></div>
+      <div class="step-content"><h4>Audyt i dokumentacja istniejącego systemu</h4><p>Reverse engineering programu STEP 5/7. Analiza I/O, sieci, HMI. Tworzenie pełnej dokumentacji jako-jest (as-built).</p><div class="step-tags"><span class="step-tag">STEP 5 Reverse</span><span class="step-tag">Analiza I/O</span><span class="step-tag">Dokumentacja</span></div></div>
+    </div>
+    <div class="step-row">
+      <div class="step-line"><div class="step-num">02</div><div class="step-connector"></div></div>
+      <div class="step-content"><h4>Projekt nowej architektury i FAT offline</h4><p>Projektowanie nowego programu S7-1500 / TIA Portal. Testy Factory Acceptance na symulatorze PLCSim Advanced przed wyjazdem do klienta.</p><div class="step-tags"><span class="step-tag">PLCSim Advanced</span><span class="step-tag">FAT offline</span><span class="step-tag">TIA Portal V18</span></div></div>
+    </div>
+    <div class="step-row">
+      <div class="step-line"><div class="step-num">03</div><div class="step-connector"></div></div>
+      <div class="step-content"><h4>Równoległa instalacja nowego sprzętu</h4><p>Montaż nowej szafy lub dodatkowego modułu CPU obok istniejącego. Okablowanie nowych kart I/O bez przerywania pracy starego systemu.</p><div class="step-tags"><span class="step-tag">Hot-standby</span><span class="step-tag">Praca równoległa</span></div></div>
+    </div>
+    <div class="step-row">
+      <div class="step-line"><div class="step-num">04</div><div class="step-connector"></div></div>
+      <div class="step-content"><h4>Przełączenie i SAT na linii produkcyjnej</h4><p>Przełączenie w zaplanowanym oknie serwisowym (weekend / zmiana nocna). Site Acceptance Test na żywej produkcji. Stary system gotowy jako fallback przez 48h.</p><div class="step-tags"><span class="step-tag">SAT</span><span class="step-tag">Okno serwisowe</span><span class="step-tag">Fallback plan</span></div></div>
+    </div>
+    <div class="step-row">
+      <div class="step-line"><div class="step-num">05</div></div>
+      <div class="step-content"><h4>Szkolenie, dokumentacja i gwarancja</h4><p>Szkolenie personelu UR i operatorów. Przekazanie kompletnej dokumentacji TIA Portal + SCADA. Gwarancja 12 miesięcy.</p><div class="step-tags"><span class="step-tag">Szkolenie PL/DE</span><span class="step-tag">Gwarancja 12M</span><span class="step-tag">Dokumentacja</span></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S5: PLATFORMS -->
+<div class="slide" id="s5">
+  <div class="slide-tag">Technologie</div>
+  <div class="slide-title">Nowe platformy — <span class="hl">pełna kontrola</span></div>
+  <div class="platform-grid">
+    <div class="plat-card">
+      <div class="plat-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/></svg>
+      </div>
+      <h4>Siemens S7-1500</h4>
+      <p>Nowoczesne CPU z wbudowanym OPC UA, web serverem i integracją chmurową. Pełna diagnostyka online.</p>
+      <div class="plat-feat">
+        <div class="plat-feat-item">TIA Portal V18/V19</div>
+        <div class="plat-feat-item">OPC UA Server/Client</div>
+        <div class="plat-feat-item">PLCnext compatible</div>
+        <div class="plat-feat-item">Fail-safe (S7-1500F)</div>
+      </div>
+    </div>
+    <div class="plat-card">
+      <div class="plat-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg>
+      </div>
+      <h4>SCADA / WinCC</h4>
+      <p>Wizualizacja procesu na poziomie zakładu. WinCC Unified, Ignition lub Inductive Automation — dobór do budżetu.</p>
+      <div class="plat-feat">
+        <div class="plat-feat-item">WinCC Unified V19</div>
+        <div class="plat-feat-item">Ignition (Inductive)</div>
+        <div class="plat-feat-item">Dashboardy OEE</div>
+        <div class="plat-feat-item">Alarmy SMS/Email</div>
+      </div>
+    </div>
+    <div class="plat-card">
+      <div class="plat-icon">
+        <svg viewBox="0 0 56 40" fill="none" width="36" height="26">
+          <polygon points="28,0 42,8 28,16 14,8" fill="#C0C0C0"/>
+          <polygon points="14,8 28,16 28,24 14,16" fill="#888"/>
+          <polygon points="28,16 42,8 42,16 28,24" fill="#A0A0A0"/>
+          <polygon points="28,16 42,24 28,32 14,24" fill="#E30613"/>
+          <polygon points="14,24 28,32 28,40 14,32" fill="#9B0000"/>
+          <polygon points="28,32 42,24 42,32 28,40" fill="#C00010"/>
+        </svg>
+      </div>
+      <h4>CODESYS Runtime</h4>
+      <p>Platforma niezależna od producenta PLC. Działa na PC, Raspberry Pi i dedykowanych kontrolerach.</p>
+      <div class="plat-feat">
+        <div class="plat-feat-item">IEC 61131-3 (ST/FBD/SFC)</div>
+        <div class="plat-feat-item">Modbus TCP/RTU</div>
+        <div class="plat-feat-item">EtherCAT motion</div>
+        <div class="plat-feat-item">Redundancja PC-PLC</div>
+      </div>
+    </div>
+    <div class="plat-card">
+      <div class="plat-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 18.5a6.5 6.5 0 100-13 6.5 6.5 0 000 13z"/><path d="M20.5 20.5l-3-3M3.5 20.5l3-3M20.5 3.5l-3 3M3.5 3.5l3 3"/></svg>
+      </div>
+      <h4>Sieci przemysłowe</h4>
+      <p>Konfiguracja i uruchomienie sieci fieldbus dla nowych i mieszanych topologii systemów.</p>
+      <div class="plat-feat">
+        <div class="plat-feat-item">Profinet IRT/RT</div>
+        <div class="plat-feat-item">Profibus → Profinet</div>
+        <div class="plat-feat-item">EtherNet/IP</div>
+        <div class="plat-feat-item">Modbus TCP</div>
+      </div>
+    </div>
+    <div class="plat-card">
+      <div class="plat-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16v16H4z M4 9h16 M9 9v11"/></svg>
+      </div>
+      <h4>Panele HMI</h4>
+      <p>Nowe panele operatorskie z nowoczesnymi wizualizacjami, alarmami i integracją z SCADA.</p>
+      <div class="plat-feat">
+        <div class="plat-feat-item">Siemens KTP/TP seeria</div>
+        <div class="plat-feat-item">Weintek / Weinview</div>
+        <div class="plat-feat-item">Web HMI (HTML5)</div>
+        <div class="plat-feat-item">Mobile HMI (React Native)</div>
+      </div>
+    </div>
+    <div class="plat-card">
+      <div class="plat-icon">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+      </div>
+      <h4>Raporty & OEE</h4>
+      <p>Automatyczne raporty zmianowe, dobowe i miesięczne. KPI dostępne z dowolnego urządzenia.</p>
+      <div class="plat-feat">
+        <div class="plat-feat-item">OEE Availability/Performance</div>
+        <div class="plat-feat-item">Raporty PDF/Excel</div>
+        <div class="plat-feat-item">Dashboard mobilny</div>
+        <div class="plat-feat-item">Alerty e-mail/SMS</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S6: BEFORE/AFTER -->
+<div class="slide" id="s6">
+  <div class="slide-tag">Transformacja</div>
+  <div class="slide-title">Przed <span class="hl-o">vs</span> Po migracji</div>
+  <div class="ba-wrap">
+    <div class="ba-side old-side">
+      <div class="ba-title">Przed migracją</div>
+      <div class="ba-row"><span class="k">Sterownik</span><span class="v-old">Siemens S5-115U / S7-314</span></div>
+      <div class="ba-row"><span class="k">Rok instalacji</span><span class="v-old">1998–2005</span></div>
+      <div class="ba-row"><span class="k">Program</span><span class="v-old">STEP 5 / AWL S7 Classic</span></div>
+      <div class="ba-row"><span class="k">Sieć</span><span class="v-old">MPI / Profibus DP</span></div>
+      <div class="ba-row"><span class="k">HMI</span><span class="v-old">Stary panel tekstowy / PC WinCC 6</span></div>
+      <div class="ba-row"><span class="k">Diagnostyka</span><span class="v-old">Tylko on-site, brak zdalnej</span></div>
+      <div class="ba-row"><span class="k">Czas awarii (MTTR)</span><span class="v-old">24–72 godz. (brak części)</span></div>
+      <div class="ba-row"><span class="k">OEE</span><span class="v-old">~72%</span></div>
+    </div>
+    <div class="ba-arrow-col">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </div>
+    <div class="ba-side new-side">
+      <div class="ba-title">Po migracji</div>
+      <div class="ba-row"><span class="k">Sterownik</span><span class="v-new">Siemens S7-1515 / S7-1517</span></div>
+      <div class="ba-row"><span class="k">Wsparcie do</span><span class="v-new">2033+ (aktywne)</span></div>
+      <div class="ba-row"><span class="k">Program</span><span class="v-new">TIA Portal V18 / SCL / LAD</span></div>
+      <div class="ba-row"><span class="k">Sieć</span><span class="v-new">Profinet IRT + OPC UA</span></div>
+      <div class="ba-row"><span class="k">HMI</span><span class="v-new">WinCC Unified / Weintek 15"</span></div>
+      <div class="ba-row"><span class="k">Diagnostyka</span><span class="v-new">Zdalny dostęp + mobile app</span></div>
+      <div class="ba-row"><span class="k">Czas awarii (MTTR)</span><span class="v-new">&lt; 2 godz. (stock + zdalna)</span></div>
+      <div class="ba-row"><span class="k">OEE</span><span class="v-new">~89% (+17pp)</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- S7: RESULTS -->
+<div class="slide" id="s7">
+  <div class="slide-tag">Wyniki</div>
+  <div class="slide-title">Mierzalne <span class="hl">rezultaty</span> dla klienta</div>
+  <div class="results-grid">
+    <div class="res-card"><div class="res-val green">+17%</div><div class="res-lbl">Wzrost OEE<br>po migracji</div></div>
+    <div class="res-card"><div class="res-val">−65%</div><div class="res-lbl">Redukcja czasu<br>naprawy (MTTR)</div></div>
+    <div class="res-card"><div class="res-val orange">0</div><div class="res-lbl">Nieplanowanych<br>przestojów podczas migracji</div></div>
+    <div class="res-card"><div class="res-val green">−80%</div><div class="res-lbl">Koszty części<br>zamiennych rocznie</div></div>
+  </div>
+  <div class="testimonial">
+    <p>„Obawiailiśmy się przestoju podczas zmiany systemu. TU Automation przeprowadziło migrację w weekend — w poniedziałek rano linia ruszyła bez żadnych problemów. Jesteśmy bardzo zadowoleni z profesjonalizmu i terminowości realizacji."</p>
+    <cite>— Kierownik UR, zakład produkcyjny tekstylny, Niemcy</cite>
+  </div>
+</div>
+
+<!-- S8: CASE STUDY -->
+<div class="slide" id="s8">
+  <div class="slide-tag">Case study</div>
+  <div class="slide-title">Modernizacja linii dziewiarskiej<br><span class="hl">S5-115U → S7-1515</span></div>
+  <div class="cs-wrap">
+    <div class="cs-illustration">
+      <svg viewBox="0 0 320 200" width="100%" fill="none">
+        <!-- OLD CABINET -->
+        <rect x="10" y="20" width="120" height="160" rx="4" stroke="rgba(239,68,68,0.4)" stroke-width="1.5" fill="rgba(239,68,68,0.04)"/>
+        <text x="70" y="14" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="rgba(239,68,68,0.7)" letter-spacing="2">STARY SYSTEM</text>
+        <rect x="22" y="32" width="96" height="28" rx="2" fill="rgba(239,68,68,0.15)" stroke="rgba(239,68,68,0.3)" stroke-width="1"/>
+        <text x="70" y="51" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#EF4444">S5-115U CPU</text>
+        <rect x="22" y="66" width="44" height="20" rx="2" fill="rgba(100,116,139,0.2)" stroke="rgba(100,116,139,0.3)" stroke-width="1"/>
+        <text x="44" y="80" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#64748B">IM 308</text>
+        <rect x="72" y="66" width="46" height="20" rx="2" fill="rgba(100,116,139,0.2)" stroke="rgba(100,116,139,0.3)" stroke-width="1"/>
+        <text x="95" y="80" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#64748B">DI 32×</text>
+        <rect x="22" y="92" width="44" height="20" rx="2" fill="rgba(100,116,139,0.2)" stroke="rgba(100,116,139,0.3)" stroke-width="1"/>
+        <text x="44" y="106" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#64748B">DO 32×</text>
+        <rect x="72" y="92" width="46" height="20" rx="2" fill="rgba(100,116,139,0.2)" stroke="rgba(100,116,139,0.3)" stroke-width="1"/>
+        <text x="95" y="106" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#64748B">AI 8×</text>
+        <line x1="22" y1="120" x2="118" y2="120" stroke="rgba(100,116,139,0.2)" stroke-width="1"/>
+        <text x="70" y="138" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">MPI 187.5k</text>
+        <text x="70" y="152" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">STEP 5 / AWL</text>
+        <text x="70" y="166" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="rgba(239,68,68,0.6)">Rok inst.: 1999</text>
+
+        <!-- ARROW -->
+        <line x1="148" y1="100" x2="170" y2="100" stroke="#F97316" stroke-width="2"/>
+        <polyline points="165,94 172,100 165,106" stroke="#F97316" stroke-width="2" fill="none"/>
+        <text x="159" y="118" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#F97316">MIGRACJA</text>
+        <text x="159" y="128" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#F97316">48h</text>
+
+        <!-- NEW CABINET -->
+        <rect x="190" y="20" width="120" height="160" rx="4" stroke="rgba(0,212,255,0.3)" stroke-width="1.5" fill="rgba(0,212,255,0.03)"/>
+        <text x="250" y="14" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="rgba(0,212,255,0.7)" letter-spacing="2">NOWY SYSTEM</text>
+        <rect x="202" y="32" width="96" height="28" rx="2" fill="rgba(0,212,255,0.12)" stroke="rgba(0,212,255,0.3)" stroke-width="1"/>
+        <text x="250" y="51" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#00D4FF">S7-1515-2 PN</text>
+        <rect x="202" y="66" width="44" height="20" rx="2" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.2)" stroke-width="1"/>
+        <text x="224" y="80" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#94A3B8">ET200SP</text>
+        <rect x="252" y="66" width="46" height="20" rx="2" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.2)" stroke-width="1"/>
+        <text x="275" y="80" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#94A3B8">DI/DO 64×</text>
+        <rect x="202" y="92" width="44" height="20" rx="2" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.2)" stroke-width="1"/>
+        <text x="224" y="106" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#94A3B8">AI/AO 16×</text>
+        <rect x="252" y="92" width="46" height="20" rx="2" fill="rgba(16,185,129,0.08)" stroke="rgba(16,185,129,0.3)" stroke-width="1"/>
+        <text x="275" y="106" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#10B981">OPC UA</text>
+        <line x1="202" y1="120" x2="298" y2="120" stroke="rgba(0,212,255,0.15)" stroke-width="1"/>
+        <text x="250" y="138" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#94A3B8">Profinet IRT</text>
+        <text x="250" y="152" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#94A3B8">TIA Portal V18 / SCL</text>
+        <text x="250" y="166" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="rgba(16,185,129,0.9)">Wsparcie do 2033+</text>
+      </svg>
+    </div>
+    <div class="cs-facts">
+      <div class="cs-fact"><div class="cs-fact-num">01</div><div class="cs-fact-text"><h4>Klient i zakres</h4><p>Producent dzianiny, Niemcy. 6 automatów dziewiarskich, 2 linie produkcyjne. System sterowania z 1999 roku.</p></div></div>
+      <div class="cs-fact"><div class="cs-fact-num">02</div><div class="cs-fact-text"><h4>Wyzwanie</h4><p>Awaria CPU S5 groziła 2-tygodniowym przestojem. Brak dostępnych modułów na rynku. Okno migracji: 48h.</p></div></div>
+      <div class="cs-fact"><div class="cs-fact-num">03</div><div class="cs-fact-text"><h4>Realizacja</h4><p>Reverse engineering STEP 5 → przepisanie na TIA Portal SCL. FAT na PLCSim Advanced. Nowa szafa + ET200SP. Przełączenie w weekend.</p></div></div>
+      <div class="cs-fact"><div class="cs-fact-num">04</div><div class="cs-fact-text"><h4>Efekty</h4><p>Linia uruchomiona w poniedziałek rano bez zakłóceń. OEE +14pp w pierwszym miesiącu. Zdalna diagnostyka active.</p></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S9: CONTACT -->
+<div class="slide" id="s9">
+  <div class="slide-tag">Kontakt</div>
+  <div class="slide-title">Zaplanujmy <span class="hl">modernizację</span><br>Twojego systemu</div>
+  <div class="slide-sub" style="margin-bottom:0">Bezpłatna analiza istniejącego systemu i wycena migracji w ciągu 48 godzin.</div>
+  <div class="contact-grid">
+    <div class="c-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2.02z"/></svg>
+      <div><div class="ci-lbl">Telefon / WhatsApp</div><div class="ci-val">+49 157 56290902</div></div>
+    </div>
+    <div class="c-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:info@tuautomation.de">info@tuautomation.de</a></div></div>
+    </div>
+    <div class="c-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div><div class="ci-lbl">Lokalizacja</div><div class="ci-val">Niemcy · Europa</div></div>
+    </div>
+  </div>
+  <div class="cta-row">
+    <a href="index.html#contact" class="btn-cta primary">Zapytaj o wycenę →</a>
+    <a href="index.html#projects" class="btn-cta outline">← Powrót do projektów</a>
+  </div>
+</div>
+
+</div><!-- /slides -->
+
+<!-- CONTROLS -->
+<div class="ctrl">
+  <button class="ctrl-btn" id="prevBtn" onclick="changeSlide(-1)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <div class="ctrl-dots" id="dots"></div>
+  <button class="ctrl-btn" id="nextBtn" onclick="changeSlide(1)">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+</div>
+
+<div class="progress" id="progress"></div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+const total=slides.length;
+let cur=0;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='ctrl-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d);}
+function goTo(n){slides[cur].classList.remove('active');cur=Math.max(0,Math.min(n,total-1));slides[cur].classList.add('active');document.querySelectorAll('.ctrl-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));document.getElementById('slideNum').textContent=String(cur+1).padStart(2,'0');document.getElementById('progress').style.width=((cur+1)/total*100)+'%';}
+function changeSlide(d){goTo(cur+d);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')changeSlide(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')changeSlide(-1);});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)changeSlide(dx<0?1:-1);},{passive:true});
+goTo(0);
+
+// PARTICLES
+const canvas=document.getElementById('bg');const ctx=canvas.getContext('2d');
+let W,H,pts=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;pts=Array.from({length:60},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5}));}
+window.addEventListener('resize',resize);resize();
+function draw(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(0,212,255,0.6)';ctx.fill();});pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<120){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,212,255,${.15*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke();}}));requestAnimationFrame(draw);}
+draw();
+</script>
+</body>
+</html>
