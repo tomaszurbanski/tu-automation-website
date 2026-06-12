@@ -781,9 +781,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
       <div>
         <div class="int-title" data-pl="Izolacja sieci" data-en="Network isolation">Izolacja sieci</div>
         <div class="int-desc"
-          data-pl="System działa w oddzielonej sieci VLAN. Komunikacja z PLC wyłącznie read-only — LineMind nigdy nie zapisuje do sterownika. HTTPS szyfruje cały ruch."
-          data-en="System runs in a separate VLAN. PLC communication is read-only — LineMind never writes to the controller. HTTPS encrypts all traffic.">
-          Osobna VLAN, komunikacja z PLC wyłącznie read-only. HTTPS szyfruje cały ruch.
+          data-pl="System działa w oddzielonej sieci VLAN. Odczyt danych z PLC bez ingerencji w sterowanie. Zapis do napędów wyłącznie przez moduł AI AutoTuning — tylko wybrane parametry, każda zmiana wymaga zatwierdzenia przez operatora lub trybu auto z limitami bezpieczeństwa. HTTPS szyfruje cały ruch."
+          data-en="System runs in a separate VLAN. PLC data is read without interfering with control logic. Drive writes only via AI AutoTuning module — selected parameters only, every change requires operator approval or auto mode with safety limits. HTTPS encrypts all traffic.">
+          Osobna VLAN. Zapis do napędów tylko przez AI AutoTuning — wybrane parametry z zatwierdzeniem operatora. HTTPS szyfruje cały ruch.
         </div>
       </div>
     </div>
@@ -792,9 +792,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
       <div>
         <div class="int-title" data-pl="Backup lokalny — NAS" data-en="Local backup — NAS">Backup lokalny — NAS</div>
         <div class="int-desc"
-          data-pl="Automatyczna kopia bazy danych co godzinę na serwer NAS w sieci zakładowej. 30 dni historii + 12 miesięcznych snapshotów. Restore po awarii hardware: poniżej 1 godziny."
-          data-en="Automatic database copy every hour to NAS server on the plant network. 30 days of history + 12 monthly snapshots. Restore after hardware failure: under 1 hour.">
-          Kopia co godzinę na NAS. 30 dni historii + snapshoty miesięczne. Restore &lt; 1 godziny.
+          data-pl="Automatyczna kopia pełnej bazy danych co godzinę na serwer NAS w sieci zakładowej. Baza przechowuje kompletną historię od pierwszego dnia wdrożenia — dane produkcyjne i zdarzenia narastają latami. Restore po awarii hardware: poniżej 1 godziny."
+          data-en="Automatic full database copy every hour to NAS server on the plant network. The database stores complete history from day one of deployment — production data and events accumulate over years. Restore after hardware failure: under 1 hour.">
+          Kopia pełnej bazy co godzinę na NAS. Kompletna historia od dnia wdrożenia — dane narastają latami. Restore &lt; 1 godziny.
         </div>
       </div>
     </div>
