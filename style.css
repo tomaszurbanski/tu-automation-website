@@ -900,3 +900,26 @@ footer {
 .article-nav { padding: 20px 5%; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 .article-nav a { color: var(--cyan); text-decoration: none; font-size: 0.85rem; }
 .article-nav a:hover { text-decoration: underline; }
+
+/* --- PRESENTATION BUTTON & MODAL --- */
+.project-actions { margin-top: 14px; }
+.btn-pres { display: inline-flex; align-items: center; gap: 7px; padding: 9px 18px; border: 1px solid var(--cyan); background: transparent; color: var(--cyan); font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.8px; cursor: pointer; transition: all 0.2s; clip-path: polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%); }
+.btn-pres:hover { background: rgba(0,212,255,0.12); box-shadow: var(--glow); }
+
+.pres-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.75); backdrop-filter: blur(6px); z-index: 9999; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+.pres-modal-overlay.active { opacity: 1; pointer-events: all; }
+.pres-modal-box { background: var(--bg2); border: 1px solid var(--border); padding: 36px 32px 30px; max-width: 420px; width: 90%; position: relative; clip-path: polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%); }
+.pres-modal-close { position: absolute; top: 14px; right: 16px; background: none; border: none; color: var(--muted); font-size: 1.1rem; cursor: pointer; }
+.pres-modal-close:hover { color: #fff; }
+.pres-modal-icon { width: 52px; height: 52px; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; color: var(--cyan); margin-bottom: 16px; }
+.pres-modal-title { font-family: 'Rajdhani', sans-serif; font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.pres-modal-sub { font-size: 0.875rem; color: var(--muted); margin-bottom: 18px; }
+.pres-modal-sub.pres-error { color: var(--red); }
+.pres-modal-form { display: flex; gap: 10px; }
+.pres-modal-input { flex: 1; padding: 10px 14px; background: rgba(255,255,255,0.04); border: 1px solid var(--border); color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.9rem; outline: none; }
+.pres-modal-input:focus { border-color: var(--cyan); }
+.btn-pres-submit { padding: 10px 20px; background: var(--cyan); color: var(--bg); border: none; font-family: 'Rajdhani', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; clip-path: polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%); transition: all 0.2s; }
+.btn-pres-submit:hover { box-shadow: var(--glow); }
+.pres-modal-noaccess { margin-top: 14px; font-size: 0.84rem; color: var(--muted); }
+.pres-modal-noaccess a { color: var(--cyan); text-decoration: none; }
+.pres-modal-noaccess a:hover { text-decoration: underline; }

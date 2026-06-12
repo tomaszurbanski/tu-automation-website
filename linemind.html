@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LineMind AI — Presentation</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0F172A;--surface:#1E293B;--line:#334155;--muted:#64748B;
+  --text:#F1F5F9;--teal:#14b8a6;--teal-glow:rgba(20,184,166,.4);
+  --blue:#3b82f6;--amber:#f59e0b;--red:#ef4444;--green:#22c55e;
+}
+html,body{width:100%;height:100%;background:var(--bg);color:var(--text);
+  font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;overflow:hidden}
+
+/* CANVAS */
+#canvas{position:fixed;inset:0;z-index:0;pointer-events:none}
+
+/* PROGRESS */
+#progress{position:fixed;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,#14b8a6,#3b82f6);z-index:200;transition:width .4s ease}
+
+/* SLIDE NUM */
+#slideNum{position:fixed;top:22px;left:24px;z-index:100;
+  font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px}
+
+/* LANG */
+#langToggle{position:fixed;top:16px;right:20px;z-index:100;
+  background:rgba(30,41,59,.85);border:1px solid var(--line);border-radius:8px;
+  padding:6px 14px;color:var(--text);font-size:12px;font-weight:700;cursor:pointer;
+  backdrop-filter:blur(10px);transition:border-color .2s,box-shadow .2s;letter-spacing:.5px}
+#langToggle:hover{border-color:var(--teal);box-shadow:0 0 14px var(--teal-glow)}
+
+/* HINT */
+#hint{position:fixed;bottom:58px;right:22px;z-index:100;text-align:right;
+  font-size:10px;color:var(--muted);line-height:1.8;pointer-events:none}
+
+/* NAV DOTS */
+#nav{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);
+  display:flex;align-items:center;gap:9px;z-index:100}
+.nav-dot{width:7px;height:7px;border-radius:50%;background:var(--line);
+  cursor:pointer;transition:background .3s,transform .3s}
+.nav-dot.active{background:var(--teal);transform:scale(1.4)}
+
+/* DECK */
+#deck{position:fixed;inset:0;z-index:1}
+
+/* SLIDE */
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:64px 72px;
+  opacity:0;transform:translateX(60px);
+  transition:opacity .55s cubic-bezier(.4,0,.2,1),transform .55s cubic-bezier(.4,0,.2,1);
+  pointer-events:none}
+.slide.active{opacity:1;transform:translateX(0);pointer-events:all}
+.slide.out{opacity:0;transform:translateX(-60px)}
+
+/* TYPOGRAPHY */
+.label{font-size:10px;font-weight:800;letter-spacing:3.5px;text-transform:uppercase;
+  color:var(--teal);margin-bottom:14px}
+h1.big{font-size:clamp(46px,6.5vw,88px);font-weight:900;line-height:1.04;text-align:center;
+  background:linear-gradient(135deg,#f1f5f9 25%,#14b8a6 75%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:18px}
+h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
+  background:linear-gradient(135deg,#f1f5f9 40%,#14b8a6 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:8px}
+.sub{font-size:clamp(13px,1.5vw,18px);color:var(--muted);text-align:center;
+  max-width:720px;line-height:1.65;margin-top:4px}
+
+/* GLASS */
+.glass{background:rgba(30,41,59,.65);border:1px solid var(--line);
+  border-radius:14px;backdrop-filter:blur(12px);padding:26px 28px}
+
+/* ── SLIDE 1: HERO ── */
+.logo-wrap{display:flex;align-items:center;gap:16px;margin-bottom:28px}
+.logo-mark{width:54px;height:54px;border-radius:14px;
+  background:linear-gradient(135deg,#14b8a6,#0f766e);
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;font-weight:900;color:#0F172A;
+  box-shadow:0 0 36px rgba(20,184,166,.55);animation:glow 2.5s ease-in-out infinite}
+.logo-name{font-size:28px;font-weight:800;letter-spacing:-.5px}
+.logo-name span{color:var(--teal)}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;margin-top:28px;
+  background:rgba(20,184,166,.1);border:1px solid rgba(20,184,166,.5);
+  border-radius:100px;padding:7px 18px;font-size:11px;font-weight:800;
+  color:var(--teal);letter-spacing:1.5px;text-transform:uppercase}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--teal);
+  animation:pulse 1.4s ease-in-out infinite}
+
+/* ── STAT GRID ── */
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  width:100%;max-width:860px;margin-top:36px}
+.stat-card{background:rgba(30,41,59,.75);border:1px solid var(--line);
+  border-radius:14px;padding:28px 18px;text-align:center;
+  transition:border-color .3s,box-shadow .3s}
+.stat-card:hover{border-color:var(--teal);box-shadow:0 0 22px rgba(20,184,166,.15)}
+.stat-val{font-size:clamp(34px,4.5vw,58px);font-weight:900;color:var(--teal);line-height:1}
+.stat-unit{font-size:18px;font-weight:700}
+.stat-lbl{font-size:11px;color:var(--muted);line-height:1.5;margin-top:8px}
+
+/* ── ARCH FLOW ── */
+.arch-flow{display:flex;align-items:center;width:100%;max-width:980px;margin-top:36px}
+.arch-node{flex:1;background:rgba(30,41,59,.75);border:1px solid var(--line);
+  border-radius:12px;padding:22px 12px;text-align:center;
+  transition:border-color .3s,transform .2s}
+.arch-node:hover{border-color:var(--teal);transform:translateY(-3px)}
+.arch-icon{font-size:32px;margin-bottom:8px}
+.arch-lbl{font-size:11px;font-weight:700;letter-spacing:.5px}
+.arch-sub{font-size:9px;color:var(--muted);margin-top:3px}
+.arch-arr{flex:0 0 32px;display:flex;align-items:center;justify-content:center;
+  color:var(--teal);font-size:18px;font-weight:700;animation:arrowPulse 1.8s ease-in-out infinite}
+
+/* ── INTEGRATION ── */
+.int-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;
+  width:100%;max-width:880px;margin-top:28px}
+.int-item{display:flex;align-items:flex-start;gap:13px;padding:18px;
+  background:rgba(30,41,59,.65);border:1px solid var(--line);border-radius:12px;
+  transition:border-color .3s}
+.int-item:hover{border-color:var(--teal)}
+.int-icon{font-size:24px;width:44px;height:44px;border-radius:10px;
+  background:rgba(20,184,166,.1);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.int-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.int-desc{font-size:11px;color:var(--muted);line-height:1.55}
+
+/* ── AI STEPS ── */
+.ai-steps{display:flex;align-items:stretch;width:100%;max-width:940px;margin-top:36px}
+.ai-step{flex:1;padding:26px 20px;text-align:center;
+  background:rgba(30,41,59,.65);border:1px solid var(--line);
+  transition:background .3s}
+.ai-step:first-child{border-radius:14px 0 0 14px}
+.ai-step:last-child{border-radius:0 14px 14px 0}
+.ai-step:hover{background:rgba(30,41,59,.95)}
+.ai-num{font-size:10px;font-weight:900;letter-spacing:2px;color:var(--teal);
+  text-transform:uppercase;margin-bottom:10px}
+.ai-icon{font-size:38px;margin-bottom:11px}
+.ai-ttl{font-size:14px;font-weight:700;margin-bottom:8px}
+.ai-desc{font-size:11px;color:var(--muted);line-height:1.6}
+.ai-sep{width:2px;background:linear-gradient(180deg,transparent,var(--teal),transparent);
+  position:relative;display:flex;align-items:center;justify-content:center}
+.ai-sep::after{content:'›';color:var(--teal);font-size:22px;font-weight:900;
+  position:absolute}
+
+/* ── TECH GRID ── */
+.tech-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+  width:100%;max-width:880px;margin-top:28px}
+.tech-badge{display:flex;align-items:center;gap:10px;padding:13px 14px;
+  background:rgba(30,41,59,.75);border:1px solid var(--line);border-radius:10px;
+  font-size:12px;font-weight:600;transition:border-color .3s,transform .2s}
+.tech-badge:hover{border-color:var(--teal);transform:translateY(-2px)}
+.tech-ico{font-size:18px}
+.tech-cat{font-size:9px;color:var(--muted);display:block;margin-top:1px}
+
+/* ── RESULTS ── */
+.res-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;
+  width:100%;max-width:860px;margin-top:36px}
+.res-card{padding:30px 16px;background:rgba(20,184,166,.07);
+  border:1px solid rgba(20,184,166,.28);border-radius:16px;text-align:center;
+  transition:border-color .3s,box-shadow .3s}
+.res-card:hover{border-color:var(--teal);box-shadow:0 0 24px rgba(20,184,166,.2)}
+.res-num{font-size:clamp(42px,5vw,64px);font-weight:900;color:var(--teal);line-height:1}
+.res-sfx{font-size:22px;font-weight:700}
+.res-lbl{font-size:12px;color:var(--muted);margin-top:10px;line-height:1.5}
+
+/* ── PHONE ── */
+.phone{width:188px;height:366px;border:2.5px solid var(--line);border-radius:28px;
+  background:var(--surface);position:relative;flex-shrink:0;
+  box-shadow:0 0 50px rgba(0,0,0,.6),0 0 90px rgba(20,184,166,.08);overflow:hidden}
+.phone::before{content:'';position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  width:56px;height:4px;background:var(--line);border-radius:2px;z-index:2}
+.phone-screen{position:absolute;inset:20px 0 0;background:var(--bg);
+  display:flex;flex-direction:column}
+.phone-topbar{height:34px;background:linear-gradient(90deg,#1E293B,#0F172A);
+  display:flex;align-items:center;padding:0 10px;gap:6px;
+  font-size:8px;color:var(--teal);font-weight:700}
+.phone-dot{width:7px;height:7px;border-radius:50%;background:var(--teal)}
+.tile-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:6px;flex:1}
+.tile{border-radius:7px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:3px;font-size:7px;
+  color:#fff;font-weight:700}
+.tile-ico{font-size:17px}
+
+/* ── CTA ── */
+.cta-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;max-width:680px;text-align:center}
+.cta-pricing{font-size:13px;color:var(--muted);background:rgba(30,41,59,.7);
+  border:1px solid var(--line);border-radius:12px;padding:20px 32px;line-height:2.1}
+.cta-pricing strong{color:var(--text)}
+.cta-email{font-size:17px;color:var(--teal);font-weight:700;letter-spacing:.3px}
+.cta-btn{display:inline-block;background:linear-gradient(135deg,#14b8a6,#0f766e);
+  color:#0F172A;font-size:15px;font-weight:900;padding:15px 44px;
+  border-radius:100px;text-decoration:none;border:none;cursor:pointer;
+  box-shadow:0 0 30px var(--teal-glow);transition:transform .2s,box-shadow .2s;
+  letter-spacing:.3px}
+.cta-btn:hover{transform:scale(1.04);box-shadow:0 0 55px var(--teal-glow)}
+.cta-mkt{font-size:10px;color:var(--muted);letter-spacing:.5px}
+
+/* ── KEYFRAMES ── */
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.75)}}
+@keyframes glow{0%,100%{box-shadow:0 0 28px rgba(20,184,166,.45)}50%{box-shadow:0 0 56px rgba(20,184,166,.85)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes arrowPulse{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes scanLine{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+
+/* stagger entrance */
+.slide.active .label{animation:fadeUp .5s .0s ease both}
+.slide.active h1.big{animation:fadeUp .55s .08s ease both}
+.slide.active h2.title{animation:fadeUp .55s .08s ease both}
+.slide.active .sub{animation:fadeUp .5s .18s ease both}
+.slide.active .logo-wrap{animation:fadeUp .5s .0s ease both}
+.slide.active .hero-badge{animation:fadeUp .5s .28s ease both}
+
+.slide.active .stat-card:nth-child(1){animation:fadeUp .5s .10s ease both}
+.slide.active .stat-card:nth-child(2){animation:fadeUp .5s .22s ease both}
+.slide.active .stat-card:nth-child(3){animation:fadeUp .5s .34s ease both}
+
+.slide.active .arch-node:nth-child(1){animation:fadeUp .5s .06s ease both}
+.slide.active .arch-node:nth-child(3){animation:fadeUp .5s .16s ease both}
+.slide.active .arch-node:nth-child(5){animation:fadeUp .5s .26s ease both}
+.slide.active .arch-node:nth-child(7){animation:fadeUp .5s .36s ease both}
+.slide.active .arch-node:nth-child(9){animation:fadeUp .5s .46s ease both}
+
+.slide.active .int-item:nth-child(1){animation:fadeUp .45s .08s ease both}
+.slide.active .int-item:nth-child(2){animation:fadeUp .45s .18s ease both}
+.slide.active .int-item:nth-child(3){animation:fadeUp .45s .28s ease both}
+.slide.active .int-item:nth-child(4){animation:fadeUp .45s .38s ease both}
+
+.slide.active .ai-step:nth-child(1){animation:fadeUp .5s .06s ease both}
+.slide.active .ai-step:nth-child(3){animation:fadeUp .5s .20s ease both}
+.slide.active .ai-step:nth-child(5){animation:fadeUp .5s .34s ease both}
+
+.slide.active .tech-badge{animation:fadeUp .4s ease both}
+.slide.active .tech-badge:nth-child(1){animation-delay:.04s}
+.slide.active .tech-badge:nth-child(2){animation-delay:.09s}
+.slide.active .tech-badge:nth-child(3){animation-delay:.14s}
+.slide.active .tech-badge:nth-child(4){animation-delay:.19s}
+.slide.active .tech-badge:nth-child(5){animation-delay:.24s}
+.slide.active .tech-badge:nth-child(6){animation-delay:.29s}
+.slide.active .tech-badge:nth-child(7){animation-delay:.34s}
+.slide.active .tech-badge:nth-child(8){animation-delay:.39s}
+.slide.active .tech-badge:nth-child(9){animation-delay:.44s}
+.slide.active .tech-badge:nth-child(10){animation-delay:.49s}
+.slide.active .tech-badge:nth-child(11){animation-delay:.54s}
+.slide.active .tech-badge:nth-child(12){animation-delay:.59s}
+
+.slide.active .res-card:nth-child(1){animation:fadeUp .5s .10s ease both}
+.slide.active .res-card:nth-child(2){animation:fadeUp .5s .24s ease both}
+.slide.active .res-card:nth-child(3){animation:fadeUp .5s .38s ease both}
+
+.slide.active .phone{animation:fadeUp .6s .12s ease both,float 3.4s 1s ease-in-out infinite}
+.slide.active .mob-feat{animation:fadeUp .45s ease both}
+.slide.active .mob-feat:nth-child(1){animation-delay:.10s}
+.slide.active .mob-feat:nth-child(2){animation-delay:.20s}
+.slide.active .mob-feat:nth-child(3){animation-delay:.30s}
+.slide.active .mob-feat:nth-child(4){animation-delay:.40s}
+
+.slide.active .cta-wrap>*{animation:fadeUp .5s ease both}
+.slide.active .cta-wrap>*:nth-child(1){animation-delay:.06s}
+.slide.active .cta-wrap>*:nth-child(2){animation-delay:.16s}
+.slide.active .cta-wrap>*:nth-child(3){animation-delay:.26s}
+.slide.active .cta-wrap>*:nth-child(4){animation-delay:.36s}
+.slide.active .cta-wrap>*:nth-child(5){animation-delay:.46s}
+.slide.active .cta-wrap>*:nth-child(6){animation-delay:.56s}
+
+/* scanline overlay on hero */
+#s0::after{content:'';position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,.04) 3px,rgba(0,0,0,.04) 4px);
+  animation:none}
+
+/* ── KPI STATS ROW ── */
+.kpi-row{display:flex;gap:14px;width:100%;max-width:860px;margin-top:22px}
+.kpi-stat{flex:1;background:rgba(30,41,59,.75);border:1px solid var(--line);
+  border-radius:12px;padding:18px 12px;text-align:center;
+  transition:border-color .3s,box-shadow .3s}
+.kpi-stat:hover{border-color:var(--teal);box-shadow:0 0 18px rgba(20,184,166,.12)}
+.kpi-num{font-size:9px;font-weight:900;letter-spacing:2.5px;color:var(--teal);
+  text-transform:uppercase;margin-bottom:6px}
+.kpi-val{font-size:clamp(26px,3.2vw,44px);font-weight:900;color:var(--teal);line-height:1.1}
+.kpi-lbl{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.4}
+
+.slide.active .kpi-stat:nth-child(1){animation:fadeUp .5s .08s ease both}
+.slide.active .kpi-stat:nth-child(2){animation:fadeUp .5s .18s ease both}
+.slide.active .kpi-stat:nth-child(3){animation:fadeUp .5s .28s ease both}
+.slide.active .kpi-stat:nth-child(4){animation:fadeUp .5s .38s ease both}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div id="progress"></div>
+<div id="slideNum">01 / 13</div>
+<button id="langToggle" onclick="toggleLang()">🌐 EN</button>
+<div id="hint">← → &nbsp;/&nbsp; SPACE<br>click dots below</div>
+
+<div id="deck">
+
+<!-- ═══ SLIDE 1 — HERO ═══ -->
+<div class="slide active" id="s0">
+  <div class="logo-wrap">
+    <div class="logo-mark">L</div>
+    <div class="logo-name">Line<span>Mind</span>&nbsp;AI</div>
+  </div>
+  <h1 class="big"
+    data-pl="Inteligentny monitoring<br>linii produkcyjnej"
+    data-en="Intelligent monitoring<br>of production lines">
+    Inteligentny monitoring<br>linii produkcyjnej
+  </h1>
+  <p class="sub"
+    data-pl="Wykrywaj awarie zanim zatrzymają produkcję. Diagnozuj, koryguj i przewiduj — w czasie rzeczywistym."
+    data-en="Detect failures before they stop production. Diagnose, correct and predict — in real time.">
+    Wykrywaj awarie zanim zatrzymają produkcję. Diagnozuj, koryguj i przewiduj — w czasie rzeczywistym.
+  </p>
+  <div class="hero-badge">
+    <div class="pulse"></div>
+    <span data-pl="WERSJA DEMO · LIVE" data-en="DEMO VERSION · LIVE">WERSJA DEMO · LIVE</span>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 2 — PROBLEM ═══ -->
+<div class="slide" id="s1">
+  <div class="label" data-pl="WYZWANIE" data-en="THE CHALLENGE">WYZWANIE</div>
+  <h2 class="title"
+    data-pl="Awarie kosztują miliony"
+    data-en="Failures cost millions">
+    Awarie kosztują miliony
+  </h2>
+  <p class="sub"
+    data-pl="Przemysł traci setki miliardów rocznie na nieplanowanych przestojach — z braku danych"
+    data-en="Industry loses hundreds of billions yearly to unplanned downtime — from lack of data">
+    Przemysł traci setki miliardów rocznie na nieplanowanych przestojach — z braku danych
+  </p>
+  <div class="stat-grid">
+    <div class="stat-card">
+      <div class="stat-val"><span class="counter" data-to="647">0</span><span class="stat-unit"> B€</span></div>
+      <div class="stat-lbl" data-pl="roczne straty przemysłu na przestojach produkcyjnych" data-en="annual industry losses from production downtime">roczne straty przemysłu na przestojach</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val"><span class="counter" data-to="37">0</span><span class="stat-unit"> min</span></div>
+      <div class="stat-lbl" data-pl="średni czas reakcji — od awarii do diagnozy przyczyny" data-en="average reaction time — from failure to root cause diagnosis">średni czas od awarii do diagnozy</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val"><span class="counter" data-to="73">0</span><span class="stat-unit"> %</span></div>
+      <div class="stat-lbl" data-pl="awarii jest przewidywalnych przy dostępie do danych" data-en="of failures are predictable with access to data">awarii jest przewidywalnych</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 3 — ARCHITECTURE ═══ -->
+<div class="slide" id="s2">
+  <div class="label" data-pl="ROZWIĄZANIE" data-en="SOLUTION">ROZWIĄZANIE</div>
+  <h2 class="title"
+    data-pl="Jak działa LineMind AI?"
+    data-en="How does LineMind AI work?">
+    Jak działa LineMind AI?
+  </h2>
+  <div class="arch-flow">
+    <div class="arch-node" style="border-color:var(--teal)">
+      <div class="arch-icon">🏭</div>
+      <div class="arch-lbl" data-pl="MASZYNA" data-en="MACHINE">MASZYNA</div>
+      <div class="arch-sub" data-pl="Kardziarnia · Linia" data-en="Carder · Line">Kardziarnia · Linia</div>
+    </div>
+    <div class="arch-arr">›</div>
+    <div class="arch-node">
+      <div class="arch-icon">🔌</div>
+      <div class="arch-lbl" data-pl="PROTOKOŁY" data-en="PROTOCOLS">PROTOKOŁY</div>
+      <div class="arch-sub">Modbus · OPC UA · S7</div>
+    </div>
+    <div class="arch-arr">›</div>
+    <div class="arch-node" style="border-color:rgba(59,130,246,.6)">
+      <div class="arch-icon">🧠</div>
+      <div class="arch-lbl">LineMind AI</div>
+      <div class="arch-sub" data-pl="Backend · AI Engine" data-en="Backend · AI Engine">Backend · AI Engine</div>
+    </div>
+    <div class="arch-arr">›</div>
+    <div class="arch-node">
+      <div class="arch-icon">💻</div>
+      <div class="arch-lbl" data-pl="PANEL WEB" data-en="WEB PANEL">PANEL WEB</div>
+      <div class="arch-sub" data-pl="Diagnostyka · Tuning" data-en="Diagnostics · Tuning">Diagnostyka · Tuning</div>
+    </div>
+    <div class="arch-arr">›</div>
+    <div class="arch-node">
+      <div class="arch-icon">📱</div>
+      <div class="arch-lbl" data-pl="MOBILNA" data-en="MOBILE">MOBILNA</div>
+      <div class="arch-sub" data-pl="Alerty · Chat · Foto" data-en="Alerts · Chat · Photo">Alerty · Chat · Foto</div>
+    </div>
+  </div>
+  <p class="sub" style="margin-top:24px"
+    data-pl="Dane co 4 sekundy &nbsp;·&nbsp; Diagnoza w ciągu minut &nbsp;·&nbsp; Pełna historia awarii"
+    data-en="Data every 4 seconds &nbsp;·&nbsp; Diagnosis in minutes &nbsp;·&nbsp; Full failure history">
+    Dane co 4 sekundy &nbsp;·&nbsp; Diagnoza w ciągu minut &nbsp;·&nbsp; Pełna historia awarii
+  </p>
+</div>
+
+<!-- ═══ SLIDE 4 — INTEGRATION: PLC ═══ -->
+<div class="slide" id="s3">
+  <div class="label" data-pl="INTEGRACJA — WARIANT 1" data-en="INTEGRATION — OPTION 1">INTEGRACJA — WARIANT 1</div>
+  <h2 class="title"
+    data-pl="Masz dostęp do PLC ✓"
+    data-en="You have PLC access ✓">
+    Masz dostęp do PLC ✓
+  </h2>
+  <div class="int-grid">
+    <div class="int-item">
+      <div class="int-icon">⚙️</div>
+      <div>
+        <div class="int-title">Siemens S7 — 300 / 400 / 1200 / 1500</div>
+        <div class="int-desc" data-pl="Bezpośredni odczyt bloków danych. Prądy, prędkości, temperatury, kody alarmów — bez modyfikacji programu PLC." data-en="Direct data block reading. Currents, speeds, temperatures, alarm codes — without modifying the PLC program.">Bezpośredni odczyt bloków danych. Prądy, prędkości, temperatury, kody alarmów — bez modyfikacji PLC.</div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">🌐</div>
+      <div>
+        <div class="int-title">Modbus TCP</div>
+        <div class="int-desc" data-pl="Uniwersalny standard przemysłowy. Działa z Schneider Electric, Beckhoff, Omron, ABB i setkami innych." data-en="Universal industrial standard. Works with Schneider Electric, Beckhoff, Omron, ABB and hundreds of others.">Uniwersalny standard przemysłowy. Schneider, Beckhoff, Omron, ABB i setki innych sterowników.</div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">🔗</div>
+      <div>
+        <div class="int-title">OPC UA — Industry 4.0</div>
+        <div class="int-desc" data-pl="Standard certyfikowanej, szyfrowanej komunikacji maszynowej. Gotowość na IIoT i chmurę." data-en="Certified, encrypted machine communication standard. IIoT and cloud ready.">Szyfrowana komunikacja przemysłowa. Gotowość na IIoT i integrację chmurową.</div>
+      </div>
+    </div>
+    <div class="int-item" style="background:rgba(20,184,166,.07);border-color:rgba(20,184,166,.35)">
+      <div class="int-icon" style="background:rgba(20,184,166,.15)">🛡️</div>
+      <div>
+        <div class="int-title" data-pl="Zawsze tylko odczyt" data-en="Always read-only">Zawsze tylko odczyt</div>
+        <div class="int-desc" data-pl="LineMind AI nigdy nie zapisuje do PLC bez zgody operatora. Bezpieczna integracja w środowisku produkcyjnym." data-en="LineMind AI never writes to PLC without operator approval. Safe integration in any production environment.">LineMind AI nigdy nie zapisuje do PLC bez zgody operatora. Bezpieczna integracja.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 5 — INTEGRATION: NO PLC ═══ -->
+<div class="slide" id="s4">
+  <div class="label" data-pl="INTEGRACJA — WARIANT 2" data-en="INTEGRATION — OPTION 2">INTEGRACJA — WARIANT 2</div>
+  <h2 class="title"
+    data-pl="Brak PLC? To też działa."
+    data-en="No PLC? This works too.">
+    Brak PLC? To też działa.
+  </h2>
+  <div class="int-grid">
+    <div class="int-item">
+      <div class="int-icon">⚡</div>
+      <div>
+        <div class="int-title" data-pl="Falowniki — Modbus RTU" data-en="Inverters — Modbus RTU">Falowniki — Modbus RTU</div>
+        <div class="int-desc" data-pl="Lenze i700, Siemens G120, SEW MOVIDRIVE, Danfoss FC. Prąd, moment, temperatura, kody błędów wprost z napędu — bez PLC." data-en="Lenze i700, Siemens G120, SEW MOVIDRIVE, Danfoss FC. Current, torque, temperature, error codes directly from the drive.">Lenze i700, Siemens G120, SEW MOVIDRIVE, Danfoss. Prąd, kody błędów wprost z napędu.</div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">🌡️</div>
+      <div>
+        <div class="int-title" data-pl="Czujniki temperatury i wibracji" data-en="Temperature and vibration sensors">Czujniki temperatury i wibracji</div>
+        <div class="int-desc" data-pl="PT100, termopary, czujniki wibracji IO-Link. Łożyska, silniki, strefy grzewcze — monitoring bez ingerencji w PLC." data-en="PT100, thermocouples, IO-Link vibration sensors. Bearings, motors, heating zones — no PLC intervention.">PT100, termopary, IO-Link. Łożyska, silniki, strefy grzewcze — bez modyfikacji maszyny.</div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">📊</div>
+      <div>
+        <div class="int-title" data-pl="Wejścia analogowe 4–20 mA" data-en="Analog inputs 4–20 mA">Wejścia analogowe 4–20 mA</div>
+        <div class="int-desc" data-pl="Czujniki ciśnienia, podciśnienia, przepływu. Moduł I/O Modbus jako gateway — minimalna ingerencja w istniejącą instalację." data-en="Pressure, vacuum, flow sensors. Modbus I/O module as gateway — minimal intervention in existing installation.">Ciśnienie, podciśnienie, przepływ. Moduł Modbus I/O — minimalna ingerencja w instalację.</div>
+      </div>
+    </div>
+    <div class="int-item" style="background:rgba(59,130,246,.07);border-color:rgba(59,130,246,.35)">
+      <div class="int-icon" style="background:rgba(59,130,246,.15)">💡</div>
+      <div>
+        <div class="int-title" data-pl="Nawet stara maszyna może być smart" data-en="Even an old machine can be smart">Nawet stara maszyna może być smart</div>
+        <div class="int-desc" data-pl="Raspberry Pi 5 lub mini-PC jako gateway lokalny. Koszt startowy poniżej 500 EUR. Instalacja w 1 dzień roboczy." data-en="Raspberry Pi 5 or mini-PC as local gateway. Starting cost under 500 EUR. Installation in 1 working day.">Raspberry Pi lub mini-PC jako gateway. Koszt startowy &lt;500 EUR. Instalacja w 1 dzień.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 6 — HOW AI WORKS ═══ -->
+<div class="slide" id="s5">
+  <div class="label" data-pl="DIAGNOSTYKA AI" data-en="AI DIAGNOSTICS">DIAGNOSTYKA AI</div>
+  <h2 class="title"
+    data-pl="Jak działa diagnoza AI?"
+    data-en="How does AI diagnosis work?">
+    Jak działa diagnoza AI?
+  </h2>
+  <div class="ai-steps">
+    <div class="ai-step">
+      <div class="ai-num" data-pl="KROK 01" data-en="STEP 01">KROK 01</div>
+      <div class="ai-icon">📡</div>
+      <div class="ai-ttl" data-pl="Zbieranie danych" data-en="Data collection">Zbieranie danych</div>
+      <div class="ai-desc" data-pl="Prądy, prędkości, temperatury, podciśnienie, kody alarmów PLC — z każdej maszyny na linii co 4 sekundy" data-en="Currents, speeds, temperatures, vacuum, PLC alarm codes — from every machine on the line every 4 seconds">Prądy, prędkości, temperatury, podciśnienie, alarmy — co 4 sekundy z każdej maszyny</div>
+    </div>
+    <div class="ai-sep"></div>
+    <div class="ai-step">
+      <div class="ai-num" data-pl="KROK 02" data-en="STEP 02">KROK 02</div>
+      <div class="ai-icon">🔍</div>
+      <div class="ai-ttl" data-pl="Analiza wielowarstwowa" data-en="Multi-layer analysis">Analiza wielowarstwowa</div>
+      <div class="ai-desc" data-pl="Reguły z manuali producentów (Lenze, Siemens) + trendy prądu i podciśnienia + historia awarii + OpenAI GPT" data-en="Rules from manufacturer manuals (Lenze, Siemens) + current and vacuum trends + fault history + OpenAI GPT">Reguły z manuali · trendy prądu · historia awarii · OpenAI GPT</div>
+    </div>
+    <div class="ai-sep"></div>
+    <div class="ai-step">
+      <div class="ai-num" data-pl="KROK 03" data-en="STEP 03">KROK 03</div>
+      <div class="ai-icon">📋</div>
+      <div class="ai-ttl" data-pl="Diagnoza z kontekstem" data-en="Contextual diagnosis">Diagnoza z kontekstem</div>
+      <div class="ai-desc" data-pl="Opis błędu z oryginalnego manuala, lista kroków do podjęcia, poprzednie awarie tej maszyny, co pomogło ostatnim razem" data-en="Error description from original manual, action steps, previous failures of this machine, what helped last time">Opis z manuala · lista kroków · historia tej maszyny · co pomogło poprzednio</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 7 — AUTO TUNING ═══ -->
+<div class="slide" id="s6">
+  <div class="label">AI AUTO TUNING</div>
+  <h2 class="title"
+    data-pl="AI koryguje napędy w czasie rzeczywistym"
+    data-en="AI corrects drives in real time">
+    AI koryguje napędy w czasie rzeczywistym
+  </h2>
+  <div style="display:flex;gap:24px;align-items:stretch;width:100%;max-width:880px;margin-top:30px">
+    <div class="glass" style="flex:1;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:10px;font-weight:800;color:var(--teal);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:6px"
+        data-pl="SCENARIUSZ DEMO" data-en="DEMO SCENARIO">SCENARIUSZ DEMO</div>
+      <div style="background:rgba(20,184,166,.08);border-left:3px solid var(--teal);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px"
+        data-pl="Prędkość linii rośnie z 20% → 65%" data-en="Line speed rises from 20% → 65%">→ Prędkość linii rośnie 20% → 65%</div>
+      <div style="background:rgba(245,158,11,.08);border-left:3px solid var(--amber);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px"
+        data-pl="Prąd silnika głównego wzrasta → zbliża się do progu i2t" data-en="Main motor current rises → approaching i2t threshold">→ Prąd silnika wzrasta → ryzyko błędu i2t Lenze</div>
+      <div style="background:rgba(20,184,166,.08);border-left:3px solid var(--teal);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px"
+        data-pl="AI wykrywa trend i automatycznie koryguje 3 napędy o +3%" data-en="AI detects trend and automatically corrects 3 drives by +3%">→ AI koryguje 3 napędy: Licker In, Worker, Mainswift +3%</div>
+      <div style="background:rgba(34,197,94,.08);border-left:3px solid var(--green);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px"
+        data-pl="Prąd spada, produkcja kontynuowana — zero przestoju, zero interwencji" data-en="Current drops, production continues — zero downtime, zero intervention">→ Prąd spada · produkcja ciągła · zero przestoju</div>
+      <div style="background:rgba(20,184,166,.06);border-left:3px solid var(--muted);padding:10px 14px;border-radius:0 8px 8px 0;font-size:12px"
+        data-pl="Prędkość wraca → AI resetuje korekty do zera automatycznie" data-en="Speed returns → AI resets corrections to zero automatically">→ Prędkość wraca → korekty AI resetują się do 0</div>
+    </div>
+    <div class="glass" style="flex:0 0 260px;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:10px;font-weight:800;color:var(--teal);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:6px"
+        data-pl="TRYBY PRACY" data-en="OPERATING MODES">TRYBY PRACY</div>
+      <div style="display:flex;flex-direction:column;gap:7px">
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(30,41,59,.7);border-radius:8px;border:1px solid var(--line)">
+          <span style="font-size:18px">👁️</span>
+          <div><div style="font-size:12px;font-weight:700" data-pl="Tylko monitoring" data-en="Monitor only">Tylko monitoring</div><div style="font-size:10px;color:var(--muted)" data-pl="obserwuj, nie ingeruj" data-en="observe, no action">obserwuj, nie ingeruj</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(30,41,59,.7);border-radius:8px;border:1px solid var(--line)">
+          <span style="font-size:18px">💬</span>
+          <div><div style="font-size:12px;font-weight:700" data-pl="Sugestie AI" data-en="AI suggestions">Sugestie AI</div><div style="font-size:10px;color:var(--muted)" data-pl="operator zatwierdza" data-en="operator approves">operator zatwierdza</div></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;padding:10px;background:rgba(20,184,166,.12);border-radius:8px;border:1px solid rgba(20,184,166,.5)">
+          <span style="font-size:18px">🤖</span>
+          <div><div style="font-size:12px;font-weight:700" data-pl="Automatyczny" data-en="Automatic">Automatyczny</div><div style="font-size:10px;color:var(--teal)" data-pl="AI działa samodzielnie" data-en="AI acts autonomously">AI działa samodzielnie</div></div>
+        </div>
+      </div>
+      <div style="font-size:10px;color:var(--muted);line-height:1.6;margin-top:auto;padding-top:10px;border-top:1px solid var(--line)"
+        data-pl="Limity bezpieczeństwa zawsze aktywne. AI nigdy nie przekracza progów zdefiniowanych przez dział UR."
+        data-en="Safety limits always active. AI never exceeds thresholds defined by maintenance.">
+        Limity bezpieczeństwa zawsze aktywne.</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 8 — MOBILE ═══ -->
+<div class="slide" id="s7">
+  <div class="label" data-pl="APLIKACJA MOBILNA" data-en="MOBILE APPLICATION">APLIKACJA MOBILNA</div>
+  <h2 class="title"
+    data-pl="Cała linia w kieszeni"
+    data-en="The entire line in your pocket">
+    Cała linia w kieszeni
+  </h2>
+  <div style="display:flex;gap:48px;align-items:center;width:100%;max-width:880px;margin-top:28px">
+    <div class="phone">
+      <div class="phone-screen">
+        <div class="phone-topbar">
+          <div class="phone-dot"></div>LineMind AI · LIVE
+        </div>
+        <div class="tile-grid">
+          <div class="tile" style="background:linear-gradient(135deg,#22a558,#0d4022)"><span class="tile-ico">✅</span>STATUS</div>
+          <div class="tile" style="background:linear-gradient(135deg,#e53e35,#7b1a15)"><span class="tile-ico">⚠️</span>AWARIE</div>
+          <div class="tile" style="background:linear-gradient(135deg,#f59a0a,#7c3208)"><span class="tile-ico">📊</span>ANOMALIE</div>
+          <div class="tile" style="background:linear-gradient(135deg,#3b82f6,#1a3a8a)"><span class="tile-ico">⚙️</span>PROCES</div>
+          <div class="tile" style="background:linear-gradient(135deg,#14b8a6,#094843)"><span class="tile-ico">🎯</span>JAKOŚĆ</div>
+          <div class="tile" style="background:linear-gradient(135deg,#2980b9,#0f2438)"><span class="tile-ico">💬</span>CHAT</div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:11px;flex:1">
+      <div class="mob-feat" style="display:flex;align-items:center;gap:12px;padding:13px;background:rgba(30,41,59,.7);border:1px solid var(--line);border-radius:10px">
+        <span style="font-size:20px">📱</span>
+        <div><div style="font-size:12px;font-weight:700">React Native · Expo SDK 54</div><div style="font-size:10px;color:var(--muted)" data-pl="iOS i Android z jednego kodu" data-en="iOS and Android from one codebase">iOS i Android z jednego kodu</div></div>
+      </div>
+      <div class="mob-feat" style="display:flex;align-items:center;gap:12px;padding:13px;background:rgba(30,41,59,.7);border:1px solid var(--line);border-radius:10px">
+        <span style="font-size:20px">💬</span>
+        <div><div style="font-size:12px;font-weight:700" data-pl="Chat Telegram-style" data-en="Telegram-style chat">Chat Telegram-style</div><div style="font-size:10px;color:var(--muted)" data-pl="Pokoje per linia + General, zdjęcia z maszyn" data-en="Rooms per line + General, photos from machines">Pokoje per linia + General, zdjęcia z maszyn</div></div>
+      </div>
+      <div class="mob-feat" style="display:flex;align-items:center;gap:12px;padding:13px;background:rgba(30,41,59,.7);border:1px solid var(--line);border-radius:10px">
+        <span style="font-size:20px">🔔</span>
+        <div><div style="font-size:12px;font-weight:700" data-pl="Alerty wibracyjne" data-en="Vibration alerts">Alerty wibracyjne</div><div style="font-size:10px;color:var(--muted)" data-pl="Natychmiastowe powiadomienie przy awarii" data-en="Immediate notification on failure">Natychmiastowe powiadomienie przy awarii</div></div>
+      </div>
+      <div class="mob-feat" style="display:flex;align-items:center;gap:12px;padding:13px;background:rgba(30,41,59,.7);border:1px solid var(--line);border-radius:10px">
+        <span style="font-size:20px">🌍</span>
+        <div><div style="font-size:12px;font-weight:700" data-pl="3 języki — PL / EN / DE" data-en="3 languages — PL / EN / DE">3 języki — PL / EN / DE</div><div style="font-size:10px;color:var(--muted)" data-pl="Gotowy na rynki DE, UK, PL" data-en="Ready for DE, UK, PL markets">Gotowy na rynki DE, UK, PL</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 9 — KPI & REPORTING ═══ -->
+<div class="slide" id="s_kpi">
+  <div class="label" data-pl="KPI I RAPORTOWANIE" data-en="KPI &amp; REPORTING">KPI I RAPORTOWANIE</div>
+  <h2 class="title"
+    data-pl="Zarządzaj przez liczby"
+    data-en="Manage by the numbers">
+    Zarządzaj przez liczby
+  </h2>
+  <p class="sub"
+    data-pl="5 dashboardów zarządczych — OEE, dostępność, przestoje, jakość, predykcja AI — na każde urządzenie"
+    data-en="5 management dashboards — OEE, availability, stoppages, quality, AI prediction — on every device">
+    5 dashboardów zarządczych — OEE, dostępność, przestoje, jakość, predykcja AI — na każde urządzenie
+  </p>
+  <div class="kpi-row">
+    <div class="kpi-stat">
+      <div class="kpi-num">OEE</div>
+      <div class="kpi-val">85<span style="font-size:20px">%+</span></div>
+      <div class="kpi-lbl" data-pl="cel produkcyjny z komponentami:<br>dostępność · wydajność · jakość" data-en="production target with components:<br>availability · performance · quality">cel z komponentami:<br>dostępność · wydajność · jakość</div>
+    </div>
+    <div class="kpi-stat">
+      <div class="kpi-num">MTTR</div>
+      <div class="kpi-val">–40<span style="font-size:20px">%</span></div>
+      <div class="kpi-lbl" data-pl="krótszy czas naprawy dzięki<br>natychmiastowej diagnozie AI" data-en="shorter repair time thanks to<br>instant AI diagnosis">krótszy czas naprawy dzięki<br>diagnozie AI</div>
+    </div>
+    <div class="kpi-stat">
+      <div class="kpi-num">MTBF</div>
+      <div class="kpi-val">+25<span style="font-size:20px">%</span></div>
+      <div class="kpi-lbl" data-pl="dłuższy czas między awariami<br>dzięki wykrywaniu anomalii" data-en="longer time between failures<br>thanks to anomaly detection">dłuższy czas między awariami<br>— wczesne wykrywanie</div>
+    </div>
+    <div class="kpi-stat">
+      <div class="kpi-num">NOK</div>
+      <div class="kpi-val">&lt;3<span style="font-size:20px">%</span></div>
+      <div class="kpi-lbl" data-pl="wskaźnik braków jakościowych<br>ważenie · wizja · metalodetektor" data-en="defect rate<br>weighing · vision · metal detector">wskaźnik braków jakościowych<br>ważenie · wizja · metalodetektor</div>
+    </div>
+  </div>
+  <div class="int-grid" style="margin-top:20px">
+    <div class="int-item">
+      <div class="int-icon">🔧</div>
+      <div>
+        <div class="int-title" data-pl="Dashboard UR Managera" data-en="Maintenance Manager Dashboard">Dashboard UR Managera</div>
+        <div class="int-desc" data-pl="Dostępność per maszyna z alarmem &lt;95%, MTTR/MTBF, awarie wg kategorii: mechaniczne, elektryczne, pneumatyczne, automatyka, operator" data-en="Availability per machine with &lt;95% alarm, MTTR/MTBF, failures by category: mechanical, electrical, pneumatic, automation, operator">Dostępność per maszyna · MTTR · MTBF · awarie wg kategorii (mechaniczne, elektryczne, automatyka)</div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">📦</div>
+      <div>
+        <div class="int-title" data-pl="Dashboard Produkcji" data-en="Production Dashboard">Dashboard Produkcji</div>
+        <div class="int-desc" data-pl="OEE z trzema komponentami, szt/h i szt/zmiana, czas pracy vs. postój, przyczyny przestojów: awaria, zmiana surowca, ustawienie maszyny, planowany postój" data-en="OEE with three components, pcs/h and pcs/shift, working time vs. downtime, stop reasons: fault, material change, machine setup, planned stop">OEE · szt/h · szt/zmiana · czas pracy vs. postój · powody przestojów z podziałem</div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">✅</div>
+      <div>
+        <div class="int-title" data-pl="Dashboard Jakości" data-en="Quality Dashboard">Dashboard Jakości</div>
+        <div class="int-desc" data-pl="Wskaźnik NOK% z trendami 12-miesięcznymi, podział odpadów per strefa, ważenie, metalodetektor, top przestoje z przyczyną i czasem trwania" data-en="NOK% rate with 12-month trends, waste breakdown per zone, weighing, metal detector, top stoppages with cause and duration">NOK% · strefy odpadów · ważenie · metalodetektor · top przestoje · AI insights</div>
+      </div>
+    </div>
+    <div class="int-item" style="background:rgba(20,184,166,.07);border-color:rgba(20,184,166,.35)">
+      <div class="int-icon" style="background:rgba(20,184,166,.15)">📊</div>
+      <div>
+        <div class="int-title" data-pl="Dashboard Dyrektora + Predykcja AI" data-en="Director Dashboard + AI Prediction">Dashboard Dyrektora + Predykcja AI</div>
+        <div class="int-desc" data-pl="Executive KPI z automatycznymi komentarzami AI, ranking maszyn. Predykcja ryzyka awarii per komponent (falownik, łożysko, pasek) z progiem ostrzeżenia." data-en="Executive KPI with automatic AI comments, machine ranking. Component-level failure risk (inverter, bearing, belt) with warning threshold.">Executive KPI · auto-komentarze AI · ranking maszyn · predykcja ryzyka per komponent</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 10 — DATA EXPORT ═══ -->
+<div class="slide" id="s_export">
+  <div class="label" data-pl="INTEGRACJA DANYCH" data-en="DATA INTEGRATION">INTEGRACJA DANYCH</div>
+  <h2 class="title"
+    data-pl="Twoje dane idą dalej"
+    data-en="Your data flows further">
+    Twoje dane idą dalej
+  </h2>
+  <p class="sub"
+    data-pl="LineMind AI nie jest silosem — każde zdarzenie, KPI i alarm można natychmiast przekazać do systemu nadrzędnego lub platformy raportowej"
+    data-en="LineMind AI is not a silo — every event, KPI and alert can be instantly forwarded to any upstream system or reporting platform">
+    LineMind AI nie jest silosem — każde zdarzenie, KPI i alarm można natychmiast przekazać dalej
+  </p>
+  <div class="int-grid">
+    <div class="int-item">
+      <div class="int-icon">🔌</div>
+      <div>
+        <div class="int-title">REST API — HTTP / JSON</div>
+        <div class="int-desc" data-pl="Otwarty endpoint dla każdego KPI, zdarzenia i alarmu. Integracja z dowolnym systemem nadrzędnym w kilka godzin — bez ingerencji w infrastrukturę IT zakładu." data-en="Open endpoint for every KPI, event and alert. Integration with any upstream system in a few hours — without interfering with the plant's IT infrastructure.">Otwarty endpoint dla każdego KPI i zdarzenia. Integracja z dowolnym systemem w kilka godzin.</div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">🏗️</div>
+      <div>
+        <div class="int-title" data-pl="MES / ERP — SAP · Oracle · Infor" data-en="MES / ERP — SAP · Oracle · Infor">MES / ERP — SAP · Oracle · Infor</div>
+        <div class="int-desc" data-pl="Przestoje, zlecenia napraw, historia awarii i wskaźniki OEE trafiają automatycznie do Twojego systemu zarządzania produkcją — koniec z ręcznym przepisywaniem danych." data-en="Downtimes, work orders, fault history and OEE metrics go automatically to your production management system — no more manual data re-entry.">Przestoje, zlecenia napraw i OEE — automatycznie w systemie ERP. Koniec z ręcznym przepisywaniem.</div>
+      </div>
+    </div>
+    <div class="int-item">
+      <div class="int-icon">📡</div>
+      <div>
+        <div class="int-title">MQTT · AWS IoT · Azure · Grafana</div>
+        <div class="int-desc" data-pl="Strumieniowanie danych na żywo do platform IoT i systemów monitoringu. Node-RED, Azure IoT Hub, AWS IoT, Grafana — natywne wsparcie protokołu MQTT." data-en="Real-time data streaming to IoT and monitoring platforms. Node-RED, Azure IoT Hub, AWS IoT, Grafana — native MQTT protocol support.">Strumieniowanie na żywo do platform IoT i dashboardów monitoringu przemysłowego.</div>
+      </div>
+    </div>
+    <div class="int-item" style="background:rgba(59,130,246,.07);border-color:rgba(59,130,246,.35)">
+      <div class="int-icon" style="background:rgba(59,130,246,.15)">📄</div>
+      <div>
+        <div class="int-title" data-pl="Raporty CSV / PDF / E-mail" data-en="Reports CSV / PDF / E-mail">Raporty CSV / PDF / E-mail</div>
+        <div class="int-desc" data-pl="Automatyczne raporty zmianowe, tygodniowe zestawienia OEE i historia awarii — gotowe do wydruku lub wysyłki e-mailem do zarządu, bez dodatkowej pracy." data-en="Automatic shift reports, weekly OEE summaries and fault history — ready to print or send by email to management, with no extra work.">Automatyczne raporty zmianowe i zestawienia OEE gotowe do wysyłki — bez dodatkowej pracy.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 11 — TECH STACK ═══ -->
+<div class="slide" id="s8">
+  <div class="label" data-pl="TECHNOLOGIE" data-en="TECHNOLOGIES">TECHNOLOGIE</div>
+  <h2 class="title"
+    data-pl="Stack technologiczny"
+    data-en="Technology stack">
+    Stack technologiczny
+  </h2>
+  <div class="tech-grid">
+    <div class="tech-badge"><span class="tech-ico">🐍</span><div><span>Python 3.12</span><span class="tech-cat">Backend</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">⚡</span><div><span>FastAPI</span><span class="tech-cat">REST API</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">🗄️</span><div><span>SQLite</span><span class="tech-cat" data-pl="Baza danych" data-en="Database">Baza danych</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">🤖</span><div><span>OpenAI GPT</span><span class="tech-cat">AI Engine</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">📱</span><div><span>React Native</span><span class="tech-cat">Mobile</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">🚀</span><div><span>Expo SDK 54</span><span class="tech-cat">Mobile Build</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">🔧</span><div><span>Modbus TCP/RTU</span><span class="tech-cat" data-pl="Protokół PLC" data-en="PLC Protocol">Protokół PLC</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">🔗</span><div><span>OPC UA</span><span class="tech-cat">Industry 4.0</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">⚙️</span><div><span>Siemens S7</span><span class="tech-cat" data-pl="Protokół PLC" data-en="PLC Protocol">Protokół PLC</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">📊</span><div><span>HTML5 + JS</span><span class="tech-cat">Web Dashboard</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">🎨</span><div><span>CSS Variables</span><span class="tech-cat" data-pl="Motywy UI" data-en="UI Themes">Motywy UI</span></div></div>
+    <div class="tech-badge"><span class="tech-ico">🏭</span><div><span>Lenze i700</span><span class="tech-cat" data-pl="Integracja napędów" data-en="Drive integration">Integracja napędów</span></div></div>
+  </div>
+</div>
+
+<!-- ═══ SLIDE 10 — RESULTS ═══ -->
+<div class="slide" id="s9">
+  <div class="label" data-pl="WYNIKI" data-en="RESULTS">WYNIKI</div>
+  <h2 class="title"
+    data-pl="Mierzalne efekty wdrożenia"
+    data-en="Measurable deployment results">
+    Mierzalne efekty wdrożenia
+  </h2>
+  <div class="res-grid">
+    <div class="res-card">
+      <div class="res-num"><span class="counter" data-to="40">0</span><span class="res-sfx">%</span></div>
+      <div class="res-lbl" data-pl="mniej nieplanowanych przestojów dzięki wczesnemu wykrywaniu anomalii" data-en="fewer unplanned downtimes thanks to early anomaly detection">mniej nieplanowanych przestojów</div>
+    </div>
+    <div class="res-card">
+      <div class="res-num"><span class="counter" data-to="15">0</span><span class="res-sfx"> min</span></div>
+      <div class="res-lbl" data-pl="wcześniejsze wykrycie problemu zanim stanie się awarią produkcyjną" data-en="earlier detection before it becomes a production failure">wcześniejsze wykrycie problemu</div>
+    </div>
+    <div class="res-card">
+      <div class="res-num" style="font-size:clamp(32px,4vw,52px)">3–5<span class="res-sfx">×</span></div>
+      <div class="res-lbl" data-pl="zwrot z inwestycji w pierwszym roku, licząc ograniczone przestoje" data-en="return on investment in the first year, accounting for reduced downtime">ROI w pierwszym roku</div>
+    </div>
+  </div>
+  <p class="sub" style="margin-top:24px;font-size:12px"
+    data-pl="Szacunki na podstawie pilotażowych wdrożeń w przemyśle włókienniczym (kardziarnie, włókniny)"
+    data-en="Estimates based on pilot deployments in the textile industry (carders, nonwovens)">
+    Szacunki na podstawie pilotażowych wdrożeń w przemyśle włókienniczym
+  </p>
+</div>
+
+<!-- ═══ SLIDE 11 — CTA ═══ -->
+<div class="slide" id="s10">
+  <div class="logo-wrap" style="margin-bottom:20px">
+    <div class="logo-mark">L</div>
+    <div class="logo-name">Line<span>Mind</span>&nbsp;AI</div>
+  </div>
+  <div class="cta-wrap">
+    <h2 class="title" style="text-align:center"
+      data-pl="Zacznijmy pilot w 3 tygodnie"
+      data-en="Let's start a pilot in 3 weeks">
+      Zacznijmy pilot w 3 tygodnie
+    </h2>
+    <div class="cta-pricing">
+      <strong data-pl="Pilot 3 miesiące:" data-en="3-month pilot:">Pilot 3 miesiące:</strong> 8 000 – 12 000 EUR <span data-pl="z referencją" data-en="with reference case">z referencją</span><br>
+      <strong data-pl="Pełne wdrożenie:" data-en="Full deployment:">Pełne wdrożenie:</strong> 25 000 – 80 000 EUR<br>
+      <strong>SaaS:</strong> 1 500 – 4 500 EUR / <span data-pl="miesiąc" data-en="month">miesiąc</span>
+    </div>
+    <div class="cta-email">turbanski824@gmail.com</div>
+    <button class="cta-btn" onclick="window.location.href='mailto:turbanski824@gmail.com?subject=LineMind AI Demo'"
+      data-pl="Umów demonstrację →"
+      data-en="Schedule a demo →">
+      Umów demonstrację →
+    </button>
+    <p class="cta-mkt"
+      data-pl="Rynki docelowe: Niemcy · Wielka Brytania · Polska · Przemysł włókienniczy"
+      data-en="Target markets: Germany · United Kingdom · Poland · Textile industry">
+      Rynki docelowe: Niemcy · Wielka Brytania · Polska · Przemysł włókienniczy
+    </p>
+  </div>
+</div>
+
+</div><!-- /deck -->
+<div id="nav"></div>
+
+<script>
+// ═══ PARTICLE SYSTEM ═══
+const cv = document.getElementById('canvas');
+const cx = cv.getContext('2d');
+let W, H, pts;
+
+function resize() {
+  W = cv.width = window.innerWidth;
+  H = cv.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', () => { resize(); initPts(); });
+
+function initPts() {
+  const n = Math.floor(W * H / 16000);
+  pts = Array.from({length: n}, () => ({
+    x: Math.random()*W, y: Math.random()*H,
+    vx: (Math.random()-.5)*.35, vy: (Math.random()-.5)*.35,
+    r: Math.random()*1.8+.6,
+  }));
+}
+initPts();
+
+function drawPts() {
+  cx.clearRect(0,0,W,H);
+  for (let p of pts) {
+    p.x += p.vx; p.y += p.vy;
+    if (p.x<0) p.x=W; if (p.x>W) p.x=0;
+    if (p.y<0) p.y=H; if (p.y>H) p.y=0;
+    cx.beginPath();
+    cx.arc(p.x, p.y, p.r, 0, Math.PI*2);
+    cx.fillStyle = 'rgba(20,184,166,.45)';
+    cx.fill();
+  }
+  for (let i=0; i<pts.length; i++) {
+    for (let j=i+1; j<pts.length; j++) {
+      const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y;
+      const d=Math.sqrt(dx*dx+dy*dy);
+      if (d<130) {
+        cx.beginPath();
+        cx.moveTo(pts[i].x,pts[i].y);
+        cx.lineTo(pts[j].x,pts[j].y);
+        cx.strokeStyle=`rgba(20,184,166,${.14*(1-d/130)})`;
+        cx.lineWidth=.7;
+        cx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(drawPts);
+}
+drawPts();
+
+// ═══ SLIDE ENGINE ═══
+const slides = [...document.querySelectorAll('.slide')];
+const navEl  = document.getElementById('nav');
+const progEl = document.getElementById('progress');
+const numEl  = document.getElementById('slideNum');
+let cur = 0;
+
+slides.forEach((_,i) => {
+  const d = document.createElement('div');
+  d.className = 'nav-dot' + (i===0?' active':'');
+  d.onclick = () => goTo(i);
+  navEl.appendChild(d);
+});
+
+function goTo(n) {
+  if (n<0||n>=slides.length||n===cur) return;
+  slides[cur].classList.remove('active');
+  slides[cur].classList.add('out');
+  const prev = cur;
+  setTimeout(()=>slides[prev].classList.remove('out'), 600);
+  cur = n;
+  slides[cur].classList.add('active');
+  updateUI();
+  startCounters();
+}
+
+function updateUI() {
+  document.querySelectorAll('.nav-dot').forEach((d,i)=>
+    d.classList.toggle('active', i===cur));
+  progEl.style.width = `${(cur+1)/slides.length*100}%`;
+  numEl.textContent = `${String(cur+1).padStart(2,'0')} / ${slides.length}`;
+}
+
+// keyboard + swipe
+document.addEventListener('keydown', e=>{
+  if (e.key==='ArrowRight'||e.key===' '){e.preventDefault();goTo(cur+1);}
+  if (e.key==='ArrowLeft') goTo(cur-1);
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;});
+document.addEventListener('touchend',e=>{
+  const d=e.changedTouches[0].clientX-tx;
+  if(Math.abs(d)>50) goTo(cur+(d<0?1:-1));
+});
+
+// ═══ LANGUAGE ═══
+let lang='pl';
+function toggleLang(){
+  lang=lang==='pl'?'en':'pl';
+  document.getElementById('langToggle').textContent='🌐 '+(lang==='pl'?'EN':'PL');
+  document.querySelectorAll('[data-pl]').forEach(el=>{
+    el.innerHTML = lang==='en' ? el.dataset.en : el.dataset.pl;
+  });
+}
+
+// ═══ COUNTERS ═══
+function animNum(el, to, ms=1300) {
+  const t0 = performance.now();
+  (function step(now){
+    const p = Math.min((now-t0)/ms,1);
+    const e = p<.5 ? 2*p*p : -1+(4-2*p)*p;
+    el.textContent = Math.round(e*to);
+    if(p<1) requestAnimationFrame(step);
+  })(t0);
+}
+
+function startCounters() {
+  slides[cur].querySelectorAll('.counter[data-to]').forEach(el=>{
+    animNum(el, parseInt(el.dataset.to));
+  });
+}
+
+// init
+updateUI();
+progEl.style.width = `${1/slides.length*100}%`;
+</script>
+</body>
+</html>

@@ -125,7 +125,15 @@
       SCADA
     </div>
     <div class="hero-icon-card">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6h16M4 10h16M4 14h10M4 18h6"/><rect x="14" y="12" width="7" height="7" rx="1"/><path d="M16 15h3M16 17h2"/></svg>
+      <svg viewBox="0 0 27 24" fill="none">
+        <rect x="0" y="0" width="7" height="15" rx="1.5" fill="#E30613"/>
+        <rect x="9" y="0" width="7" height="7" rx="1.5" fill="#E30613" opacity="0.85"/>
+        <rect x="18" y="0" width="9" height="4.5" rx="1.5" fill="#E30613"/>
+        <rect x="9" y="9" width="7" height="6" rx="1.5" fill="#E30613" opacity="0.65"/>
+        <rect x="18" y="6.5" width="9" height="4.5" rx="1.5" fill="#b80010" opacity="0.9"/>
+        <rect x="18" y="13" width="9" height="4.5" rx="1.5" fill="#E30613" opacity="0.75"/>
+        <rect x="0" y="17" width="27" height="7" rx="1.5" fill="#E30613" opacity="0.8"/>
+      </svg>
       CODESYS
     </div>
   </div>
@@ -320,6 +328,12 @@
         <h3 data-i18n="proj1.title">LineMind AI – Monitorowanie maszyn z AI</h3>
         <p data-i18n="proj1.desc">System monitorowania linii produkcyjnych oparty o sztuczną inteligencję. Aplikacja webowa PWA zbiera dane z czujników w czasie rzeczywistym, wykrywa anomalie i przewiduje awarie. Backend FastAPI + Python, baza SQLite, alerty mobilne i raporty OEE.</p>
         <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">FastAPI</span><span class="project-tag">AI/ML</span><span class="project-tag">PWA</span><span class="project-tag">SQLite</span><span class="project-tag">Modbus</span><span class="project-tag">OEE</span></div>
+        <div class="project-actions">
+          <button class="btn-pres" onclick="openPresModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Prezentacja
+          </button>
+        </div>
       </div>
     </div>
     <div class="project-card reveal">
@@ -576,6 +590,36 @@
     </div>
   </div>
 </div>
+
+<!-- PREZENTACJA MODAL -->
+<div class="pres-modal-overlay" id="presModal" onclick="if(event.target===this)closePresModal()">
+  <div class="pres-modal-box">
+    <button class="pres-modal-close" onclick="closePresModal()">✕</button>
+    <div class="pres-modal-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/><path d="M10 10l5-3-5-3v6z" fill="currentColor" stroke="none"/></svg>
+    </div>
+    <h3 class="pres-modal-title">LineMind AI — Prezentacja</h3>
+    <p class="pres-modal-sub" id="presModalSub">Wpisz hasło dostępu, aby otworzyć prezentację interaktywną.</p>
+    <div class="pres-modal-form" id="presForm">
+      <input class="pres-modal-input" type="password" id="presPass" placeholder="Hasło dostępu…" onkeydown="if(event.key==='Enter')checkPresPass()"/>
+      <button class="btn-pres-submit" onclick="checkPresPass()">Otwórz</button>
+    </div>
+    <p class="pres-modal-noaccess" id="presNoAccess" style="display:none">
+      Nie masz hasła? <a href="mailto:turbanski824@gmail.com?subject=LineMind AI – prośba o prezentację">Napisz do mnie</a> — odpiszę w 24h.
+    </p>
+  </div>
+</div>
+
+<script>
+function openPresModal(){document.getElementById('presModal').classList.add('active');setTimeout(()=>document.getElementById('presPass').focus(),200);}
+function closePresModal(){document.getElementById('presModal').classList.remove('active');document.getElementById('presPass').value='';document.getElementById('presModalSub').textContent='Wpisz hasło dostępu, aby otworzyć prezentację interaktywną.';document.getElementById('presModalSub').classList.remove('pres-error');document.getElementById('presForm').style.display='flex';document.getElementById('presNoAccess').style.display='none';}
+function checkPresPass(){
+  var p=document.getElementById('presPass').value.trim();
+  if(p==='LineMind2025'){window.open('linemind.html','_blank');closePresModal();}
+  else if(p===''){document.getElementById('presModalSub').textContent='Pole hasła nie może być puste.';document.getElementById('presModalSub').classList.add('pres-error');}
+  else{document.getElementById('presModalSub').textContent='Nieprawidłowe hasło.';document.getElementById('presModalSub').classList.add('pres-error');document.getElementById('presNoAccess').style.display='block';}
+}
+</script>
 
 <script src="script.js"></script>
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
