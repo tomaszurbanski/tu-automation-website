@@ -26,6 +26,8 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 .nav-counter span{color:var(--cyan)}
 .nav-back{font-family:'Rajdhani',sans-serif;font-size:.8rem;letter-spacing:2px;color:var(--muted);text-decoration:none;transition:color .2s}
 .nav-back:hover{color:var(--cyan)}
+.lang-btn{font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:2px;padding:5px 12px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
+.lang-btn.active{border-color:var(--cyan);color:var(--cyan)}
 
 /* SLIDES */
 .slides{position:relative;z-index:1;width:100%;height:100vh;overflow:hidden}
@@ -179,10 +181,15 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 <!-- NAV -->
 <nav class="nav">
   <div class="nav-logo">TU<span>Automation</span></div>
-  <div class="nav-tag">Modernizacja & Migracja PLC</div>
+  <div style="display:flex;align-items:center;gap:14px">
+    <div class="nav-tag lang-pl">Modernizacja & Migracja PLC</div>
+    <div class="nav-tag lang-en" style="display:none">PLC Modernization & Migration</div>
+    <button class="lang-btn active" id="btnPL" onclick="setLang('pl')">PL</button>
+    <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+  </div>
   <div style="display:flex;align-items:center;gap:24px">
     <div class="nav-counter">PROJEKT <span id="slideNum">01</span> / 09</div>
-    <a href="index.html#projects" class="nav-back">← Wróć do strony</a>
+    <a href="index.html#projects" class="nav-back">← <span class="lang-pl">Wróć</span><span class="lang-en" style="display:none">Back</span></a>
   </div>
 </nav>
 
@@ -218,8 +225,8 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 
 <!-- S2: WHY MIGRATE -->
 <div class="slide" id="s2">
-  <div class="slide-tag">Problem</div>
-  <div class="slide-title">Dlaczego stare systemy <span class="hl-o">to ryzyko</span>?</div>
+  <div class="slide-tag"><span class="lang-pl">Problem</span><span class="lang-en" style="display:none">Problem</span></div>
+  <div class="slide-title"><span class="lang-pl">Dlaczego stare systemy <span class="hl-o">to ryzyko</span>?</span><span class="lang-en" style="display:none">Why old systems <span class="hl-o">are a risk</span>?</span></div>
   <div class="slide-sub" style="margin-bottom:0">Przestarzała automatyka generuje ukryte koszty i realne zagrożenia dla ciągłości produkcji.</div>
   <div class="two-col">
     <div class="problem-item">
@@ -251,8 +258,8 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 
 <!-- S3: COMPARISON TABLE -->
 <div class="slide" id="s3">
-  <div class="slide-tag">Analiza techniczna</div>
-  <div class="slide-title">Stary system <span class="hl-o">vs</span> Nowa platforma</div>
+  <div class="slide-tag"><span class="lang-pl">Analiza techniczna</span><span class="lang-en" style="display:none">Technical analysis</span></div>
+  <div class="slide-title"><span class="lang-pl">Stary system <span class="hl-o">vs</span> Nowa platforma</span><span class="lang-en" style="display:none">Old system <span class="hl-o">vs</span> New platform</span></div>
   <div class="comp-wrap">
     <div class="comp-header">
       <div class="comp-h old">S5 / S7-300 / S7-400</div>
@@ -272,8 +279,8 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 
 <!-- S4: METHODOLOGY -->
 <div class="slide" id="s4">
-  <div class="slide-tag">Metodologia</div>
-  <div class="slide-title">Migracja <span class="hl">krok po kroku</span><br>— zero ryzyka</div>
+  <div class="slide-tag"><span class="lang-pl">Metodologia</span><span class="lang-en" style="display:none">Methodology</span></div>
+  <div class="slide-title"><span class="lang-pl">Migracja <span class="hl">krok po kroku</span><br>— zero ryzyka</span><span class="lang-en" style="display:none">Migration <span class="hl">step by step</span><br>— zero risk</span></div>
   <div class="steps">
     <div class="step-row">
       <div class="step-line"><div class="step-num">01</div><div class="step-connector"></div></div>
@@ -300,8 +307,8 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 
 <!-- S5: PLATFORMS -->
 <div class="slide" id="s5">
-  <div class="slide-tag">Technologie</div>
-  <div class="slide-title">Nowe platformy — <span class="hl">pełna kontrola</span></div>
+  <div class="slide-tag"><span class="lang-pl">Technologie</span><span class="lang-en" style="display:none">Technologies</span></div>
+  <div class="slide-title"><span class="lang-pl">Nowe platformy — <span class="hl">pełna kontrola</span></span><span class="lang-en" style="display:none">New platforms — <span class="hl">full control</span></span></div>
   <div class="platform-grid">
     <div class="plat-card">
       <div class="plat-icon">
@@ -393,8 +400,8 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 
 <!-- S6: BEFORE/AFTER -->
 <div class="slide" id="s6">
-  <div class="slide-tag">Transformacja</div>
-  <div class="slide-title">Przed <span class="hl-o">vs</span> Po migracji</div>
+  <div class="slide-tag"><span class="lang-pl">Transformacja</span><span class="lang-en" style="display:none">Transformation</span></div>
+  <div class="slide-title"><span class="lang-pl">Przed <span class="hl-o">vs</span> Po migracji</span><span class="lang-en" style="display:none">Before <span class="hl-o">vs</span> After migration</span></div>
   <div class="ba-wrap">
     <div class="ba-side old-side">
       <div class="ba-title">Przed migracją</div>
@@ -426,8 +433,8 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 
 <!-- S7: RESULTS -->
 <div class="slide" id="s7">
-  <div class="slide-tag">Wyniki</div>
-  <div class="slide-title">Mierzalne <span class="hl">rezultaty</span> dla klienta</div>
+  <div class="slide-tag"><span class="lang-pl">Wyniki</span><span class="lang-en" style="display:none">Results</span></div>
+  <div class="slide-title"><span class="lang-pl">Mierzalne <span class="hl">rezultaty</span> dla klienta</span><span class="lang-en" style="display:none">Measurable <span class="hl">results</span> for the client</span></div>
   <div class="results-grid">
     <div class="res-card"><div class="res-val green">+17%</div><div class="res-lbl">Wzrost OEE<br>po migracji</div></div>
     <div class="res-card"><div class="res-val">−65%</div><div class="res-lbl">Redukcja czasu<br>naprawy (MTTR)</div></div>
@@ -443,7 +450,7 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 <!-- S8: CASE STUDY -->
 <div class="slide" id="s8">
   <div class="slide-tag">Case study</div>
-  <div class="slide-title">Modernizacja linii dziewiarskiej<br><span class="hl">S5-115U → S7-1515</span></div>
+  <div class="slide-title"><span class="lang-pl">Modernizacja linii dziewiarskiej<br><span class="hl">S5-115U → S7-1515</span></span><span class="lang-en" style="display:none">Knitting line modernization<br><span class="hl">S5-115U → S7-1515</span></span></div>
   <div class="cs-wrap">
     <div class="cs-illustration">
       <svg viewBox="0 0 320 200" width="100%" fill="none">
@@ -501,8 +508,8 @@ canvas#bg{position:fixed;inset:0;z-index:0;opacity:.35}
 
 <!-- S9: CONTACT -->
 <div class="slide" id="s9">
-  <div class="slide-tag">Kontakt</div>
-  <div class="slide-title">Zaplanujmy <span class="hl">modernizację</span><br>Twojego systemu</div>
+  <div class="slide-tag"><span class="lang-pl">Kontakt</span><span class="lang-en" style="display:none">Contact</span></div>
+  <div class="slide-title"><span class="lang-pl">Zaplanujmy <span class="hl">modernizację</span><br>Twojego systemu</span><span class="lang-en" style="display:none">Let's plan <span class="hl">the modernization</span><br>of your system</span></div>
   <div class="slide-sub" style="margin-bottom:0">Bezpłatna analiza istniejącego systemu i wycena migracji w ciągu 48 godzin.</div>
   <div class="contact-grid">
     <div class="c-item">
@@ -552,6 +559,14 @@ let tx=0;
 document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
 document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)changeSlide(dx<0?1:-1);},{passive:true});
 goTo(0);
+
+// LANGUAGE
+function setLang(l){
+  document.querySelectorAll('.lang-pl').forEach(el=>el.style.display=l==='pl'?'':'none');
+  document.querySelectorAll('.lang-en').forEach(el=>el.style.display=l==='en'?'':'none');
+  document.getElementById('btnPL').classList.toggle('active',l==='pl');
+  document.getElementById('btnEN').classList.toggle('active',l==='en');
+}
 
 // PARTICLES
 const canvas=document.getElementById('bg');const ctx=canvas.getContext('2d');

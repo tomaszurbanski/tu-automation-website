@@ -371,6 +371,12 @@
         <h3 data-i18n="proj4.title">System SCADA dla oczyszczalni ścieków</h3>
         <p data-i18n="proj4.desc">Kompleksowy system nadzoru — monitoring pomp, napowietrzaczy i reaktorów biologicznych. Wizualizacja WinCC OA, trendy historyczne, alarmy SMS, raportowanie automatyczne. Sieć Profibus obsługująca 120+ urządzeń terenowych.</p>
         <div class="project-tags"><span class="project-tag">WinCC OA</span><span class="project-tag">S7-400</span><span class="project-tag">Profibus</span><span class="project-tag">OPC UA</span><span class="project-tag">SMS</span></div>
+        <div class="project-actions">
+          <button class="btn-pres" onclick="openScadaModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+            Prezentacja
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -605,6 +611,35 @@
     </div>
   </div>
 </div>
+
+<!-- SCADA MODAL -->
+<div class="pres-modal-overlay" id="scadaModal" onclick="if(event.target===this)closeScadaModal()">
+  <div class="pres-modal-box">
+    <button class="pres-modal-close" onclick="closeScadaModal()">✕</button>
+    <div class="pres-modal-icon">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/><polyline points="6 9 10 13 14 9 18 13"/></svg>
+    </div>
+    <h3 class="pres-modal-title">SCADA Oczyszczalnia — Prezentacja</h3>
+    <p class="pres-modal-sub" id="scadaModalSub">Wpisz hasło dostępu, aby otworzyć prezentację interaktywną.</p>
+    <div class="pres-modal-form" id="scadaForm">
+      <input class="pres-modal-input" type="password" id="scadaPass" placeholder="Hasło dostępu…" onkeydown="if(event.key==='Enter')checkScadaPass()"/>
+      <button class="btn-pres-submit" onclick="checkScadaPass()">Otwórz</button>
+    </div>
+    <p class="pres-modal-noaccess" id="scadaNoAccess" style="display:none">
+      Nie masz hasła? <a href="mailto:info@tuautomation.de?subject=Prośba o prezentację – SCADA">Napisz do mnie</a> — odpiszę w 24h.
+    </p>
+  </div>
+</div>
+<script>
+function openScadaModal(){document.getElementById('scadaModal').classList.add('active');setTimeout(()=>document.getElementById('scadaPass').focus(),200);}
+function closeScadaModal(){document.getElementById('scadaModal').classList.remove('active');document.getElementById('scadaPass').value='';document.getElementById('scadaModalSub').textContent='Wpisz hasło dostępu, aby otworzyć prezentację interaktywną.';document.getElementById('scadaModalSub').classList.remove('pres-error');document.getElementById('scadaForm').style.display='flex';document.getElementById('scadaNoAccess').style.display='none';}
+function checkScadaPass(){
+  var p=document.getElementById('scadaPass').value.trim();
+  if(p==='LineMind2025'){window.open('scada.html','_blank');closeScadaModal();}
+  else if(p===''){document.getElementById('scadaModalSub').textContent='Pole hasła nie może być puste.';document.getElementById('scadaModalSub').classList.add('pres-error');}
+  else{document.getElementById('scadaModalSub').textContent='Nieprawidłowe hasło.';document.getElementById('scadaModalSub').classList.add('pres-error');document.getElementById('scadaNoAccess').style.display='block';}
+}
+</script>
 
 <!-- MIGRACJA MODAL -->
 <div class="pres-modal-overlay" id="migModal" onclick="if(event.target===this)closeMigModal()">

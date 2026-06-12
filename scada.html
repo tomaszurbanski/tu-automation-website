@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>SCADA Oczyszczalnia Ścieków – TU Automation</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#080C14;--bg2:#0D1220;--cyan:#00D4FF;--orange:#F97316;--green:#10B981;--red:#EF4444;--blue:#3B82F6;--text:#E2E8F0;--muted:#64748B;--border:rgba(0,212,255,0.15);--glow:0 0 24px rgba(0,212,255,0.35)}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:'Inter',sans-serif}
+canvas#bg{position:fixed;inset:0;z-index:0;opacity:.3}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:12px 40px;border-bottom:1px solid var(--border);background:rgba(8,12,20,.9);backdrop-filter:blur(12px)}
+.nav-logo{font-family:'Rajdhani',sans-serif;font-size:1.1rem;font-weight:700;letter-spacing:2px;color:#fff}.nav-logo span{color:var(--cyan)}
+.nav-mid{display:flex;align-items:center;gap:16px}
+.nav-tag{font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:3px;color:var(--muted)}
+.lang-btn{font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:2px;padding:5px 12px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s}
+.lang-btn.active{border-color:var(--cyan);color:var(--cyan)}
+.nav-right{display:flex;align-items:center;gap:20px}
+.nav-counter{font-family:'Rajdhani',sans-serif;font-size:.82rem;color:var(--muted);letter-spacing:2px}.nav-counter span{color:var(--cyan)}
+.nav-back{font-family:'Rajdhani',sans-serif;font-size:.78rem;letter-spacing:2px;color:var(--muted);text-decoration:none;transition:color .2s}.nav-back:hover{color:var(--cyan)}
+.slides{position:relative;z-index:1;width:100%;height:100vh;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:88px 60px 60px;opacity:0;pointer-events:none;transition:opacity .5s,transform .5s;transform:translateY(28px)}
+.slide.active{opacity:1;pointer-events:all;transform:translateY(0)}
+.ctrl{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);z-index:100;display:flex;align-items:center;gap:16px}
+.ctrl-btn{width:42px;height:42px;border:1px solid var(--border);background:rgba(13,18,32,.9);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}.ctrl-btn:hover{border-color:var(--cyan);color:var(--cyan);box-shadow:var(--glow)}
+.ctrl-dots{display:flex;gap:8px;align-items:center}
+.ctrl-dot{width:6px;height:6px;background:var(--muted);border-radius:50%;transition:all .3s;cursor:pointer}.ctrl-dot.active{background:var(--cyan);box-shadow:0 0 8px rgba(0,212,255,.6);transform:scale(1.3)}
+.progress{position:fixed;bottom:0;left:0;height:2px;background:linear-gradient(90deg,var(--cyan),var(--blue));transition:width .5s;z-index:100}
+.slide-tag{font-family:'Rajdhani',sans-serif;font-size:.7rem;letter-spacing:4px;color:var(--cyan);text-transform:uppercase;margin-bottom:10px}
+.slide-title{font-family:'Rajdhani',sans-serif;font-size:clamp(1.5rem,3.5vw,2.6rem);font-weight:700;color:#fff;line-height:1.15;margin-bottom:14px}
+.slide-title .hl{color:var(--cyan)}.slide-title .hl-g{color:var(--green)}.slide-title .hl-o{color:var(--orange)}
+.slide-sub{font-size:.9rem;color:var(--muted);line-height:1.8;max-width:560px}
+.card{background:rgba(13,18,32,.7);border:1px solid var(--border);padding:18px 22px;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.slide.active>*{animation:fadeUp .5s ease both}.slide.active .main-content{animation-delay:.15s}
+
+/* S1 TITLE */
+#s1{text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--border);padding:6px 16px;font-family:'Rajdhani',sans-serif;font-size:.72rem;letter-spacing:3px;color:var(--muted);margin-bottom:24px}
+.hero-badge .dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.5s infinite}
+#s1 h1{font-family:'Rajdhani',sans-serif;font-size:clamp(1.8rem,4.5vw,3.4rem);font-weight:700;line-height:1.1;margin-bottom:18px}
+#s1 .sub{font-size:.95rem;color:var(--muted);max-width:620px;margin:0 auto 30px;line-height:1.8}
+.hero-stats{display:flex;gap:36px;justify-content:center;flex-wrap:wrap}
+.hs-item{text-align:center}.hs-val{font-family:'Rajdhani',sans-serif;font-size:1.9rem;font-weight:700;color:var(--cyan)}.hs-lbl{font-size:.72rem;color:var(--muted);letter-spacing:2px;margin-top:2px}
+
+/* S2 SCOPE */
+#s2 .main-content{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:880px;margin-top:18px}
+.scope-card{padding:18px 20px;border:1px solid var(--border);background:rgba(13,18,32,.6);clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.scope-card h4{font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:10px}
+.scope-icon{width:30px;height:30px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--cyan);flex-shrink:0}
+.scope-card p{font-size:.8rem;color:var(--muted);line-height:1.65}
+.scope-tags{margin-top:10px;display:flex;flex-wrap:wrap;gap:5px}
+.sc-tag{font-size:.68rem;font-family:'Rajdhani',sans-serif;letter-spacing:1px;padding:2px 8px;border:1px solid var(--border);color:var(--muted)}
+
+/* S3 PROCESS */
+#s3 .main-content{width:100%;max-width:900px;margin-top:16px}
+.process-flow{display:flex;align-items:stretch;gap:0;width:100%}
+.pf-stage{flex:1;display:flex;flex-direction:column;align-items:center;position:relative}
+.pf-stage:not(:last-child)::after{content:'→';position:absolute;right:-14px;top:28px;color:var(--cyan);font-size:1.1rem;z-index:1}
+.pf-box{padding:14px 10px;border:1px solid var(--border);background:rgba(13,18,32,.7);width:100%;text-align:center;clip-path:polygon(0 0,calc(100% - 6px) 0,100% 6px,100% 100%,0 100%)}
+.pf-icon{color:var(--cyan);margin-bottom:8px}
+.pf-name{font-family:'Rajdhani',sans-serif;font-size:.8rem;font-weight:700;color:#fff;margin-bottom:6px;letter-spacing:.5px}
+.pf-params{font-size:.68rem;color:var(--muted);line-height:1.6}
+.pf-sensors{margin-top:8px;display:flex;flex-direction:column;gap:3px}
+.pf-sensor{font-size:.65rem;color:var(--cyan);background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.2);padding:2px 6px;border-radius:0}
+.process-legend{display:flex;gap:20px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.pl-item{display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--muted)}
+.pl-dot{width:8px;height:8px;border-radius:50%}
+
+/* S4 ARCHITECTURE */
+#s4 .main-content{width:100%;max-width:900px;margin-top:14px}
+.arch-svg-wrap{border:1px solid var(--border);background:rgba(13,18,32,.6);padding:20px;width:100%}
+.arch-legend{display:flex;gap:18px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.al-item{display:flex;align-items:center;gap:7px;font-size:.75rem;color:var(--muted);font-family:'Rajdhani',sans-serif;letter-spacing:1px}
+.al-dot{width:10px;height:10px;border-radius:50%}
+
+/* S5 SCADA VIZ */
+#s5 .main-content{display:grid;grid-template-columns:1.2fr 1fr;gap:22px;width:100%;max-width:900px;margin-top:16px;align-items:start}
+.viz-screen{border:1px solid var(--border);background:rgba(13,18,32,.7);padding:16px;overflow:hidden}
+.viz-features{display:flex;flex-direction:column;gap:12px}
+.vf-item{display:flex;gap:13px;align-items:flex-start;padding:13px 16px;background:rgba(13,18,32,.6);border:1px solid var(--border);clip-path:polygon(0 0,calc(100% - 7px) 0,100% 7px,100% 100%,0 100%)}
+.vf-icon{width:32px;height:32px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--cyan);flex-shrink:0}
+.vf-item h4{font-family:'Rajdhani',sans-serif;font-size:.88rem;font-weight:700;color:#fff;margin-bottom:3px}
+.vf-item p{font-size:.76rem;color:var(--muted);line-height:1.6}
+
+/* S6 ALARMS */
+#s6 .main-content{width:100%;max-width:880px;margin-top:16px}
+.alarm-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.alarm-level{padding:16px 20px;border:1px solid;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.al-crit{border-color:rgba(239,68,68,.4);background:rgba(239,68,68,.05)}.al-warn{border-color:rgba(249,115,22,.4);background:rgba(249,115,22,.05)}.al-info{border-color:rgba(59,130,246,.3);background:rgba(59,130,246,.04)}.al-ok{border-color:rgba(16,185,129,.3);background:rgba(16,185,129,.04)}
+.alarm-level .al-head{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.al-badge{font-family:'Rajdhani',sans-serif;font-size:.7rem;letter-spacing:2px;padding:3px 9px;border:1px solid}
+.al-crit .al-badge{border-color:var(--red);color:var(--red)}.al-warn .al-badge{border-color:var(--orange);color:var(--orange)}.al-info .al-badge{border-color:var(--blue);color:var(--blue)}.al-ok .al-badge{border-color:var(--green);color:var(--green)}
+.alarm-level ul{list-style:none;font-size:.78rem;color:var(--muted);line-height:2}
+.alarm-level ul li::before{content:'· ';color:var(--cyan)}
+.sms-flow{display:flex;align-items:center;gap:0;padding:14px 20px;background:rgba(13,18,32,.6);border:1px solid var(--border)}
+.sms-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;text-align:center}
+.sms-step .si{width:36px;height:36px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--cyan);margin:0 auto}
+.sms-step p{font-size:.72rem;color:var(--muted)}
+.sms-arr{color:var(--cyan);font-size:1.1rem;flex-shrink:0}
+
+/* S7 INTEGRATION */
+#s7 .main-content{display:grid;grid-template-columns:1fr 1fr;gap:20px;width:100%;max-width:880px;margin-top:16px}
+.int-card{padding:18px 20px;border:1px solid var(--border);background:rgba(13,18,32,.6);clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.int-card h4{font-family:'Rajdhani',sans-serif;font-size:.95rem;font-weight:700;color:#fff;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.int-card h4 svg{color:var(--cyan)}
+.int-card p{font-size:.79rem;color:var(--muted);line-height:1.65}
+.int-stats{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap}
+.int-stat{font-size:.7rem;font-family:'Rajdhani',sans-serif;letter-spacing:1px;padding:3px 9px;border:1px solid var(--border);color:var(--muted)}
+
+/* S8 RESULTS */
+#s8 .main-content{width:100%;max-width:880px;margin-top:16px}
+.res-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+.res-card{padding:18px 12px;border:1px solid var(--border);background:rgba(13,18,32,.7);text-align:center;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.res-val{font-family:'Rajdhani',sans-serif;font-size:2rem;font-weight:700;color:var(--cyan);line-height:1}
+.res-val.g{color:var(--green)}.res-val.o{color:var(--orange)}
+.res-lbl{font-size:.72rem;color:var(--muted);margin-top:5px;line-height:1.5}
+.testimonial{padding:18px 24px;border-left:2px solid var(--cyan);background:rgba(0,212,255,.04)}
+.testimonial p{font-size:.88rem;color:var(--muted);line-height:1.8;font-style:italic}
+.testimonial cite{display:block;margin-top:8px;font-size:.72rem;color:var(--cyan);font-style:normal;font-family:'Rajdhani',sans-serif;letter-spacing:2px}
+
+/* S9 CONTACT */
+#s9{text-align:center}
+.contact-grid{display:flex;gap:16px;justify-content:center;margin-top:22px;flex-wrap:wrap}
+.c-item{padding:18px 24px;border:1px solid var(--border);background:rgba(13,18,32,.7);display:flex;align-items:center;gap:13px;clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,0 100%)}
+.c-item svg{color:var(--cyan);flex-shrink:0}
+.ci-lbl{font-size:.68rem;color:var(--muted);letter-spacing:2px;font-family:'Rajdhani',sans-serif;margin-bottom:3px}
+.ci-val{font-size:.88rem;color:#fff}.ci-val a{color:#fff;text-decoration:none}.ci-val a:hover{color:var(--cyan)}
+.cta-row{display:flex;gap:14px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+.btn-cta{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;font-family:'Rajdhani',sans-serif;font-size:.9rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;cursor:pointer;border:none;clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,0 100%);transition:all .2s}
+.btn-cta.primary{background:var(--cyan);color:var(--bg)}.btn-cta.primary:hover{box-shadow:var(--glow)}
+.btn-cta.outline{background:transparent;border:1px solid var(--border);color:var(--text)}.btn-cta.outline:hover{border-color:var(--cyan);color:var(--cyan)}
+</style>
+</head>
+<body>
+<canvas id="bg"></canvas>
+
+<nav class="nav">
+  <div class="nav-logo">TU<span>Automation</span></div>
+  <div class="nav-mid">
+    <div class="nav-tag lang-pl">PROJEKT #03 · SCADA OCZYSZCZALNIA</div>
+    <div class="nav-tag lang-en" style="display:none">PROJECT #03 · SCADA WASTEWATER</div>
+    <button class="lang-btn active" id="btnPL" onclick="setLang('pl')">PL</button>
+    <button class="lang-btn" id="btnEN" onclick="setLang('en')">EN</button>
+  </div>
+  <div class="nav-right">
+    <div class="nav-counter">SLIDE <span id="slideNum">01</span> / 09</div>
+    <a href="index.html#projects" class="nav-back">← <span class="lang-pl">Wróć</span><span class="lang-en" style="display:none">Back</span></a>
+  </div>
+</nav>
+
+<div class="slides">
+
+<!-- S1: TITLE -->
+<div class="slide active" id="s1">
+  <div class="hero-badge"><span class="dot"></span><span class="lang-pl">TU AUTOMATION · PROJEKT #03</span><span class="lang-en" style="display:none">TU AUTOMATION · PROJECT #03</span></div>
+  <h1>
+    <span class="lang-pl">System <span style="color:var(--cyan)">SCADA</span><br>Oczyszczalnia Ścieków</span>
+    <span class="lang-en" style="display:none"><span style="color:var(--cyan)">SCADA</span> System<br>Wastewater Treatment Plant</span>
+  </h1>
+  <p class="sub lang-pl">Kompleksowy system wizualizacji i sterowania procesem oczyszczania ścieków komunalnych. S7-400, Profibus DP, WinCC OA, OPC UA, monitoring 24/7 z alarmami SMS.</p>
+  <p class="sub lang-en" style="display:none">Complete SCADA system for municipal wastewater treatment process monitoring and control. S7-400, Profibus DP, WinCC OA, OPC UA, 24/7 monitoring with SMS alarms.</p>
+  <div class="hero-stats main-content">
+    <div class="hs-item"><div class="hs-val">24/7</div><div class="hs-lbl lang-pl">Monitoring online</div><div class="hs-lbl lang-en" style="display:none">Online monitoring</div></div>
+    <div class="hs-item"><div class="hs-val">120+</div><div class="hs-lbl lang-pl">Punktów pomiarowych</div><div class="hs-lbl lang-en" style="display:none">Measurement points</div></div>
+    <div class="hs-item"><div class="hs-val">&lt;30s</div><div class="hs-lbl lang-pl">Czas powiadomienia SMS</div><div class="hs-lbl lang-en" style="display:none">SMS alarm response time</div></div>
+    <div class="hs-item"><div class="hs-val">99.7%</div><div class="hs-lbl lang-pl">Dostępność systemu</div><div class="hs-lbl lang-en" style="display:none">System availability</div></div>
+  </div>
+</div>
+
+<!-- S2: SCOPE -->
+<div class="slide" id="s2">
+  <div class="slide-tag lang-pl">Zakres projektu</div>
+  <div class="slide-tag lang-en" style="display:none">Project scope</div>
+  <div class="slide-title"><span class="lang-pl">Co obejmował <span class="hl">projekt</span>?</span><span class="lang-en" style="display:none">What did the <span class="hl">project</span> cover?</span></div>
+  <div class="main-content">
+    <div class="scope-card">
+      <h4><div class="scope-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"/></svg></div><span class="lang-pl">Sterowanie PLC</span><span class="lang-en" style="display:none">PLC Control</span></h4>
+      <p class="lang-pl">3× Siemens S7-414 rozmieszczone na obiektach oczyszczalni. Sieć Profibus DP 1.5 Mbit/s łącząca stacje ET200S i napędy.</p>
+      <p class="lang-en" style="display:none">3× Siemens S7-414 PLCs distributed across treatment facilities. Profibus DP 1.5 Mbit/s network connecting ET200S remote I/O and drives.</p>
+      <div class="scope-tags"><span class="sc-tag">S7-414</span><span class="sc-tag">Profibus DP</span><span class="sc-tag">ET200S</span><span class="sc-tag">Lenze VFD</span></div>
+    </div>
+    <div class="scope-card">
+      <h4><div class="scope-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg></div><span class="lang-pl">Wizualizacja SCADA</span><span class="lang-en" style="display:none">SCADA Visualization</span></h4>
+      <p class="lang-pl">WinCC OA (PVSS) na serwerze redundantnym. 18 synoptyk procesu z animowanym przepływem ścieków i trendami historycznymi.</p>
+      <p class="lang-en" style="display:none">WinCC OA (PVSS) on redundant server. 18 process synoptics with animated wastewater flow and historical trends.</p>
+      <div class="scope-tags"><span class="sc-tag">WinCC OA</span><span class="sc-tag">Redundancja</span><span class="sc-tag">18 synoptyk</span></div>
+    </div>
+    <div class="scope-card">
+      <h4><div class="scope-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2.02z"/></svg></div><span class="lang-pl">System alarmów SMS</span><span class="lang-en" style="display:none">SMS Alarm System</span></h4>
+      <p class="lang-pl">Automatyczne SMS do dyżurnych UR przy alarmach krytycznych. Eskalacja alarmów, harmonogram dyżurów, potwierdzenia SMS.</p>
+      <p class="lang-en" style="display:none">Automatic SMS to on-call maintenance staff for critical alarms. Alarm escalation, duty schedule management, SMS acknowledgment.</p>
+      <div class="scope-tags"><span class="sc-tag">GSM Gateway</span><span class="sc-tag">Eskalacja</span><span class="sc-tag">24/7</span></div>
+    </div>
+    <div class="scope-card">
+      <h4><div class="scope-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg></div><span class="lang-pl">Integracja & raporty</span><span class="lang-en" style="display:none">Integration & reports</span></h4>
+      <p class="lang-pl">OPC UA do wymiany danych z systemem laboratoryjnym LIMS. Automatyczne raporty dobowe i miesięczne dla Inspektoratu Ochrony Środowiska.</p>
+      <p class="lang-en" style="display:none">OPC UA data exchange with laboratory LIMS system. Automated daily and monthly reports for Environmental Protection Inspectorate.</p>
+      <div class="scope-tags"><span class="sc-tag">OPC UA</span><span class="sc-tag">LIMS</span><span class="sc-tag">PDF raporty</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- S3: PROCESS -->
+<div class="slide" id="s3">
+  <div class="slide-tag lang-pl">Technologia procesu</div>
+  <div class="slide-tag lang-en" style="display:none">Treatment process</div>
+  <div class="slide-title"><span class="lang-pl">Etapy oczyszczania <span class="hl">pod kontrolą SCADA</span></span><span class="lang-en" style="display:none">Treatment stages <span class="hl">under SCADA control</span></span></div>
+  <div class="main-content" style="width:100%;max-width:960px;margin-top:14px">
+    <div class="process-flow">
+      <div class="pf-stage">
+        <div class="pf-box">
+          <div class="pf-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="1.5"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM12 20c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/><path d="M12 6v6l4 2"/></svg></div>
+          <div class="pf-name lang-pl">Krata & Piaskownik</div>
+          <div class="pf-name lang-en" style="display:none">Screen & Grit</div>
+          <div class="pf-params lang-pl">Usuwanie skratek<br>i piasku</div>
+          <div class="pf-params lang-en" style="display:none">Removing screenings<br>and grit</div>
+          <div class="pf-sensors"><span class="pf-sensor">Qv przepływ</span><span class="pf-sensor">poziom</span></div>
+        </div>
+      </div>
+      <div class="pf-stage">
+        <div class="pf-box">
+          <div class="pf-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.5"><path d="M3 6l9 6 9-6M3 18l9-6 9 6"/></svg></div>
+          <div class="pf-name lang-pl">Osadnik Wstępny</div>
+          <div class="pf-name lang-en" style="display:none">Primary Clarifier</div>
+          <div class="pf-params lang-pl">Sedymentacja<br>zawiesiny</div>
+          <div class="pf-params lang-en" style="display:none">Suspended solids<br>sedimentation</div>
+          <div class="pf-sensors"><span class="pf-sensor">zawiesina</span><span class="pf-sensor">poziom</span></div>
+        </div>
+      </div>
+      <div class="pf-stage">
+        <div class="pf-box" style="border-color:rgba(16,185,129,0.4);background:rgba(16,185,129,0.06)">
+          <div class="pf-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M8 12s1.5-3 4-3 4 3 4 3"/><line x1="12" y1="8" x2="12" y2="12"/></svg></div>
+          <div class="pf-name lang-pl">Reaktor Biologiczny</div>
+          <div class="pf-name lang-en" style="display:none">Biological Reactor</div>
+          <div class="pf-params lang-pl">Nitryfikacja<br>Denitryfikacja</div>
+          <div class="pf-params lang-en" style="display:none">Nitrification<br>Denitrification</div>
+          <div class="pf-sensors"><span class="pf-sensor">O₂ rozpuszcz.</span><span class="pf-sensor">NH₄ azot</span><span class="pf-sensor">pH</span></div>
+        </div>
+      </div>
+      <div class="pf-stage">
+        <div class="pf-box">
+          <div class="pf-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06B6D4" stroke-width="1.5"><path d="M12 2l9 4.5v9L12 20l-9-4.5v-9L12 2z"/></svg></div>
+          <div class="pf-name lang-pl">Osadnik Wtórny</div>
+          <div class="pf-name lang-en" style="display:none">Secondary Clarifier</div>
+          <div class="pf-params lang-pl">Separacja<br>osadu czynnego</div>
+          <div class="pf-params lang-en" style="display:none">Activated sludge<br>separation</div>
+          <div class="pf-sensors"><span class="pf-sensor">zawiesina</span><span class="pf-sensor">poziom osadu</span></div>
+        </div>
+      </div>
+      <div class="pf-stage">
+        <div class="pf-box" style="border-color:rgba(249,115,22,0.4);background:rgba(249,115,22,0.05)">
+          <div class="pf-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5"><path d="M12 2v6m0 4v6m-6-9l5.2 3m1.6 0L18 9M6 15l5.2-3m1.6 0L18 15"/></svg></div>
+          <div class="pf-name lang-pl">Gospodarka Osadem</div>
+          <div class="pf-name lang-en" style="display:none">Sludge Treatment</div>
+          <div class="pf-params lang-pl">Zagęszczanie<br>Odwadnianie</div>
+          <div class="pf-params lang-en" style="display:none">Thickening<br>Dewatering</div>
+          <div class="pf-sensors"><span class="pf-sensor">sucha masa</span><span class="pf-sensor">Qv osad</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="process-legend">
+      <div class="pl-item"><div class="pl-dot" style="background:#3B82F6"></div><span class="lang-pl">Mechaniczne</span><span class="lang-en" style="display:none">Mechanical</span></div>
+      <div class="pl-item"><div class="pl-dot" style="background:#10B981"></div><span class="lang-pl">Biologiczne</span><span class="lang-en" style="display:none">Biological</span></div>
+      <div class="pl-item"><div class="pl-dot" style="background:#F97316"></div><span class="lang-pl">Gospodarka osadem</span><span class="lang-en" style="display:none">Sludge handling</span></div>
+      <div class="pl-item"><div class="pl-dot" style="background:#00D4FF"></div><span class="lang-pl">Punkt pomiarowy SCADA</span><span class="lang-en" style="display:none">SCADA measurement point</span></div>
+    </div>
+    <div style="margin-top:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+      <div class="card" style="text-align:center;padding:10px"><div style="font-family:'Rajdhani',sans-serif;font-size:1.3rem;font-weight:700;color:var(--cyan)">120+</div><div style="font-size:.7rem;color:var(--muted)" class="lang-pl">Zmiennych PLC</div><div style="font-size:.7rem;color:var(--muted)" class="lang-en d-none">PLC variables</div></div>
+      <div class="card" style="text-align:center;padding:10px"><div style="font-family:'Rajdhani',sans-serif;font-size:1.3rem;font-weight:700;color:var(--green)">48</div><div style="font-size:.7rem;color:var(--muted)" class="lang-pl">Napędów VFD</div><div style="font-size:.7rem;color:var(--muted)" class="lang-en d-none">VFD drives</div></div>
+      <div class="card" style="text-align:center;padding:10px"><div style="font-family:'Rajdhani',sans-serif;font-size:1.3rem;font-weight:700;color:var(--orange)">8</div><div style="font-size:.7rem;color:var(--muted)" class="lang-pl">Analizatorów online</div><div style="font-size:.7rem;color:var(--muted)" class="lang-en d-none">Online analyzers</div></div>
+      <div class="card" style="text-align:center;padding:10px"><div style="font-family:'Rajdhani',sans-serif;font-size:1.3rem;font-weight:700;color:var(--cyan)">3</div><div style="font-size:.7rem;color:var(--muted)" class="lang-pl">Stacje S7-414</div><div style="font-size:.7rem;color:var(--muted)" class="lang-en d-none">S7-414 stations</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S4: ARCHITECTURE -->
+<div class="slide" id="s4">
+  <div class="slide-tag lang-pl">Architektura systemu</div>
+  <div class="slide-tag lang-en" style="display:none">System architecture</div>
+  <div class="slide-title"><span class="lang-pl">3-poziomowa <span class="hl">architektura SCADA</span></span><span class="lang-en" style="display:none">3-level <span class="hl">SCADA architecture</span></span></div>
+  <div class="main-content" style="width:100%;max-width:900px;margin-top:14px">
+    <div class="arch-svg-wrap">
+      <svg viewBox="0 0 800 280" width="100%" fill="none">
+        <!-- LEVEL 3: MANAGEMENT -->
+        <rect x="10" y="10" width="780" height="60" rx="3" stroke="rgba(59,130,246,0.4)" stroke-width="1" fill="rgba(59,130,246,0.06)"/>
+        <text x="20" y="28" font-family="Rajdhani,sans-serif" font-size="9" fill="#3B82F6" letter-spacing="2">POZIOM 3 — ZARZĄDZANIE / MANAGEMENT</text>
+        <rect x="30" y="33" width="120" height="28" rx="2" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+        <text x="90" y="51" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="8.5" fill="#93C5FD">LIMS Laborat.</text>
+        <rect x="165" y="33" width="130" height="28" rx="2" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+        <text x="230" y="51" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="8.5" fill="#93C5FD">Raporty Środowisko</text>
+        <rect x="310" y="33" width="130" height="28" rx="2" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+        <text x="375" y="51" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="8.5" fill="#93C5FD">Zdalny dostęp VPN</text>
+        <rect x="455" y="33" width="130" height="28" rx="2" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+        <text x="520" y="51" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="8.5" fill="#93C5FD">Archiwum hist. 10 lat</text>
+        <!-- OPC UA line -->
+        <line x1="400" y1="70" x2="400" y2="90" stroke="rgba(59,130,246,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <text x="415" y="83" font-family="Rajdhani,sans-serif" font-size="8" fill="#3B82F6">OPC UA</text>
+
+        <!-- LEVEL 2: SCADA -->
+        <rect x="10" y="90" width="780" height="70" rx="3" stroke="rgba(0,212,255,0.3)" stroke-width="1" fill="rgba(0,212,255,0.04)"/>
+        <text x="20" y="108" font-family="Rajdhani,sans-serif" font-size="9" fill="#00D4FF" letter-spacing="2">POZIOM 2 — SCADA / SUPERVISORY</text>
+        <rect x="30" y="113" width="165" height="38" rx="2" fill="rgba(0,212,255,0.1)" stroke="rgba(0,212,255,0.35)" stroke-width="1"/>
+        <text x="112" y="128" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#00D4FF">WinCC OA Server</text>
+        <text x="112" y="143" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">Serwer główny + backup</text>
+        <rect x="210" y="113" width="140" height="38" rx="2" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.2)" stroke-width="1"/>
+        <text x="280" y="128" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#94A3B8">Stacja operatorska 1</text>
+        <text x="280" y="143" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">Hala sterowni</text>
+        <rect x="365" y="113" width="140" height="38" rx="2" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.2)" stroke-width="1"/>
+        <text x="435" y="128" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#94A3B8">Stacja operatorska 2</text>
+        <text x="435" y="143" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">Dyżurka UR</text>
+        <rect x="520" y="113" width="130" height="38" rx="2" fill="rgba(249,115,22,0.08)" stroke="rgba(249,115,22,0.3)" stroke-width="1"/>
+        <text x="585" y="128" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#FB923C">GSM Gateway</text>
+        <text x="585" y="143" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">Alarmy SMS</text>
+        <!-- Profibus line -->
+        <line x1="400" y1="160" x2="400" y2="180" stroke="rgba(0,212,255,0.4)" stroke-width="1.5"/>
+        <text x="415" y="173" font-family="Rajdhani,sans-serif" font-size="8" fill="#00D4FF">Profibus DP / Industrial Ethernet</text>
+
+        <!-- LEVEL 1: PLC -->
+        <rect x="10" y="180" width="780" height="70" rx="3" stroke="rgba(16,185,129,0.3)" stroke-width="1" fill="rgba(16,185,129,0.04)"/>
+        <text x="20" y="198" font-family="Rajdhani,sans-serif" font-size="9" fill="#10B981" letter-spacing="2">POZIOM 1 — STEROWANIE / CONTROL</text>
+        <rect x="30" y="203" width="170" height="38" rx="2" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.35)" stroke-width="1"/>
+        <text x="115" y="218" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#10B981">S7-414 CPU · Część mech.</text>
+        <text x="115" y="233" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">Krata, piaskownik, osadnik 1</text>
+        <rect x="215" y="203" width="185" height="38" rx="2" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.35)" stroke-width="1"/>
+        <text x="307" y="218" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#10B981">S7-414 CPU · Biologia</text>
+        <text x="307" y="233" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">Reaktory, napowietrzanie, recyrk.</text>
+        <rect x="415" y="203" width="185" height="38" rx="2" fill="rgba(16,185,129,0.1)" stroke="rgba(16,185,129,0.35)" stroke-width="1"/>
+        <text x="507" y="218" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#10B981">S7-414 CPU · Osad</text>
+        <text x="507" y="233" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">Zagęszczarka, wirówka, pras. taśm.</text>
+        <rect x="615" y="203" width="165" height="38" rx="2" fill="rgba(0,212,255,0.06)" stroke="rgba(0,212,255,0.2)" stroke-width="1"/>
+        <text x="697" y="218" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="9" fill="#94A3B8">ET200S Remote I/O</text>
+        <text x="697" y="233" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#64748B">Profibus slaves (DI/DO/AI/AO)</text>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<!-- S5: SCADA VISUALIZATION -->
+<div class="slide" id="s5">
+  <div class="slide-tag lang-pl">Wizualizacja</div>
+  <div class="slide-tag lang-en" style="display:none">Visualization</div>
+  <div class="slide-title"><span class="lang-pl">SCADA — <span class="hl">synoptyki i trendy</span></span><span class="lang-en" style="display:none">SCADA — <span class="hl">synoptics & trends</span></span></div>
+  <div class="main-content">
+    <div class="viz-screen">
+      <svg viewBox="0 0 420 210" width="100%" fill="none">
+        <rect width="420" height="210" fill="#050A12"/>
+        <rect width="420" height="22" fill="#0D1220"/>
+        <text x="10" y="15" font-family="Rajdhani,sans-serif" font-size="9" fill="#00D4FF" letter-spacing="2">OCZYSZCZALNIA ŚCIEKÓW · WIDOK GŁÓWNY</text>
+        <text x="360" y="15" font-family="Rajdhani,sans-serif" font-size="8" fill="#64748B">14:32:18</text>
+        <!-- mini process diagram -->
+        <rect x="10" y="30" width="55" height="35" rx="2" fill="#0D1220" stroke="rgba(59,130,246,0.5)" stroke-width="1"/>
+        <text x="37" y="48" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#60A5FA">KRATA</text>
+        <text x="37" y="58" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="8" fill="#fff">OK</text>
+        <rect x="75" y="30" width="55" height="35" rx="2" fill="#0D1220" stroke="rgba(0,212,255,0.4)" stroke-width="1"/>
+        <text x="102" y="48" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#00D4FF">OSADNIK 1</text>
+        <text x="102" y="58" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="8" fill="#10B981">↑ 2.3m</text>
+        <rect x="140" y="30" width="70" height="35" rx="2" fill="#0D1220" stroke="rgba(16,185,129,0.5)" stroke-width="1"/>
+        <text x="175" y="46" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#10B981">REAKTOR BIO</text>
+        <text x="175" y="56" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#34D399">O₂: 2.1 mg/l</text>
+        <text x="175" y="65" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#34D399">pH: 7.4</text>
+        <rect x="220" y="30" width="55" height="35" rx="2" fill="#0D1220" stroke="rgba(0,212,255,0.4)" stroke-width="1"/>
+        <text x="247" y="48" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#00D4FF">OSADNIK 2</text>
+        <text x="247" y="58" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="8" fill="#10B981">OK</text>
+        <rect x="285" y="30" width="60" height="35" rx="2" fill="#0D1220" stroke="rgba(249,115,22,0.4)" stroke-width="1"/>
+        <text x="315" y="46" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7" fill="#FB923C">ZAGĘSZCZ.</text>
+        <text x="315" y="58" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="8" fill="#FBBF24">6.2%SM</text>
+        <!-- flow arrows -->
+        <line x1="65" y1="47" x2="75" y2="47" stroke="#00D4FF" stroke-width="1"/><polyline points="73,44 76,47 73,50" stroke="#00D4FF" stroke-width="1" fill="none"/>
+        <line x1="130" y1="47" x2="140" y2="47" stroke="#00D4FF" stroke-width="1"/><polyline points="138,44 141,47 138,50" stroke="#00D4FF" stroke-width="1" fill="none"/>
+        <line x1="210" y1="47" x2="220" y2="47" stroke="#00D4FF" stroke-width="1"/><polyline points="218,44 221,47 218,50" stroke="#00D4FF" stroke-width="1" fill="none"/>
+        <line x1="275" y1="47" x2="285" y2="47" stroke="#00D4FF" stroke-width="1"/><polyline points="283,44 286,47 283,50" stroke="#00D4FF" stroke-width="1" fill="none"/>
+        <!-- alarms panel -->
+        <rect x="355" y="28" width="58" height="14" rx="1" fill="rgba(239,68,68,0.2)" stroke="rgba(239,68,68,0.5)" stroke-width="1"/>
+        <text x="384" y="38" text-anchor="middle" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#EF4444">● ALARM: 2</text>
+        <!-- trend chart -->
+        <rect x="10" y="75" width="240" height="80" rx="2" fill="rgba(13,18,32,0.8)" stroke="rgba(0,212,255,0.15)" stroke-width="1"/>
+        <text x="16" y="87" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#00D4FF">TREND — O₂ Reaktor (24h)</text>
+        <polyline points="16,145 40,138 65,142 90,128 115,120 140,125 165,118 190,115 215,122 235,118" stroke="#10B981" stroke-width="1.5" fill="none"/>
+        <line x1="16" y1="90" x2="16" y2="150" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <line x1="16" y1="150" x2="240" y2="150" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+        <text x="241" y="120" font-family="Rajdhani,sans-serif" font-size="6.5" fill="#64748B">2.1</text>
+        <!-- data table -->
+        <rect x="260" y="75" width="153" height="80" rx="2" fill="rgba(13,18,32,0.8)" stroke="rgba(0,212,255,0.15)" stroke-width="1"/>
+        <text x="266" y="87" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#00D4FF">WARTOŚCI BIEŻĄCE</text>
+        <text x="266" y="100" font-family="Rajdhani,sans-serif" font-size="7" fill="#94A3B8">Przepływ Qv:</text><text x="390" y="100" text-anchor="end" font-family="Rajdhani,sans-serif" font-size="7" fill="#10B981">1842 m³/h</text>
+        <text x="266" y="112" font-family="Rajdhani,sans-serif" font-size="7" fill="#94A3B8">O₂ reaktor:</text><text x="390" y="112" text-anchor="end" font-family="Rajdhani,sans-serif" font-size="7" fill="#10B981">2.1 mg/l</text>
+        <text x="266" y="124" font-family="Rajdhani,sans-serif" font-size="7" fill="#94A3B8">pH:</text><text x="390" y="124" text-anchor="end" font-family="Rajdhani,sans-serif" font-size="7" fill="#10B981">7.42</text>
+        <text x="266" y="136" font-family="Rajdhani,sans-serif" font-size="7" fill="#94A3B8">NH₄-N:</text><text x="390" y="136" text-anchor="end" font-family="Rajdhani,sans-serif" font-size="7" fill="#FBBF24">4.2 mg/l</text>
+        <text x="266" y="148" font-family="Rajdhani,sans-serif" font-size="7" fill="#94A3B8">Napędy aktywne:</text><text x="390" y="148" text-anchor="end" font-family="Rajdhani,sans-serif" font-size="7" fill="#10B981">44 / 48</text>
+        <!-- alarm list -->
+        <rect x="10" y="163" width="403" height="40" rx="2" fill="rgba(13,18,32,0.8)" stroke="rgba(0,212,255,0.12)" stroke-width="1"/>
+        <text x="16" y="175" font-family="Rajdhani,sans-serif" font-size="7.5" fill="#00D4FF">LISTA ALARMÓW</text>
+        <rect x="16" y="179" width="8" height="8" rx="1" fill="rgba(239,68,68,0.6)"/>
+        <text x="30" y="187" font-family="Rajdhani,sans-serif" font-size="7" fill="#EF4444">14:18  KRYT  Pompa osadu P-12 — przeciążenie prądowe</text>
+        <rect x="16" y="190" width="8" height="8" rx="1" fill="rgba(249,115,22,0.5)"/>
+        <text x="30" y="198" font-family="Rajdhani,sans-serif" font-size="7" fill="#FB923C">13:45  WARN  NH₄-N przekroczony próg 5.0 mg/l</text>
+      </svg>
+    </div>
+    <div class="viz-features">
+      <div class="vf-item">
+        <div class="vf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8m-4-4v4"/></svg></div>
+        <div><h4 class="lang-pl">18 synoptyk procesu</h4><h4 class="lang-en" style="display:none">18 process synoptics</h4><p class="lang-pl">Animowany przepływ ścieków, stany pomp i zaworów w czasie rzeczywistym.</p><p class="lang-en" style="display:none">Animated wastewater flow, pump and valve states in real time.</p></div>
+      </div>
+      <div class="vf-item">
+        <div class="vf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div><h4 class="lang-pl">Trendy historyczne 10 lat</h4><h4 class="lang-en" style="display:none">Historical trends 10 years</h4><p class="lang-pl">Archiwizacja wszystkich wartości pomiarowych co 1 sekundę. Szybki dostęp do historii awarii.</p><p class="lang-en" style="display:none">All measurement values archived every 1 second. Quick access to fault history.</p></div>
+      </div>
+      <div class="vf-item">
+        <div class="vf-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586l5.414 5.414V19a2 2 0 01-2 2z"/></svg></div>
+        <div><h4 class="lang-pl">Raporty automatyczne</h4><h4 class="lang-en" style="display:none">Automatic reports</h4><p class="lang-pl">Dobowe, miesięczne i roczne raporty PDF zgodne z wymogami WIOŚ wysyłane e-mailem.</p><p class="lang-en" style="display:none">Daily, monthly, annual PDF reports compliant with environmental regulator requirements, sent by email.</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S6: ALARMS -->
+<div class="slide" id="s6">
+  <div class="slide-tag lang-pl">System alarmów</div>
+  <div class="slide-tag lang-en" style="display:none">Alarm system</div>
+  <div class="slide-title"><span class="lang-pl">Alarmy & <span class="hl">powiadomienia SMS</span></span><span class="lang-en" style="display:none">Alarms & <span class="hl">SMS notifications</span></span></div>
+  <div class="main-content" style="width:100%;max-width:880px;margin-top:14px">
+    <div class="alarm-grid">
+      <div class="alarm-level al-crit">
+        <div class="al-head"><div class="al-badge">KRYTYCZNY / CRITICAL</div></div>
+        <ul class="lang-pl"><li>Brak zasilania / UPS aktywny</li><li>Awaria pompy ścieków surowych</li><li>O₂ &lt; 0.5 mg/l — brak napowietrzania</li><li>Przepełnienie zbiornika retencyjnego</li></ul>
+        <ul class="lang-en" style="display:none"><li>Power failure / UPS active</li><li>Raw sewage pump fault</li><li>DO &lt; 0.5 mg/l — aeration failure</li><li>Retention tank overflow</li></ul>
+      </div>
+      <div class="alarm-level al-warn">
+        <div class="al-head"><div class="al-badge">OSTRZEŻENIE / WARNING</div></div>
+        <ul class="lang-pl"><li>NH₄-N powyżej progu 5 mg/l</li><li>Przeciążenie prądowe napędu</li><li>Ciśnienie powietrza poniżej min.</li><li>Awaria analizatora online</li></ul>
+        <ul class="lang-en" style="display:none"><li>NH₄-N above threshold 5 mg/l</li><li>Drive overcurrent fault</li><li>Air pressure below minimum</li><li>Online analyzer failure</li></ul>
+      </div>
+      <div class="alarm-level al-info">
+        <div class="al-head"><div class="al-badge">INFO</div></div>
+        <ul class="lang-pl"><li>Zmiana trybu pracy (Auto/Ręczny)</li><li>Zaplanowany serwis napędu</li><li>Zmiana parametru procesu</li><li>Logowanie operatora</li></ul>
+        <ul class="lang-en" style="display:none"><li>Mode change (Auto/Manual)</li><li>Scheduled drive service</li><li>Process parameter change</li><li>Operator login event</li></ul>
+      </div>
+      <div class="alarm-level al-ok">
+        <div class="al-head"><div class="al-badge">ODWOŁANY / CLEARED</div></div>
+        <ul class="lang-pl"><li>Automatyczne skasowanie po normalizacji</li><li>Historia potwierdzeń przez operatora</li><li>Czas trwania alarmu w raporcie</li><li>Archiwum zdarzeń 10 lat</li></ul>
+        <ul class="lang-en" style="display:none"><li>Auto-clear after normalization</li><li>Operator acknowledgment history</li><li>Alarm duration in report</li><li>10-year event archive</li></ul>
+      </div>
+    </div>
+    <div class="sms-flow">
+      <div class="sms-step"><div class="si"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div><p class="lang-pl">Alarm SCADA</p><p class="lang-en" style="display:none">SCADA alarm</p></div>
+      <span class="sms-arr">→</span>
+      <div class="sms-step"><div class="si"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2"/><path d="M12 18h.01"/></svg></div><p class="lang-pl">GSM Gateway</p><p class="lang-en" style="display:none">GSM Gateway</p></div>
+      <span class="sms-arr">→</span>
+      <div class="sms-step"><div class="si"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07"/><path d="M14.05 2a9 9 0 010 9.91"/></svg></div><p class="lang-pl">SMS dyżurny UR</p><p class="lang-en" style="display:none">On-call SMS</p></div>
+      <span class="sms-arr">→</span>
+      <div class="sms-step"><div class="si" style="border-color:var(--orange)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#F97316" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><p class="lang-pl">Brak odp. → eskalacja</p><p class="lang-en" style="display:none">No reply → escalate</p></div>
+      <span class="sms-arr">→</span>
+      <div class="sms-step"><div class="si" style="border-color:var(--green)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="1.5"><polyline points="20 6 9 17 4 12"/></svg></div><p class="lang-pl">&lt;30s czas reakcji</p><p class="lang-en" style="display:none">&lt;30s response time</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- S7: INTEGRATION -->
+<div class="slide" id="s7">
+  <div class="slide-tag lang-pl">Integracja & dane</div>
+  <div class="slide-tag lang-en" style="display:none">Integration & data</div>
+  <div class="slide-title"><span class="lang-pl">Otwarta <span class="hl">integracja systemów</span></span><span class="lang-en" style="display:none">Open <span class="hl">system integration</span></span></div>
+  <div class="main-content">
+    <div class="int-card">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 010 20M12 2a15.3 15.3 0 000 20"/></svg><span class="lang-pl">OPC UA — LIMS Laboratorium</span><span class="lang-en" style="display:none">OPC UA — LIMS Laboratory</span></h4>
+      <p class="lang-pl">Automatyczna wymiana danych pomiarowych z systemem laboratoryjnym LIMS. Wyniki analiz fizyko-chemicznych trafiają bezpośrednio do bazy SCADA — koniec z przepisywaniem ręcznie.</p>
+      <p class="lang-en" style="display:none">Automatic exchange of measurement data with the LIMS laboratory system. Physico-chemical analysis results go directly into the SCADA database — no more manual entry.</p>
+      <div class="int-stats"><span class="int-stat">OPC UA Client/Server</span><span class="int-stat">Auto-sync 15min</span></div>
+    </div>
+    <div class="int-card">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586l5.414 5.414V19a2 2 0 01-2 2z"/></svg><span class="lang-pl">Raporty środowiskowe</span><span class="lang-en" style="display:none">Environmental reports</span></h4>
+      <p class="lang-pl">Automatyczne generowanie raportów dobowych i miesięcznych w formacie wymaganym przez Inspekcję Ochrony Środowiska (WIOŚ). Wysyłka e-mail do inspekcji i zarządu.</p>
+      <p class="lang-en" style="display:none">Automatic daily and monthly report generation in the format required by the Environmental Protection Inspectorate. Email delivery to inspectorate and management.</p>
+      <div class="int-stats"><span class="int-stat">PDF / Excel</span><span class="int-stat">Auto e-mail</span><span class="int-stat">WIOŚ format</span></div>
+    </div>
+    <div class="int-card">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg><span class="lang-pl">Zdalny dostęp VPN</span><span class="lang-en" style="display:none">VPN remote access</span></h4>
+      <p class="lang-pl">Szyfrowany tunel VPN umożliwia zdalną diagnostykę PLC i SCADA. Serwis zdalny bez wyjazdu na obiekt — oszczędność czasu i kosztów.</p>
+      <p class="lang-en" style="display:none">Encrypted VPN tunnel enables remote PLC and SCADA diagnostics. Remote service without site visits — saving time and costs.</p>
+      <div class="int-stats"><span class="int-stat">SSL VPN</span><span class="int-stat">TIA Portal Remote</span><span class="int-stat">WinCC OA Remote</span></div>
+    </div>
+    <div class="int-card">
+      <h4><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg><span class="lang-pl">Redundancja & Backup</span><span class="lang-en" style="display:none">Redundancy & Backup</span></h4>
+      <p class="lang-pl">Serwer SCADA w konfiguracji hot-standby. Automatyczny failover w czasie &lt;5 sekund. Backup danych historycznych na NAS co 24h.</p>
+      <p class="lang-en" style="display:none">SCADA server in hot-standby configuration. Automatic failover in &lt;5 seconds. Historical data backup to NAS every 24h.</p>
+      <div class="int-stats"><span class="int-stat">Hot-standby</span><span class="int-stat">Failover &lt;5s</span><span class="int-stat">NAS backup</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- S8: RESULTS -->
+<div class="slide" id="s8">
+  <div class="slide-tag lang-pl">Wyniki projektu</div>
+  <div class="slide-tag lang-en" style="display:none">Project results</div>
+  <div class="slide-title"><span class="lang-pl">Mierzalne <span class="hl">korzyści</span> dla klienta</span><span class="lang-en" style="display:none">Measurable <span class="hl">benefits</span> for the client</span></div>
+  <div class="main-content" style="width:100%;max-width:880px;margin-top:16px">
+    <div class="res-grid">
+      <div class="res-card"><div class="res-val g">99.7%</div><div class="res-lbl lang-pl">Dostępność SCADA<br>(SLA)</div><div class="res-lbl lang-en" style="display:none">SCADA availability<br>(SLA)</div></div>
+      <div class="res-card"><div class="res-val">−70%</div><div class="res-lbl lang-pl">Czas reakcji<br>na awarie</div><div class="res-lbl lang-en" style="display:none">Fault response<br>time reduction</div></div>
+      <div class="res-card"><div class="res-val o">0</div><div class="res-lbl lang-pl">Przekroczeń norm<br>ścieków oczyszczonych</div><div class="res-lbl lang-en" style="display:none">Treated effluent<br>standard violations</div></div>
+      <div class="res-card"><div class="res-val g">−25%</div><div class="res-lbl lang-pl">Zużycie energii<br>(optymalizacja O₂)</div><div class="res-lbl lang-en" style="display:none">Energy consumption<br>(O₂ optimization)</div></div>
+    </div>
+    <div class="testimonial">
+      <p class="lang-pl">„System SCADA od TU Automation kompletnie zmienił sposób pracy naszej oczyszczalni. Mamy pełny wgląd w proces 24 godziny na dobę, alarmy SMS docierają natychmiast do dyżurnych, a raporty dla inspekcji generują się same. Polecamy."</p>
+      <p class="lang-en" style="display:none">"The SCADA system from TU Automation completely transformed how our wastewater plant operates. We have full process visibility 24 hours a day, SMS alarms reach on-call staff instantly, and inspection reports generate themselves. Highly recommended."</p>
+      <cite class="lang-pl">— Kierownik Zakładu, Oczyszczalnia Ścieków Komunalnych, Polska</cite>
+      <cite class="lang-en" style="display:none">— Plant Manager, Municipal Wastewater Treatment Plant, Poland</cite>
+    </div>
+  </div>
+</div>
+
+<!-- S9: CONTACT -->
+<div class="slide" id="s9">
+  <div class="slide-tag lang-pl">Kontakt</div>
+  <div class="slide-tag lang-en" style="display:none">Contact</div>
+  <div class="slide-title"><span class="lang-pl">Zaprojektujmy <span class="hl">Twój system SCADA</span></span><span class="lang-en" style="display:none">Let's design <span class="hl">your SCADA system</span></span></div>
+  <p class="slide-sub lang-pl">Bezpłatna analiza wymagań i wycena systemu SCADA dla Twojego zakładu w ciągu 48 godzin.</p>
+  <p class="slide-sub lang-en" style="display:none">Free requirements analysis and SCADA system quote for your facility within 48 hours.</p>
+  <div class="contact-grid main-content">
+    <div class="c-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.63A2 2 0 012 .18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7a2 2 0 011.72 2.02z"/></svg>
+      <div><div class="ci-lbl">WhatsApp</div><div class="ci-val">+49 157 56290902</div></div>
+    </div>
+    <div class="c-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <div><div class="ci-lbl">Email</div><div class="ci-val"><a href="mailto:info@tuautomation.de">info@tuautomation.de</a></div></div>
+    </div>
+    <div class="c-item">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <div><div class="ci-lbl lang-pl">Lokalizacja</div><div class="ci-lbl lang-en" style="display:none">Location</div><div class="ci-val">Niemcy · Europa / Germany · Europe</div></div>
+    </div>
+  </div>
+  <div class="cta-row main-content">
+    <a href="index.html#contact" class="btn-cta primary"><span class="lang-pl">Zapytaj o wycenę →</span><span class="lang-en" style="display:none">Request a quote →</span></a>
+    <a href="index.html#projects" class="btn-cta outline"><span class="lang-pl">← Powrót do projektów</span><span class="lang-en" style="display:none">← Back to projects</span></a>
+  </div>
+</div>
+
+</div>
+
+<div class="ctrl">
+  <button class="ctrl-btn" onclick="changeSlide(-1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+  <div class="ctrl-dots" id="dots"></div>
+  <button class="ctrl-btn" onclick="changeSlide(1)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+</div>
+<div class="progress" id="progress"></div>
+
+<script>
+const slides=document.querySelectorAll('.slide'),total=slides.length;
+let cur=0;
+const dotsEl=document.getElementById('dots');
+for(let i=0;i<total;i++){const d=document.createElement('div');d.className='ctrl-dot'+(i===0?' active':'');d.onclick=()=>goTo(i);dotsEl.appendChild(d);}
+function goTo(n){slides[cur].classList.remove('active');cur=Math.max(0,Math.min(n,total-1));slides[cur].classList.add('active');document.querySelectorAll('.ctrl-dot').forEach((d,i)=>d.classList.toggle('active',i===cur));document.getElementById('slideNum').textContent=String(cur+1).padStart(2,'0');document.getElementById('progress').style.width=((cur+1)/total*100)+'%';}
+function changeSlide(d){goTo(cur+d);}
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key==='ArrowDown')changeSlide(1);if(e.key==='ArrowLeft'||e.key==='ArrowUp')changeSlide(-1);});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>50)changeSlide(dx<0?1:-1);},{passive:true});
+goTo(0);
+
+let lang='pl';
+function setLang(l){
+  lang=l;
+  document.querySelectorAll('.lang-pl').forEach(el=>el.style.display=l==='pl'?'':'none');
+  document.querySelectorAll('.lang-en').forEach(el=>el.style.display=l==='en'?'':'none');
+  document.getElementById('btnPL').classList.toggle('active',l==='pl');
+  document.getElementById('btnEN').classList.toggle('active',l==='en');
+}
+
+const canvas=document.getElementById('bg'),ctx=canvas.getContext('2d');
+let W,H,pts=[];
+function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;pts=Array.from({length:55},()=>({x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5}));}
+window.addEventListener('resize',resize);resize();
+function draw(){ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(0,212,255,0.5)';ctx.fill();});pts.forEach((a,i)=>pts.slice(i+1).forEach(b=>{const d=Math.hypot(a.x-b.x,a.y-b.y);if(d<110){ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.strokeStyle=`rgba(0,212,255,${.12*(1-d/110)})`;ctx.lineWidth=.5;ctx.stroke();}}));requestAnimationFrame(draw);}
+draw();
+</script>
+</body>
+</html>
