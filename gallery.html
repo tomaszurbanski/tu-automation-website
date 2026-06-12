@@ -456,7 +456,7 @@
 
 <!-- STATS -->
 <div class="gal-stats">
-  <div class="gal-stat"><div class="gal-stat-num">15+</div><div class="gal-stat-lbl">Projektów</div></div>
+  <div class="gal-stat"><div class="gal-stat-num">20</div><div class="gal-stat-lbl">Realizacji</div></div>
   <div class="gal-stat"><div class="gal-stat-num">3</div><div class="gal-stat-lbl">Kategorie</div></div>
   <div class="gal-stat"><div class="gal-stat-num">DE/PL</div><div class="gal-stat-lbl">Region</div></div>
   <div class="gal-stat"><div class="gal-stat-num">NDA</div><div class="gal-stat-lbl">Chronione</div></div>
@@ -465,7 +465,7 @@
 <!-- FILTERS -->
 <div class="gal-filters">
   <button class="gal-filter-btn active" data-filter="all">// Wszystkie</button>
-  <button class="gal-filter-btn" data-filter="hw">⬡ Szafy elektryczne</button>
+  <button class="gal-filter-btn" data-filter="hw">⬡ Sprzęt / Serwis</button>
   <button class="gal-filter-btn" data-filter="hmi">◈ HMI · SCADA</button>
   <button class="gal-filter-btn" data-filter="code">&#x3E; Programowanie</button>
 </div>
@@ -486,7 +486,7 @@
     </div>
     <div class="lb-panel">
       <div class="lb-panel-header">// TU Automation — field record</div>
-      <div class="lb-codename" id="lbCodename">PROJEKT NEXUS</div>
+      <div class="lb-codename" id="lbCodename">PRJ-0000-000</div>
       <div class="lb-field">
         <span class="lb-field-key">Kategoria</span>
         <span class="lb-field-val" id="lbCat">—</span>
@@ -500,7 +500,7 @@
         <span class="lb-field-val"><span class="lb-redacted">█████████</span></span>
       </div>
       <div class="lb-field">
-        <span class="lb-field-key">Technologie</span>
+        <span class="lb-field-key">Zakres prac</span>
         <span class="lb-field-val" id="lbTech">—</span>
       </div>
       <div class="lb-field">
@@ -523,128 +523,171 @@
 
 <script>
 // ── GALLERY DATA ─────────────────────────────────────────────────────
-// Dodaj zdjęcia do folderu gallery/ i odpowiadające wpisy poniżej.
-// cat: 'hw' = szafy elektryczne, 'hmi' = HMI/SCADA, 'code' = programowanie
+// cat: 'hw' = sprzet/serwis, 'hmi' = HMI/panel, 'code' = programowanie
 const ITEMS = [
+  // ── SZAFY ELEKTRYCZNE / BUDOWA ─────────────────────────────────────
   {
     src: 'gallery/hw-001.jpg',
-    codename: 'PROJEKT NEXUS',
+    codename: 'PRJ-2021-001',
     cat: 'hw',
     catLabel: 'Szafa elektryczna',
-    tech: 'Siemens S7-1500, ET200SP',
-    desc: 'Projekt i montaż szafy sterowniczej dla linii produkcyjnej. Wdrożenie PLC S7-1500 z rozproszoną peryferia ET200SP.',
+    tech: 'Budowa szafy sterowniczej, PLC, I/O',
+    desc: 'Projekt i montaż szafy sterowniczej dla linii produkcyjnej. Instalacja sterownika PLC z rozproszonym I/O, okablowanie tras kablowych, uruchomienie.',
   },
   {
     src: 'gallery/hw-002.jpg',
-    codename: 'PROJEKT ALPHA',
+    codename: 'PRJ-2021-001',
     cat: 'hw',
     catLabel: 'Szafa elektryczna',
-    tech: 'Siemens S7-300, Profibus DP',
-    desc: 'Modernizacja układu sterowania. Wymiana sterownika S5 na S7-300 z zachowaniem okablowania polowego.',
+    tech: 'Okablowanie, listwy zaciskowe, sieci',
+    desc: 'Detal wykonania szafy sterowniczej. Organizacja okablowania, sieci przemysłowe, zasilanie i obwody bezpieczeństwa.',
   },
   {
     src: 'gallery/hw-003.jpg',
-    codename: 'PROJEKT GRID',
+    codename: 'PRJ-2021-001',
     cat: 'hw',
     catLabel: 'Szafa elektryczna',
-    tech: 'Wago I/O, EtherNet/IP',
-    desc: 'Szafa sterownicza z modułami Wago dla układu transportowego. Komunikacja EtherNet/IP z SCADA.',
+    tech: 'Sterowanie, bezpieczeństwo, I/O',
+    desc: 'Montaż komponentów sterowniczych i bezpieczeństwa w szafie. Układy wejść/wyjść cyfrowych i analogowych.',
   },
   {
     src: 'gallery/hw-004.jpg',
-    codename: 'PROJEKT SIGMA',
+    codename: 'PRJ-2021-001',
     cat: 'hw',
     catLabel: 'Szafa elektryczna',
-    tech: 'Siemens S7-1200, TIA Portal',
-    desc: 'Układ sterowania procesem dozowania. S7-1200 z panelem KTP700 Basic.',
+    tech: 'Szafa sterownicza, kompletacja',
+    desc: 'Widok gotowej sekcji szafy sterowniczej — okablowanie, terminale i organizacja komponentów przed uruchomieniem.',
   },
   {
     src: 'gallery/hw-005.jpg',
-    codename: 'PROJEKT VECTOR',
+    codename: 'PRJ-2021-002',
     cat: 'hw',
     catLabel: 'Szafa elektryczna',
-    tech: 'ABB AC500, Modbus TCP',
-    desc: 'Szafa sterowania napędami. Falowniki Lenze z komunikacją Modbus TCP do sterownika nadrzędnego.',
+    tech: 'PLC, zasilanie, sieci, bezpieczeństwo',
+    desc: 'Nowoczesna szafa sterownicza z redundantnym zasilaniem, sterownikiem PLC, siecią przemysłową i modułami bezpieczeństwa.',
   },
+  // ── SERWIS — STARE STEROWANIA ──────────────────────────────────────
   {
     src: 'gallery/hw-006.jpg',
-    codename: 'PROJEKT ORBIT',
+    codename: 'PRJ-2019-003',
     cat: 'hw',
-    catLabel: 'Szafa elektryczna',
-    tech: 'Phoenix Contact, Siemens',
-    desc: 'Rozdzielnica zasilająca z zabezpieczeniami Siemens 3RV i terminalami Phoenix Contact.',
+    catLabel: 'Serwis / Modernizacja',
+    tech: 'Diagnostyka, wymiana, uruchomienie',
+    desc: 'Serwis i diagnostyka przestarzałego systemu sterowniczego. Ocena stanu technicznego przed migracją na nowoczesne rozwiązanie.',
   },
   {
     src: 'gallery/hw-007.jpg',
-    codename: 'PROJEKT HELIX',
+    codename: 'PRJ-2018-002',
     cat: 'hw',
-    catLabel: 'Szafa elektryczna',
-    tech: 'Siemens S7-1500, PROFINET',
-    desc: 'Szafa główna dla zautomatyzowanej linii montażowej. PROFINET IO z 12 rozproszonych stacji.',
+    catLabel: 'Serwis / Diagnoza',
+    tech: 'Stare sterowanie, analiza, dokumentacja',
+    desc: 'Inwentaryzacja i ocena techniczna starego pulpitu sterowania. Podstawa do opracowania projektu modernizacji maszyny.',
   },
   {
     src: 'gallery/hw-008.jpg',
-    codename: 'PROJEKT BINARY',
+    codename: 'PRJ-2019-003',
     cat: 'hw',
-    catLabel: 'Szafa elektryczna',
-    tech: 'Beckhoff CX, EtherCAT',
-    desc: 'Sterowanie serwonapędami — 8 osi EtherCAT. Beckhoff CX5140 z TwinCAT 3.',
+    catLabel: 'Serwis / Napędy',
+    tech: 'Napędy przemysłowe, elektronika',
+    desc: 'Inspekcja i serwis układów napędowych. Diagnoza uszkodzeń, wymiana elektroniki, ponowne uruchomienie i parametryzacja.',
   },
   {
     src: 'gallery/hw-009.jpg',
-    codename: 'PROJEKT PRISM',
+    codename: 'PRJ-2020-004',
     cat: 'hw',
-    catLabel: 'Szafa elektryczna',
-    tech: 'Siemens, Schneider',
-    desc: 'Rozbudowa istniejącej szafy sterowniczej. Dodanie sekcji bezpieczeństwa EN 13849 PL-d.',
+    catLabel: 'Sieci przemysłowe',
+    tech: 'Sieci przemysłowe, protokoły komunikacji',
+    desc: 'Wdrożenie i konfiguracja modułu sieci przemysłowej. Integracja z systemem nadrzędnym i urządzeniami polowymi.',
   },
   {
     src: 'gallery/hw-010.jpg',
-    codename: 'PROJEKT PULSE',
+    codename: 'PRJ-2022-005',
     cat: 'hw',
-    catLabel: 'Szafa elektryczna',
-    tech: 'Siemens S7-300 → S7-1500',
-    desc: 'Migracja sterowania z S7-300 do S7-1500. Zachowanie istniejących obwodów polowych.',
+    catLabel: 'Napędy / Serwo',
+    tech: 'Serwowzmacniacz, parametryzacja',
+    desc: 'Montaż i uruchomienie nowego serwowzmacniacza. Konfiguracja parametrów, integracja z PLC, testy dynamiczne.',
   },
   {
+    src: 'gallery/hw-011.jpg',
+    codename: 'PRJ-2018-001',
+    cat: 'hw',
+    catLabel: 'Serwis / Regulacja',
+    tech: 'Regulator procesowy, kalibracja',
+    desc: 'Serwis i kalibracja sterownika procesowego. Weryfikacja parametrów, naprawa układu oraz dokumentacja porealizacyjna.',
+  },
+  {
+    src: 'gallery/hw-012.jpg',
+    codename: 'PRJ-2019-004',
+    cat: 'hw',
+    catLabel: 'Serwis / Elektronika',
+    tech: 'Diagnoza płyt elektronicznych, naprawa',
+    desc: 'Diagnostyka i naprawa płyty elektronicznej systemu sterowania. Lokalizacja uszkodzeń na poziomie komponentów, wymiana, test.',
+  },
+  // ── HMI / WIZUALIZACJA ─────────────────────────────────────────────
+  {
     src: 'gallery/hmi-001.png',
-    codename: 'PROJEKT VORTEX',
+    codename: 'PRJ-2020-002',
     cat: 'hmi',
-    catLabel: 'HMI / SCADA',
-    tech: 'WinCC, Simatic HMI',
-    desc: 'Wizualizacja procesu dla linii produkcji włókiettextylnej. Nadzór 40+ napędów w czasie rzeczywistym.',
+    catLabel: 'HMI / Wizualizacja',
+    tech: 'Panel operatorski, nadzór procesu',
+    desc: 'Wizualizacja procesu produkcyjnego — ekran główny z nadzorem napędów, sygnalizacją stanów i archiwum alarmów.',
   },
   {
     src: 'gallery/hmi-002.png',
-    codename: 'PROJEKT NOVA',
+    codename: 'PRJ-2020-002',
     cat: 'hmi',
-    catLabel: 'HMI / SCADA',
-    tech: 'WinCC Flexible, TP1500',
-    desc: 'Panel operatorski dla sekcji vliesstrecke. Ekrany synoptyczne z recepturami i archiwum alarmów.',
+    catLabel: 'HMI / Wizualizacja',
+    tech: 'Ekrany synoptyczne, receptury',
+    desc: 'Panel operatorski — ekran sterowania sekcją technologiczną z recepturami, danymi procesowymi i nadzorem napędów.',
   },
   {
     src: 'gallery/hmi-003.png',
-    codename: 'PROJEKT AXIS',
+    codename: 'PRJ-2020-002',
     cat: 'hmi',
-    catLabel: 'HMI / SCADA',
-    tech: 'WinCC RT Professional',
-    desc: 'SCADA dla wielosegmentowej linii produkcyjnej. Raportowanie zmianowe, histogramy wydajności.',
+    catLabel: 'HMI / Wizualizacja',
+    tech: 'Wizualizacja, alarmy, diagnostyka',
+    desc: 'Dodatkowy ekran synoptyczny z nadzorem stanu maszyny, diagnostyką i archiwum zdarzeń procesowych.',
   },
   {
+    src: 'gallery/hmi-004.jpg',
+    codename: 'PRJ-2022-006',
+    cat: 'hmi',
+    catLabel: 'HMI / Panel',
+    tech: 'Panel dotykowy, sterowanie maszyną',
+    desc: 'Panel operatorski maszyny przemysłowej — sterowanie trybami pracy, nadzór parametrów i sygnalizacja stanów awaryjnych.',
+  },
+  // ── PROGRAMOWANIE ──────────────────────────────────────────────────
+  {
     src: 'gallery/code-001.png',
-    codename: 'PROJEKT DELTA',
+    codename: 'PRJ-2019-001',
     cat: 'code',
-    catLabel: 'Programowanie PLC',
-    tech: 'TIA Portal V18, SCL, FB',
-    desc: 'Programowanie sterownika w języku SCL — strukturalne bloki funkcji dla algorytmów regulacji PID i AutoTuning.',
+    catLabel: 'Programowanie',
+    tech: 'IEC 61131-3, bloki funkcyjne, napędy',
+    desc: 'Programowanie sterownika napędów w środowisku IEC 61131-3. Bloki funkcyjne dla sterowania wieloosiowego i komunikacji z nadrzędnym PLC.',
   },
   {
     src: 'gallery/code-002.png',
-    codename: 'PROJEKT CORE',
+    codename: 'PRJ-2019-001',
     cat: 'code',
-    catLabel: 'Programowanie PLC',
-    tech: 'CODESYS 3.5, Structured Text',
-    desc: 'Implementacja Structured Text w CODESYS. Moduł komunikacji OPC UA z systemem nadrzędnym.',
+    catLabel: 'Programowanie',
+    tech: 'IEC 61131-3, I/O, struktury danych',
+    desc: 'Programowanie bloków wejść/wyjść i struktur wymiany danych między sterownikiem napędów a systemem nadrzędnym.',
+  },
+  {
+    src: 'gallery/code-003.png',
+    codename: 'PRJ-2021-002',
+    cat: 'code',
+    catLabel: 'Programowanie',
+    tech: 'TIA Portal, SCL, bloki FB',
+    desc: 'Programowanie PLC w TIA Portal — implementacja algorytmów inspekcji wizyjnej. Bloki funkcyjne, sekwencja stanów, obsługa kamer.',
+  },
+  {
+    src: 'gallery/code-004.png',
+    codename: 'PRJ-2021-001',
+    cat: 'code',
+    catLabel: 'Programowanie',
+    tech: 'TIA Portal, SCL, napędy',
+    desc: 'Programowanie w języku SCL — bloki funkcyjne sterowania napędami, komunikacja i parametryzacja w oparciu o standard IEC 61131.',
   },
 ];
 
@@ -666,7 +709,7 @@ function renderGrid(filter) {
         <div class="gal-decrypt">DECRYPT ▶</div>
       </div>
       <div class="gal-info">
-        <span class="gal-codename">${item.codename}</span>
+        <span class="gal-codename">// ${item.codename}</span>
         <span class="gal-cat-badge ${catBadgeClass[item.cat]}">${catIcon[item.cat]} ${item.catLabel}</span>
       </div>
       <div class="corner-br"></div>
