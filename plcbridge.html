@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PLCbridge — PLC Language Converter | TU Automation</title>
+  <meta name="description" content="Free online PLC language converter. Convert STL/AWL to SCL, SCL to ST (CODESYS), IL and more. Powered by AI. By TU Automation."/>
+  <meta name="keywords" content="PLC converter, STL to SCL, AWL to SCL, CODESYS converter, TIA Portal, IEC 61131-3"/>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+
+  <!-- CodeMirror 5 (CDN) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/theme/dracula.min.css"/>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.18/mode/clike/clike.min.js"></script>
+
+  <style>
+    /* ── tuautomation.de palette ── */
+    :root {
+      --bg:      #080C14;
+      --bg2:     #0D1220;
+      --bg3:     #111827;
+      --surface: #151E2D;
+      --border:  #1E293B;
+      --border2: #243348;
+      --cyan:    #00D4FF;
+      --cyan-d:  #0099bb;
+      --blue:    #1D4ED8;
+      --text:    #E2E8F0;
+      --muted:   #64748B;
+      --muted2:  #94A3B8;
+      --green:   #22c55e;
+      --warn:    #fbbf24;
+      --error:   #f87171;
+      --glow:    rgba(0,212,255,0.15);
+      --glow2:   rgba(0,212,255,0.06);
+      --mono:    'JetBrains Mono', 'Fira Code', monospace;
+      --head:    'Rajdhani', sans-serif;
+      --body:    'Inter', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      font-size: 15px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 58px;
+      background: rgba(8,12,20,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .topbar-logo {
+      font-family: var(--head);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--cyan);
+      text-decoration: none;
+      letter-spacing: 0.04em;
+    }
+    .topbar-logo span { color: var(--text); }
+    .topbar-nav { display: flex; align-items: center; gap: 24px; }
+    .topbar-nav a {
+      color: var(--muted2);
+      font-size: 13px;
+      font-weight: 500;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .topbar-nav a:hover { color: var(--cyan); }
+    .topbar-nav a.active { color: var(--cyan); }
+    .btn-cta {
+      background: var(--cyan);
+      border: none;
+      border-radius: 7px;
+      color: #000;
+      cursor: pointer;
+      font-family: var(--head);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 8px 18px;
+      text-decoration: none;
+      transition: opacity 0.15s, box-shadow 0.15s;
+      box-shadow: 0 0 16px var(--glow);
+      white-space: nowrap;
+    }
+    .btn-cta:hover { opacity: 0.85; box-shadow: 0 0 24px rgba(0,212,255,0.3); }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 64px 24px 40px;
+      background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
+      border-bottom: 1px solid var(--border);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0,212,255,0.08);
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 20px;
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-family: var(--head);
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+      letter-spacing: 0.02em;
+    }
+    .hero h1 span { color: var(--cyan); }
+    .hero p {
+      color: var(--muted2);
+      font-size: 16px;
+      max-width: 560px;
+      margin: 0 auto 28px;
+    }
+    .lang-pills {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .lang-pill {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 5px;
+      color: var(--muted2);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      letter-spacing: 0.06em;
+    }
+    .lang-pill.active { border-color: var(--cyan); color: var(--cyan); background: var(--glow2); }
+
+    /* ── CONVERTER ── */
+    .converter-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 60px;
+    }
+
+    /* toolbar */
+    .conv-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 12px 16px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-bottom: none;
+      border-radius: 12px 12px 0 0;
+    }
+    .conv-select {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 7px 12px;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+      min-width: 220px;
+    }
+    .conv-select:hover, .conv-select:focus { border-color: var(--cyan-d); }
+    .arrow-sym {
+      color: var(--cyan);
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      padding: 0 4px;
+      transition: opacity 0.15s;
+    }
+    .arrow-sym.disabled { opacity: 0.3; cursor: default; }
+    .btn-convert-main {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--cyan);
+      border: none;
+      border-radius: 7px;
+      color: #000;
+      cursor: pointer;
+      font-family: var(--head);
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 8px 24px;
+      transition: opacity 0.15s, box-shadow 0.15s;
+      box-shadow: 0 0 16px var(--glow);
+    }
+    .btn-convert-main:hover:not(:disabled) { opacity: 0.85; box-shadow: 0 0 24px rgba(0,212,255,0.3); }
+    .btn-convert-main:disabled { opacity: 0.4; cursor: not-allowed; box-shadow: none; }
+    .btn-sm {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      color: var(--muted2);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 7px 12px;
+      transition: color 0.15s;
+    }
+    .btn-sm:hover { color: var(--text); }
+    .toolbar-right { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+
+    /* free counter */
+    .free-counter {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted2);
+      white-space: nowrap;
+    }
+    .free-counter .dots {
+      display: flex;
+      gap: 4px;
+    }
+    .free-counter .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--border2);
+    }
+    .free-counter .dot.used { background: var(--cyan); }
+
+    /* editors */
+    .editors-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      overflow: hidden;
+      min-height: 420px;
+    }
+    .editor-col { display: flex; flex-direction: column; }
+    .editor-col + .editor-col { border-left: 1px solid var(--border); }
+    .editor-col-hdr {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 7px 14px;
+      background: var(--bg3);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .e-lang-badge {
+      background: var(--border2);
+      border-radius: 4px;
+      color: var(--cyan);
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+    }
+    .btn-copy {
+      background: none;
+      border: 1px solid var(--border2);
+      border-radius: 4px;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 11px;
+      padding: 2px 8px;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .btn-copy:hover { color: var(--cyan); border-color: var(--cyan-d); }
+
+    /* CodeMirror overrides */
+    .CodeMirror {
+      height: 400px;
+      font-family: var(--mono) !important;
+      font-size: 13px;
+      background: var(--bg) !important;
+      color: #f8f8f2 !important;
+    }
+    .editor-col:last-child .CodeMirror { background: var(--bg2) !important; }
+    .CodeMirror-gutters { background: var(--bg2) !important; border-right: 1px solid var(--border) !important; }
+    .CodeMirror-linenumber { color: var(--muted) !important; }
+    .CodeMirror-cursor { border-left: 2px solid var(--cyan) !important; }
+    .CodeMirror-selected { background: rgba(0,212,255,0.1) !important; }
+    .CodeMirror-activeline-background { background: rgba(0,212,255,0.04) !important; }
+
+    /* status */
+    .conv-status {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      height: 28px;
+      background: var(--cyan);
+      color: #000;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 0 0 12px 12px;
+      overflow: hidden;
+      margin-top: -12px;
+    }
+    .conv-status .s-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 0 14px;
+      height: 100%;
+      border-right: 1px solid rgba(0,0,0,0.15);
+      white-space: nowrap;
+    }
+    .conv-status .s-right { margin-left: auto; border-right: none; border-left: 1px solid rgba(0,0,0,0.15); cursor: pointer; }
+    .conv-status .s-right:hover { background: rgba(0,0,0,0.1); }
+    .conv-status.error { background: var(--error); color: #fff; }
+    .conv-status.idle { background: var(--bg3); color: var(--muted2); border: 1px solid var(--border); border-top: none; }
+
+    /* warnings */
+    .conv-warning {
+      background: rgba(251,191,36,0.08);
+      border: 1px solid rgba(251,191,36,0.25);
+      border-radius: 8px;
+      color: var(--warn);
+      font-size: 13px;
+      margin-top: 12px;
+      padding: 10px 16px;
+      display: none;
+    }
+    .conv-warning.visible { display: flex; align-items: center; gap: 8px; }
+
+    /* ── UPGRADE WALL ── */
+    .upgrade-wall {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 40px 20px;
+      background: linear-gradient(135deg, rgba(0,212,255,0.06), rgba(29,78,216,0.08));
+      border: 1px solid rgba(0,212,255,0.2);
+      border-radius: 12px;
+      margin-top: 24px;
+    }
+    .upgrade-wall.visible { display: flex; }
+    .upgrade-wall h3 {
+      font-family: var(--head);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    .upgrade-wall p { color: var(--muted2); max-width: 420px; margin-bottom: 24px; }
+    .upgrade-features {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+    .upgrade-feat {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--muted2);
+    }
+    .upgrade-feat strong { color: var(--cyan); display: block; font-size: 16px; margin-bottom: 2px; }
+
+    /* ── INFO SECTION ── */
+    .info-section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px 80px;
+    }
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .info-card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      transition: border-color 0.15s;
+    }
+    .info-card:hover { border-color: var(--border2); }
+    .info-card h4 {
+      font-family: var(--head);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+    .info-card p { color: var(--muted2); font-size: 13px; line-height: 1.6; }
+    .info-card .card-icon { font-size: 24px; margin-bottom: 12px; }
+    .section-label {
+      font-family: var(--head);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: var(--head);
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer a { color: var(--muted); text-decoration: none; }
+    .footer a:hover { color: var(--cyan); }
+
+    /* spin */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spin { display: inline-block; animation: spin 0.7s linear infinite; }
+
+    /* responsive */
+    @media (max-width: 700px) {
+      .editors-row { grid-template-columns: 1fr; }
+      .editor-col + .editor-col { border-left: none; border-top: 1px solid var(--border); }
+      .conv-toolbar { gap: 8px; }
+      .topbar { padding: 0 16px; }
+      .topbar-nav { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── TOPBAR ── -->
+<nav class="topbar">
+  <a class="topbar-logo" href="https://tuautomation.de/">TU<span>Automation</span></a>
+  <div class="topbar-nav">
+    <a href="https://tuautomation.de/">Home</a>
+    <a href="https://tuautomation.de/#services">Services</a>
+    <a href="https://tuautomation.de/blog.html">Blog</a>
+    <a href="#converter" class="active">PLCbridge</a>
+    <a class="btn-cta" href="https://tuautomation.de/#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="hero-badge">⚡ AI-Powered · Free Online Tool</div>
+  <h1>PLC Language <span>Converter</span></h1>
+  <p>Convert between Siemens STL/AWL, SCL, CODESYS ST, and IEC 61131-3 IL instantly. Powered by AI — no installation required.</p>
+  <div class="lang-pills">
+    <span class="lang-pill active">STL / AWL</span>
+    <span class="lang-pill">⇄</span>
+    <span class="lang-pill active">SCL</span>
+    <span class="lang-pill">⇄</span>
+    <span class="lang-pill active">ST (CODESYS)</span>
+    <span class="lang-pill">⇄</span>
+    <span class="lang-pill active">IL</span>
+  </div>
+</section>
+
+<!-- ── CONVERTER ── -->
+<div class="converter-wrap" id="converter">
+
+  <!-- toolbar -->
+  <div class="conv-toolbar">
+    <select class="conv-select" id="srcLang" onchange="onSrcChange()">
+      <option value="STL">STL / AWL — Siemens S7</option>
+      <option value="SCL">SCL — Siemens TIA Portal</option>
+      <option value="ST">ST — CODESYS / Beckhoff</option>
+      <option value="IL">IL — IEC 61131-3</option>
+    </select>
+
+    <span class="arrow-sym" id="swapBtn" onclick="swapLangs()" title="Swap languages">⇄</span>
+
+    <select class="conv-select" id="tgtLang">
+      <option value="SCL">SCL — Siemens TIA Portal</option>
+      <option value="IL">IL — IEC 61131-3</option>
+    </select>
+
+    <button class="btn-convert-main" id="convertBtn" onclick="doConvert()">
+      ⚡ Convert
+    </button>
+
+    <div class="toolbar-right">
+      <label class="btn-sm" style="cursor:pointer" title="Upload .awl/.scl/.txt file">
+        ↑ Upload
+        <input type="file" accept=".awl,.scl,.txt,.st,.il,.xml" style="display:none" onchange="loadFile(this)"/>
+      </label>
+      <button class="btn-sm" onclick="clearSource()" title="Clear source">✕ Clear</button>
+
+      <div class="free-counter" id="freeCounter">
+        <span>Free:</span>
+        <div class="dots" id="freeDots"></div>
+        <span id="freeLabel">5/5 left</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- editors -->
+  <div class="editors-row">
+    <div class="editor-col">
+      <div class="editor-col-hdr">
+        SOURCE
+        <span class="e-lang-badge" id="srcBadge">STL</span>
+      </div>
+      <textarea id="srcEditor"></textarea>
+    </div>
+    <div class="editor-col">
+      <div class="editor-col-hdr">
+        OUTPUT
+        <div style="display:flex;gap:6px;align-items:center">
+          <span class="e-lang-badge" id="tgtBadge">SCL</span>
+          <button class="btn-copy" onclick="copyOutput()" title="Copy output">⎘ Copy</button>
+        </div>
+      </div>
+      <textarea id="tgtEditor" readonly></textarea>
+    </div>
+  </div>
+
+  <!-- warning -->
+  <div class="conv-warning" id="warnBox">
+    ⚠ <span id="warnText"></span>
+  </div>
+
+  <!-- status bar -->
+  <div class="conv-status idle" id="statusBar">
+    <div class="s-item">⚡ PLCbridge by TU Automation</div>
+    <div class="s-item" id="statusInfo">Ready</div>
+    <div class="s-item s-right" id="downloadBtn" style="display:none" onclick="downloadOutput()">
+      ↓ Download
+    </div>
+  </div>
+
+  <!-- upgrade wall -->
+  <div class="upgrade-wall" id="upgradeWall">
+    <div style="font-size:36px;margin-bottom:16px">⚡</div>
+    <h3>Free limit reached</h3>
+    <p>You've used all 5 free daily conversions. Get unlimited access — no restrictions on lines or conversions.</p>
+    <div class="upgrade-features">
+      <div class="upgrade-feat"><strong>∞</strong>Unlimited conversions</div>
+      <div class="upgrade-feat"><strong>2000+</strong>Lines per file</div>
+      <div class="upgrade-feat"><strong>API</strong>Direct API access</div>
+      <div class="upgrade-feat"><strong>Priority</strong>Faster processing</div>
+    </div>
+    <a class="btn-cta" href="https://tuautomation.de/#contact">Contact for Pro Access →</a>
+  </div>
+</div>
+
+<!-- ── INFO ── -->
+<section class="info-section">
+  <div style="text-align:center;margin-bottom:8px">
+    <div class="section-label">How it works</div>
+    <div class="section-title">AI-powered PLC translation</div>
+  </div>
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="card-icon">📋</div>
+      <h4>Paste or upload your code</h4>
+      <p>Paste STL/AWL code directly or upload a .awl, .scl, or .txt file from TIA Portal.</p>
+    </div>
+    <div class="info-card">
+      <div class="card-icon">⚡</div>
+      <h4>AI converts in seconds</h4>
+      <p>GPT-4o analyzes Siemens-specific constructs and generates equivalent SCL, ST or IL code.</p>
+    </div>
+    <div class="info-card">
+      <div class="card-icon">✅</div>
+      <h4>Review and download</h4>
+      <p>Lines that need attention are marked with <code style="color:var(--cyan)">// PLCbridge: review</code>. Download the result as a file.</p>
+    </div>
+    <div class="info-card">
+      <div class="card-icon">🔒</div>
+      <h4>Your code stays private</h4>
+      <p>Code is sent only to OpenAI's API for processing and is never stored or shared. Processed with enterprise privacy settings.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div>© 2026 <a href="https://tuautomation.de/">TU Automation</a> — Tomasz Urbański</div>
+  <div style="display:flex;gap:20px">
+    <a href="https://tuautomation.de/privacy.html">Privacy Policy</a>
+    <a href="https://tuautomation.de/impressum.html">Impressum</a>
+    <a href="https://tuautomation.de/#contact">Contact</a>
+  </div>
+</footer>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────────
+const API_URL   = 'https://api.plcbridge.tuautomation.de'; // change when deployed
+const FREE_MAX  = 5;
+const FREE_KEY  = 'plcbridge_free';
+const MAX_LINES = 100;
+
+// ── TARGETS MAP ─────────────────────────────────────────────────────────
+const TARGETS = {
+  STL: ['SCL', 'IL'],
+  SCL: ['STL', 'ST'],
+  ST:  ['SCL'],
+  IL:  ['STL'],
+};
+const LANG_LABELS = {
+  STL: 'STL / AWL — Siemens S7',
+  SCL: 'SCL — Siemens TIA Portal',
+  ST:  'ST — CODESYS / Beckhoff',
+  IL:  'IL — IEC 61131-3',
+};
+const PLACEHOLDERS = {
+  STL: `// Paste STL / AWL code here
+      A     #Enable
+      A     #Sensor1
+      =     #Output1
+      L     S5T#5S
+      SD    #Timer1
+      A     #Timer1
+      =     #TimerDone`,
+  SCL: `// Paste SCL code here
+IF #Enable AND #Sensor1 THEN
+  #Output1 := TRUE;
+END_IF;
+#Timer1(IN := #Start, PT := T#5S);
+#TimerDone := #Timer1.Q;`,
+  ST: `// Paste ST (CODESYS) code here
+IF Enable AND Sensor1 THEN
+  Output1 := TRUE;
+END_IF;`,
+  IL: `// Paste IL code here
+LD   Enable
+AND  Sensor1
+ST   Output1`,
+};
+
+// ── CODEMIRROR INIT ──────────────────────────────────────────────────────
+const cmTheme = { theme: 'dracula', lineNumbers: true, styleActiveLine: true, lineWrapping: true };
+
+const srcCM = CodeMirror.fromTextArea(document.getElementById('srcEditor'), {
+  ...cmTheme, mode: 'text/x-c++src', readOnly: false,
+  extraKeys: { 'Ctrl-Enter': doConvert },
+  placeholder: PLACEHOLDERS.STL,
+});
+const tgtCM = CodeMirror.fromTextArea(document.getElementById('tgtEditor'), {
+  ...cmTheme, mode: 'text/x-c++src', readOnly: true,
+});
+srcCM.setSize('100%', '400px');
+tgtCM.setSize('100%', '400px');
+
+// ── FREE COUNTER ─────────────────────────────────────────────────────────
+function getFreeData() {
+  const raw  = localStorage.getItem(FREE_KEY);
+  const today = new Date().toDateString();
+  if (!raw) return { date: today, used: 0 };
+  const d = JSON.parse(raw);
+  return d.date === today ? d : { date: today, used: 0 };
+}
+function saveFreeData(d) { localStorage.setItem(FREE_KEY, JSON.stringify(d)); }
+function freeLeft() { return Math.max(0, FREE_MAX - getFreeData().used); }
+
+function renderCounter() {
+  const left = freeLeft();
+  const dots = document.getElementById('freeDots');
+  dots.innerHTML = '';
+  for (let i = 0; i < FREE_MAX; i++) {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i < (FREE_MAX - left) ? ' used' : '');
+    dots.appendChild(d);
+  }
+  document.getElementById('freeLabel').textContent = `${left}/${FREE_MAX} left`;
+  document.getElementById('upgradeWall').classList.toggle('visible', left === 0);
+  document.getElementById('convertBtn').disabled = left === 0;
+}
+renderCounter();
+
+// ── LANGUAGE SELECTORS ───────────────────────────────────────────────────
+let lastConvId = null;
+let lastTgtLang = 'SCL';
+
+function onSrcChange() {
+  const src = document.getElementById('srcLang').value;
+  const tgtSel = document.getElementById('tgtLang');
+  const validTargets = TARGETS[src] || [];
+  tgtSel.innerHTML = validTargets.map(id =>
+    `<option value="${id}">${LANG_LABELS[id]}</option>`
+  ).join('');
+  document.getElementById('srcBadge').textContent = src;
+  document.getElementById('tgtBadge').textContent = validTargets[0] || '';
+  srcCM.setOption('placeholder', PLACEHOLDERS[src] || '// Paste code here');
+  srcCM.setOption('mode', ['SCL','ST'].includes(src) ? 'text/x-c++src' : 'text/plain');
+}
+
+document.getElementById('tgtLang').addEventListener('change', function() {
+  document.getElementById('tgtBadge').textContent = this.value;
+  const lang = this.value;
+  tgtCM.setOption('mode', ['SCL','ST'].includes(lang) ? 'text/x-c++src' : 'text/plain');
+});
+
+function canSwap() {
+  const src = document.getElementById('srcLang').value;
+  const tgt = document.getElementById('tgtLang').value;
+  return (TARGETS[tgt] || []).includes(src);
+}
+function swapLangs() {
+  if (!canSwap()) return;
+  const src = document.getElementById('srcLang').value;
+  const tgt = document.getElementById('tgtLang').value;
+  document.getElementById('srcLang').value = tgt;
+  onSrcChange();
+  document.getElementById('tgtLang').value = src;
+  document.getElementById('tgtBadge').textContent = src;
+  const outCode = tgtCM.getValue();
+  if (outCode.trim() && !outCode.startsWith('//')) srcCM.setValue(outCode);
+  tgtCM.setValue('');
+}
+
+// ── CONVERT ──────────────────────────────────────────────────────────────
+async function doConvert() {
+  const code = srcCM.getValue().trim();
+  if (!code || freeLeft() === 0) return;
+
+  const lines = code.split('\n').length;
+  if (lines > MAX_LINES) {
+    setStatus('error', `Free tier: max ${MAX_LINES} lines. Your code has ${lines} lines.`);
+    return;
+  }
+
+  const src = document.getElementById('srcLang').value;
+  const tgt = document.getElementById('tgtLang').value;
+
+  setStatus('idle', '⚙ Converting…');
+  document.getElementById('convertBtn').disabled = true;
+  document.getElementById('warnBox').classList.remove('visible');
+
+  try {
+    const res = await fetch(`${API_URL}/api/convert`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source_lang: src, target_lang: tgt, code }),
+    });
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.detail || 'Conversion failed');
+    }
+    const data = await res.json();
+
+    // update output
+    tgtCM.setValue(data.target_code);
+    tgtCM.setOption('mode', ['SCL','ST'].includes(tgt) ? 'text/x-c++src' : 'text/plain');
+    lastConvId  = data.id;
+    lastTgtLang = tgt;
+
+    // consume free use
+    const fd = getFreeData();
+    fd.used++;
+    saveFreeData(fd);
+    renderCounter();
+
+    // status
+    setStatus('ok', `${src} → ${tgt} · ${data.tokens_used} tokens · ${data.id}`);
+    document.getElementById('downloadBtn').style.display = '';
+
+    // warnings
+    if (data.warnings && data.warnings.length) {
+      document.getElementById('warnText').textContent = data.warnings[0];
+      document.getElementById('warnBox').classList.add('visible');
+    }
+
+    // save history
+    const history = JSON.parse(localStorage.getItem('plcbridge_history') || '[]');
+    history.unshift({ ...data, source_lang: src, target_lang: tgt, source_code: code, created_at: new Date().toISOString() });
+    localStorage.setItem('plcbridge_history', JSON.stringify(history.slice(0, 50)));
+
+  } catch (e) {
+    setStatus('error', e.message || 'Network error — is the server running?');
+  } finally {
+    document.getElementById('convertBtn').disabled = freeLeft() === 0;
+  }
+}
+
+// ── UTILS ────────────────────────────────────────────────────────────────
+function setStatus(type, text) {
+  const bar = document.getElementById('statusBar');
+  bar.className = 'conv-status' + (type === 'error' ? ' error' : '');
+  document.getElementById('statusInfo').textContent = text;
+}
+
+function clearSource() {
+  srcCM.setValue('');
+  tgtCM.setValue('');
+  document.getElementById('warnBox').classList.remove('visible');
+  document.getElementById('downloadBtn').style.display = 'none';
+  setStatus('idle', 'Ready');
+}
+
+function copyOutput() {
+  const txt = tgtCM.getValue();
+  if (!txt) return;
+  navigator.clipboard.writeText(txt).then(() => {
+    const btn = document.querySelector('.btn-copy');
+    btn.textContent = '✓ Copied';
+    setTimeout(() => btn.textContent = '⎘ Copy', 1800);
+  });
+}
+
+function downloadOutput() {
+  const txt = tgtCM.getValue();
+  if (!txt || !lastConvId) return;
+  const ext = { SCL: 'scl', STL: 'awl', ST: 'st', IL: 'il' }[lastTgtLang] || 'txt';
+  const blob = new Blob([txt], { type: 'text/plain' });
+  const a    = document.createElement('a');
+  a.href     = URL.createObjectURL(blob);
+  a.download = `plcbridge_${lastConvId}.${ext}`;
+  a.click();
+}
+
+function loadFile(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => srcCM.setValue(e.target.result || '');
+  reader.readAsText(file);
+  input.value = '';
+}
+
+// Ctrl+Enter anywhere
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') doConvert();
+});
+</script>
+</body>
+</html>
