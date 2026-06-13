@@ -829,23 +829,23 @@
   <div class="info-grid">
     <div class="info-card">
       <div class="card-icon">📋</div>
-      <h4>Paste or upload your code</h4>
-      <p>Paste STL/AWL code directly or upload a .awl, .scl, or .txt file from TIA Portal.</p>
+      <h4 data-i18n="plc.c1.title">Paste or upload your code</h4>
+      <p data-i18n="plc.c1.desc">Paste STL/AWL code directly or upload a .awl, .scl, or .txt file from TIA Portal.</p>
     </div>
     <div class="info-card">
       <div class="card-icon">⚡</div>
-      <h4>AI converts in seconds</h4>
-      <p>GPT-4o analyzes Siemens-specific constructs and generates equivalent SCL, ST or IL code.</p>
+      <h4 data-i18n="plc.c2.title">AI converts in seconds</h4>
+      <p data-i18n="plc.c2.desc">GPT-4o analyzes Siemens-specific constructs and generates equivalent SCL, ST or IL code.</p>
     </div>
     <div class="info-card">
       <div class="card-icon">✅</div>
-      <h4>Review and download</h4>
-      <p>Lines that need attention are marked with <code style="color:var(--cyan)">// PLCbridge: review</code>. Download the result as a file.</p>
+      <h4 data-i18n="plc.c3.title">Review and download</h4>
+      <p data-i18n="plc.c3.desc">Lines that need attention are marked with <code style="color:var(--cyan)">// PLCbridge: review</code>. Download the result as a file.</p>
     </div>
     <div class="info-card">
       <div class="card-icon">🔒</div>
-      <h4>Your code stays private</h4>
-      <p>Code is sent only to OpenAI's API for processing and is never stored or shared. Processed with enterprise privacy settings.</p>
+      <h4 data-i18n="plc.c4.title">Your code stays private</h4>
+      <p data-i18n="plc.c4.desc">Code is sent only to OpenAI's API for processing and is never stored or shared. Processed with enterprise privacy settings.</p>
     </div>
   </div>
 </section>
@@ -1189,6 +1189,10 @@ const PT = {
     'plc.wall.title':'Osiągnięto limit darmowy',
     'plc.wall.desc':'Wykorzystałeś 5 darmowych konwersji dziennych. Uzyskaj nieograniczony dostęp — bez ograniczeń linii ani konwersji.',
     'plc.info.how':'Jak to działa','plc.info.ai':'Tłumaczenie PLC zasilane AI',
+    'plc.c1.title':'Wklej lub wgraj kod','plc.c1.desc':'Wklej kod STL/AWL bezpośrednio lub wgraj plik .awl, .scl lub .txt z TIA Portal.',
+    'plc.c2.title':'AI konwertuje w sekundy','plc.c2.desc':'GPT-4o analizuje konstrukcje specyficzne dla Siemens i generuje równoważny kod SCL, ST lub IL.',
+    'plc.c3.title':'Przejrzyj i pobierz','plc.c3.desc':'Linie wymagające uwagi są oznaczone jako // PLCbridge: review. Pobierz wynik jako plik.',
+    'plc.c4.title':'Twój kod pozostaje prywatny','plc.c4.desc':'Kod jest wysyłany tylko do API OpenAI i nigdy nie jest przechowywany ani udostępniany. Przetwarzany z ustawieniami prywatności dla przedsiębiorstw.',
     'plc.footer.privacy':'Polityka prywatności','plc.footer.impressum':'Impressum','plc.footer.contact':'Kontakt',
   },
   en: {
@@ -1201,6 +1205,10 @@ const PT = {
     'plc.wall.title':'Free limit reached',
     'plc.wall.desc':"You've used all 5 free daily conversions. Get unlimited access — no restrictions on lines or conversions.",
     'plc.info.how':'How it works','plc.info.ai':'AI-powered PLC translation',
+    'plc.c1.title':'Paste or upload your code','plc.c1.desc':'Paste STL/AWL code directly or upload a .awl, .scl, or .txt file from TIA Portal.',
+    'plc.c2.title':'AI converts in seconds','plc.c2.desc':'GPT-4o analyzes Siemens-specific constructs and generates equivalent SCL, ST or IL code.',
+    'plc.c3.title':'Review and download','plc.c3.desc':'Lines that need attention are marked with // PLCbridge: review. Download the result as a file.',
+    'plc.c4.title':'Your code stays private','plc.c4.desc':'Code is sent only to OpenAI\'s API for processing and is never stored or shared. Processed with enterprise privacy settings.',
     'plc.footer.privacy':'Privacy Policy','plc.footer.impressum':'Impressum','plc.footer.contact':'Contact',
   },
   de: {
@@ -1213,6 +1221,10 @@ const PT = {
     'plc.wall.title':'Freies Limit erreicht',
     'plc.wall.desc':'Sie haben alle 5 kostenlosen Tageskonvertierungen genutzt. Erhalten Sie unbegrenzten Zugang — ohne Einschränkungen.',
     'plc.info.how':'So funktioniert es','plc.info.ai':'KI-gestützte PLC-Übersetzung',
+    'plc.c1.title':'Code einfügen oder hochladen','plc.c1.desc':'STL/AWL-Code direkt einfügen oder eine .awl-, .scl- oder .txt-Datei aus TIA Portal hochladen.',
+    'plc.c2.title':'KI konvertiert in Sekunden','plc.c2.desc':'GPT-4o analysiert Siemens-spezifische Konstrukte und generiert äquivalenten SCL-, ST- oder IL-Code.',
+    'plc.c3.title':'Prüfen und herunterladen','plc.c3.desc':'Zeilen, die Aufmerksamkeit erfordern, sind als // PLCbridge: review markiert. Ergebnis als Datei herunterladen.',
+    'plc.c4.title':'Ihr Code bleibt privat','plc.c4.desc':'Code wird nur zur Verarbeitung an die OpenAI-API gesendet und nie gespeichert oder geteilt.',
     'plc.footer.privacy':'Datenschutz','plc.footer.impressum':'Impressum','plc.footer.contact':'Kontakt',
   },
   tr: {
@@ -1225,6 +1237,10 @@ const PT = {
     'plc.wall.title':'Ücretsiz limit doldu',
     'plc.wall.desc':'Günlük 5 ücretsiz dönüşümün tamamını kullandınız. Sınır olmaksızın sınırsız erişim elde edin.',
     'plc.info.how':'Nasıl çalışır','plc.info.ai':'Yapay zeka destekli PLC çevirisi',
+    'plc.c1.title':'Kodu yapıştırın veya yükleyin','plc.c1.desc':'STL/AWL kodunu doğrudan yapıştırın veya TIA Portal\'dan .awl, .scl ya da .txt dosyası yükleyin.',
+    'plc.c2.title':'Yapay zeka saniyeler içinde dönüştürür','plc.c2.desc':'GPT-4o, Siemens\'e özgü yapıları analiz eder ve eşdeğer SCL, ST veya IL kodu üretir.',
+    'plc.c3.title':'İnceleyin ve indirin','plc.c3.desc':'Dikkat gerektiren satırlar // PLCbridge: review olarak işaretlenir. Sonucu dosya olarak indirin.',
+    'plc.c4.title':'Kodunuz gizli kalır','plc.c4.desc':'Kod yalnızca işlem için OpenAI API\'sine gönderilir, hiçbir zaman depolanmaz veya paylaşılmaz.',
     'plc.footer.privacy':'Gizlilik Politikası','plc.footer.impressum':'Künye','plc.footer.contact':'İletişim',
   },
   ar: {
@@ -1237,6 +1253,10 @@ const PT = {
     'plc.wall.title':'تم الوصول إلى الحد المجاني',
     'plc.wall.desc':'لقد استخدمت جميع تحويلاتك اليومية الخمس المجانية. احصل على وصول غير محدود.',
     'plc.info.how':'كيف يعمل','plc.info.ai':'ترجمة PLC بالذكاء الاصطناعي',
+    'plc.c1.title':'الصق الكود أو ارفعه','plc.c1.desc':'الصق كود STL/AWL مباشرةً أو ارفع ملف .awl أو .scl أو .txt من TIA Portal.',
+    'plc.c2.title':'الذكاء الاصطناعي يحوّل في ثوانٍ','plc.c2.desc':'يحلل GPT-4o البنى الخاصة بـ Siemens ويولّد كود SCL أو ST أو IL مكافئاً.',
+    'plc.c3.title':'راجع وحمّل','plc.c3.desc':'الأسطر التي تحتاج انتباهاً تُعلَّم بـ // PLCbridge: review. حمّل النتيجة كملف.',
+    'plc.c4.title':'كودك يبقى خاصاً','plc.c4.desc':'يُرسَل الكود فقط إلى API الخاص بـ OpenAI ولا يُخزَّن أو يُشارَك أبداً.',
     'plc.footer.privacy':'سياسة الخصوصية','plc.footer.impressum':'بيانات الناشر','plc.footer.contact':'تواصل',
   },
 };
@@ -1250,7 +1270,7 @@ function plcApplyLang(l) {
   const dict = PT[l] || PT.pl;
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const k = el.dataset.i18n;
-    if (dict[k] !== undefined) el.textContent = dict[k];
+    if (dict[k] !== undefined) el.innerHTML = dict[k];
   });
   document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
   const activeStyle = 'background:rgba(0,212,255,0.15);border-color:rgba(0,212,255,0.7);color:#00D4FF;';
