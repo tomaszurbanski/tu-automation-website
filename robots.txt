@@ -1,3 +1,3 @@
 User-agent: *
 Allow: /
-Sitemap: https://tomaszurbanski.github.io/tu-automation-website/sitemap.xml
+Sitemap: https://tuautomation.de/sitemap.xml
