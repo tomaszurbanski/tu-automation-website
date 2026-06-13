@@ -484,49 +484,50 @@ section { position: relative; z-index: 2; }
 }
 .about-layout {
   display: grid;
-  grid-template-columns: 380px 1fr;
-  gap: 60px;
-  align-items: center;
+  grid-template-columns: 220px 1fr;
+  gap: 48px;
+  align-items: start;
   max-width: 1100px;
   margin: 0 auto;
 }
 
-/* ── Photo frame ── */
+/* ── Photo — gallery-card style ── */
 .about-photo-col { position: relative; }
 .about-photo-frame {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border);
   box-shadow: var(--glow);
-  aspect-ratio: 3/4;
-  max-width: 340px;
-  margin: 0 auto;
+  width: 220px;
   background: var(--bg);
+  cursor: pointer;
 }
+/* Exact gallery filter */
 .about-photo {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top center;
   display: block;
-  filter: grayscale(18%) contrast(1.08) brightness(0.82) saturate(0.88);
-  transition: filter 0.4s ease;
+  filter: sepia(100%) hue-rotate(155deg) saturate(280%) brightness(62%) contrast(115%);
+  transition: filter 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.5s ease;
 }
 .about-photo-frame:hover .about-photo {
-  filter: grayscale(5%) contrast(1.05) brightness(0.88) saturate(1.05);
+  filter: sepia(30%) hue-rotate(155deg) saturate(140%) brightness(82%) contrast(108%);
+  transform: scale(1.03);
 }
-/* Cyan tint overlay at bottom */
+/* Scanlines overlay — identical to gallery */
 .about-photo-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 212, 255, 0.22) 0%,
-    rgba(29, 78, 216, 0.10) 35%,
-    transparent 65%
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0,0,0,.18) 2px,
+    rgba(0,0,0,.18) 4px
   );
   pointer-events: none;
+  z-index: 2;
+  transition: opacity .7s;
 }
+.about-photo-frame:hover .about-photo-overlay { opacity: .4; }
 /* Animated scan line */
 .about-photo-scanline {
   position: absolute;
@@ -535,6 +536,7 @@ section { position: relative; z-index: 2; }
   background: linear-gradient(90deg, transparent, rgba(0,212,255,0.6), transparent);
   animation: aph-scan 4s linear infinite;
   pointer-events: none;
+  z-index: 3;
 }
 @keyframes aph-scan {
   0%   { top: 0%; opacity: 0; }
@@ -545,31 +547,32 @@ section { position: relative; z-index: 2; }
 /* Corner markers */
 .aph-corner {
   position: absolute;
-  width: 16px;
-  height: 16px;
+  width: 14px; height: 14px;
   pointer-events: none;
+  z-index: 4;
 }
-.aph-tl { top: 8px;  left: 8px;  border-top:  2px solid var(--cyan); border-left:  2px solid var(--cyan); }
-.aph-tr { top: 8px;  right: 8px; border-top:  2px solid var(--cyan); border-right: 2px solid var(--cyan); }
-.aph-bl { bottom: 8px; left: 8px;  border-bottom: 2px solid var(--cyan); border-left:  2px solid var(--cyan); }
-.aph-br { bottom: 8px; right: 8px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
-/* Name badge at bottom */
+.aph-tl { top: 6px;  left: 6px;  border-top:  2px solid var(--cyan); border-left:  2px solid var(--cyan); }
+.aph-tr { top: 6px;  right: 6px; border-top:  2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+.aph-bl { bottom: 6px; left: 6px;  border-bottom: 2px solid var(--cyan); border-left:  2px solid var(--cyan); }
+.aph-br { bottom: 6px; right: 6px; border-bottom: 2px solid var(--cyan); border-right: 2px solid var(--cyan); }
+/* Name badge */
 .aph-badge {
   position: absolute;
   bottom: 0; left: 0; right: 0;
-  padding: 10px 14px;
-  background: rgba(8,12,20,0.82);
+  padding: 7px 10px;
+  background: rgba(8,12,20,0.85);
   backdrop-filter: blur(6px);
-  font-size: 0.72rem;
+  font-size: 0.65rem;
   letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--cyan);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  z-index: 4;
 }
 .aph-dot {
-  width: 6px; height: 6px;
+  width: 5px; height: 5px;
   border-radius: 50%;
   background: var(--cyan);
   animation: pulse 1.8s ease-in-out infinite;
@@ -585,13 +588,14 @@ section { position: relative; z-index: 2; }
 
 .about-stats-row {
   display: flex;
-  gap: 24px;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 .about-stat {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  padding: 12px 18px;
+  padding: 10px 16px;
   border: 1px solid var(--border);
   background: rgba(0,212,255,0.03);
   min-width: 80px;
@@ -657,13 +661,10 @@ section { position: relative; z-index: 2; }
 @media (max-width: 900px) {
   .about-layout {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 32px;
   }
-  .about-photo-frame {
-    max-width: 280px;
-    aspect-ratio: 3/4;
-  }
-  .about-stats-row { gap: 12px; }
+  .about-photo-frame { width: 200px; }
+  .about-stats-row { gap: 10px; }
 }
 
 /* ── PROJECTS ── */

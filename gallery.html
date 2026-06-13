@@ -433,15 +433,22 @@
 <nav id="nav">
   <div class="nav-logo"><a href="index.html" style="text-decoration:none;color:inherit">TU<span>Automation</span></a></div>
   <ul class="nav-links" id="navLinks">
-    <li><a href="index.html#services">Usługi</a></li>
-    <li><a href="index.html#tech">Technologie</a></li>
-    <li><a href="index.html#projects">Projekty</a></li>
-    <li><a href="gallery.html" class="active">Galeria</a></li>
-    <li><a href="index.html#contact">Kontakt</a></li>
-    <li><a href="blog.html">Blog</a></li>
+    <li><a href="index.html#services" data-i18n="nav.services">Usługi</a></li>
+    <li><a href="index.html#tech" data-i18n="nav.tech">Technologie</a></li>
+    <li><a href="index.html#projects" data-i18n="nav.projects">Projekty</a></li>
+    <li><a href="gallery.html" class="active" data-i18n="nav.gallery">Galeria</a></li>
+    <li><a href="index.html#contact" data-i18n="nav.contact">Kontakt</a></li>
+    <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
   </ul>
   <div class="nav-right">
-    <a href="index.html#contact" class="nav-cta">Zapytaj o projekt</a>
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="pl">PL</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="tr">TR</button>
+      <button class="lang-btn" data-lang="ar">AR</button>
+    </div>
+    <a href="index.html#contact" class="nav-cta" data-i18n="nav.cta">Zapytaj o projekt</a>
     <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
   </div>
 </nav>
@@ -450,30 +457,28 @@
 <section class="gal-hero">
   <div class="gal-hero-tag">// tuautomation.de — field documentation</div>
   <h1>INTEL<span>//</span>ARCHIVE</h1>
-  <p class="gal-hero-sub">WYBRANE REALIZACJE &nbsp;·&nbsp; DANE KLIENTÓW CHRONIONE &nbsp;·&nbsp; NDA COMPLIANT</p>
+  <p class="gal-hero-sub" data-i18n="gal.sub">WYBRANE REALIZACJE &nbsp;·&nbsp; DANE KLIENTÓW CHRONIONE &nbsp;·&nbsp; NDA COMPLIANT</p>
   <div class="classified-stamp">⬛ RESTRICTED ACCESS ⬛</div>
 </section>
 
 <!-- STATS -->
 <div class="gal-stats">
-  <div class="gal-stat"><div class="gal-stat-num">20</div><div class="gal-stat-lbl">Realizacji</div></div>
-  <div class="gal-stat"><div class="gal-stat-num">3</div><div class="gal-stat-lbl">Kategorie</div></div>
-  <div class="gal-stat"><div class="gal-stat-num">DE/PL</div><div class="gal-stat-lbl">Region</div></div>
-  <div class="gal-stat"><div class="gal-stat-num">NDA</div><div class="gal-stat-lbl">Chronione</div></div>
+  <div class="gal-stat"><div class="gal-stat-num">20</div><div class="gal-stat-lbl" data-i18n="gal.stat1">Realizacji</div></div>
+  <div class="gal-stat"><div class="gal-stat-num">3</div><div class="gal-stat-lbl" data-i18n="gal.stat2">Kategorie</div></div>
+  <div class="gal-stat"><div class="gal-stat-num">DE/PL</div><div class="gal-stat-lbl" data-i18n="gal.stat3">Region</div></div>
+  <div class="gal-stat"><div class="gal-stat-num">NDA</div><div class="gal-stat-lbl" data-i18n="gal.stat4">Chronione</div></div>
 </div>
 
 <!-- FILTERS -->
 <div class="gal-filters">
-  <button class="gal-filter-btn active" data-filter="all">// Wszystkie</button>
-  <button class="gal-filter-btn" data-filter="hw">⬡ Sprzęt / Serwis</button>
-  <button class="gal-filter-btn" data-filter="hmi">◈ HMI · SCADA</button>
-  <button class="gal-filter-btn" data-filter="code">&#x3E; Programowanie</button>
+  <button class="gal-filter-btn active" data-filter="all" data-i18n="gal.f.all">// Wszystkie</button>
+  <button class="gal-filter-btn" data-filter="hw" data-i18n="gal.f.hw">⬡ Sprzęt / Serwis</button>
+  <button class="gal-filter-btn" data-filter="hmi" data-i18n="gal.f.hmi">◈ HMI · SCADA</button>
+  <button class="gal-filter-btn" data-filter="code" data-i18n="gal.f.code">&#x3E; Programowanie</button>
 </div>
 
 <!-- GRID -->
-<div class="gal-grid" id="galGrid">
-  <!-- Items injected by JS -->
-</div>
+<div class="gal-grid" id="galGrid"></div>
 
 <!-- LIGHTBOX -->
 <div class="lightbox" id="lightbox">
@@ -488,28 +493,28 @@
       <div class="lb-panel-header">// TU Automation — field record</div>
       <div class="lb-codename" id="lbCodename">PRJ-0000-000</div>
       <div class="lb-field">
-        <span class="lb-field-key">Kategoria</span>
+        <span class="lb-field-key" data-i18n="gal.lb.cat">Kategoria</span>
         <span class="lb-field-val" id="lbCat">—</span>
       </div>
       <div class="lb-field">
-        <span class="lb-field-key">Klient</span>
+        <span class="lb-field-key" data-i18n="gal.lb.client">Klient</span>
         <span class="lb-field-val"><span class="lb-redacted">██████████████</span></span>
       </div>
       <div class="lb-field">
-        <span class="lb-field-key">Lokalizacja</span>
+        <span class="lb-field-key" data-i18n="gal.lb.loc">Lokalizacja</span>
         <span class="lb-field-val"><span class="lb-redacted">█████████</span></span>
       </div>
       <div class="lb-field">
-        <span class="lb-field-key">Zakres prac</span>
+        <span class="lb-field-key" data-i18n="gal.lb.scope">Zakres prac</span>
         <span class="lb-field-val" id="lbTech">—</span>
       </div>
       <div class="lb-field">
-        <span class="lb-field-key">Opis</span>
+        <span class="lb-field-key" data-i18n="gal.lb.desc">Opis</span>
         <span class="lb-field-val" id="lbDesc" style="line-height:1.6">—</span>
       </div>
       <div class="lb-status">
         <div class="lb-status-dot"></div>
-        <span class="lb-status-txt">Client data classified</span>
+        <span class="lb-status-txt" data-i18n="gal.lb.classified">Client data classified</span>
       </div>
     </div>
   </div>
@@ -517,8 +522,9 @@
 
 <!-- FOOTER NOTE -->
 <div class="gal-note">
-  Szczegóły każdego projektu dostępne na zapytanie po podpisaniu NDA<br/>
-  <a href="index.html#contact">→ Skontaktuj się</a> &nbsp;·&nbsp; <a href="index.html">← Powrót na stronę główną</a>
+  <span data-i18n="gal.note">Szczegóły każdego projektu dostępne na zapytanie po podpisaniu NDA</span><br/>
+  <a href="index.html#contact" data-i18n="gal.contact.link">→ Skontaktuj się</a> &nbsp;·&nbsp;
+  <a href="index.html" data-i18n="gal.back">← Powrót na stronę główną</a>
 </div>
 
 <script>
@@ -883,6 +889,82 @@ if (ham) ham.addEventListener('click', () => { ham.classList.toggle('open'); nav
 
 // ── INIT ──────────────────────────────────────────────────────────────
 renderGrid('all');
+</script>
+
+<!-- ── GALLERY i18n ── -->
+<script>
+const GT = {
+  pl: {
+    'nav.services':'Usługi','nav.tech':'Technologie','nav.projects':'Projekty',
+    'nav.gallery':'Galeria','nav.contact':'Kontakt','nav.blog':'Blog','nav.cta':'Zapytaj o projekt',
+    'gal.sub':'WYBRANE REALIZACJE · DANE KLIENTÓW CHRONIONE · NDA COMPLIANT',
+    'gal.stat1':'Realizacji','gal.stat2':'Kategorie','gal.stat3':'Region','gal.stat4':'Chronione',
+    'gal.f.all':'// Wszystkie','gal.f.hw':'⬡ Sprzęt / Serwis','gal.f.hmi':'◈ HMI · SCADA','gal.f.code':'> Programowanie',
+    'gal.lb.cat':'Kategoria','gal.lb.client':'Klient','gal.lb.loc':'Lokalizacja','gal.lb.scope':'Zakres prac','gal.lb.desc':'Opis','gal.lb.classified':'Dane klienta zastrzeżone',
+    'gal.note':'Szczegóły każdego projektu dostępne na zapytanie po podpisaniu NDA',
+    'gal.contact.link':'→ Skontaktuj się','gal.back':'← Powrót na stronę główną',
+  },
+  en: {
+    'nav.services':'Services','nav.tech':'Technologies','nav.projects':'Projects',
+    'nav.gallery':'Gallery','nav.contact':'Contact','nav.blog':'Blog','nav.cta':'Request a quote',
+    'gal.sub':'SELECTED PROJECTS · CLIENT DATA PROTECTED · NDA COMPLIANT',
+    'gal.stat1':'Projects','gal.stat2':'Categories','gal.stat3':'Region','gal.stat4':'Protected',
+    'gal.f.all':'// All','gal.f.hw':'⬡ Hardware / Service','gal.f.hmi':'◈ HMI · SCADA','gal.f.code':'> Programming',
+    'gal.lb.cat':'Category','gal.lb.client':'Client','gal.lb.loc':'Location','gal.lb.scope':'Scope','gal.lb.desc':'Description','gal.lb.classified':'Client data classified',
+    'gal.note':'Project details available on request after NDA signing',
+    'gal.contact.link':'→ Contact us','gal.back':'← Back to main site',
+  },
+  de: {
+    'nav.services':'Leistungen','nav.tech':'Technologien','nav.projects':'Projekte',
+    'nav.gallery':'Galerie','nav.contact':'Kontakt','nav.blog':'Blog','nav.cta':'Anfrage stellen',
+    'gal.sub':'AUSGEWÄHLTE PROJEKTE · KUNDENDATEN GESCHÜTZT · NDA KONFORM',
+    'gal.stat1':'Projekte','gal.stat2':'Kategorien','gal.stat3':'Region','gal.stat4':'Geschützt',
+    'gal.f.all':'// Alle','gal.f.hw':'⬡ Hardware / Service','gal.f.hmi':'◈ HMI · SCADA','gal.f.code':'> Programmierung',
+    'gal.lb.cat':'Kategorie','gal.lb.client':'Kunde','gal.lb.loc':'Standort','gal.lb.scope':'Leistungsumfang','gal.lb.desc':'Beschreibung','gal.lb.classified':'Kundendaten klassifiziert',
+    'gal.note':'Projektdetails auf Anfrage nach NDA-Unterzeichnung verfügbar',
+    'gal.contact.link':'→ Kontakt aufnehmen','gal.back':'← Zurück zur Hauptseite',
+  },
+  tr: {
+    'nav.services':'Hizmetler','nav.tech':'Teknolojiler','nav.projects':'Projeler',
+    'nav.gallery':'Galeri','nav.contact':'İletişim','nav.blog':'Blog','nav.cta':'Teklif İste',
+    'gal.sub':'SEÇİLMİŞ PROJELER · MÜŞTERİ VERİLERİ KORUNUYOR · NDA UYUMLU',
+    'gal.stat1':'Proje','gal.stat2':'Kategori','gal.stat3':'Bölge','gal.stat4':'Korumalı',
+    'gal.f.all':'// Tümü','gal.f.hw':'⬡ Donanım / Servis','gal.f.hmi':'◈ HMI · SCADA','gal.f.code':'> Programlama',
+    'gal.lb.cat':'Kategori','gal.lb.client':'Müşteri','gal.lb.loc':'Lokasyon','gal.lb.scope':'Kapsam','gal.lb.desc':'Açıklama','gal.lb.classified':'Müşteri verileri gizlidir',
+    'gal.note':'Proje detayları NDA imzalandıktan sonra talep üzerine paylaşılır',
+    'gal.contact.link':'→ İletişime geç','gal.back':'← Ana sayfaya dön',
+  },
+  ar: {
+    'nav.services':'الخدمات','nav.tech':'التقنيات','nav.projects':'المشاريع',
+    'nav.gallery':'معرض','nav.contact':'اتصل بنا','nav.blog':'مدونة','nav.cta':'طلب عرض سعر',
+    'gal.sub':'مشاريع مختارة · بيانات العملاء محمية · متوافق مع NDA',
+    'gal.stat1':'مشروع','gal.stat2':'فئات','gal.stat3':'المنطقة','gal.stat4':'محمي',
+    'gal.f.all':'// الكل','gal.f.hw':'⬡ أجهزة / خدمة','gal.f.hmi':'◈ HMI · SCADA','gal.f.code':'> برمجة',
+    'gal.lb.cat':'الفئة','gal.lb.client':'العميل','gal.lb.loc':'الموقع','gal.lb.scope':'النطاق','gal.lb.desc':'الوصف','gal.lb.classified':'بيانات العميل سرية',
+    'gal.note':'تفاصيل المشروع متاحة عند الطلب بعد توقيع NDA',
+    'gal.contact.link':'→ تواصل معنا','gal.back':'← العودة للصفحة الرئيسية',
+  },
+};
+const GKEY = 'tuLang';
+let gLang = localStorage.getItem(GKEY) || 'pl';
+
+function galApplyLang(l) {
+  gLang = l;
+  localStorage.setItem(GKEY, l);
+  document.documentElement.lang = l;
+  document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+  const dict = GT[l] || GT.pl;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (dict[k] !== undefined) el.textContent = dict[k];
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+}
+
+document.querySelectorAll('.lang-btn').forEach(b =>
+  b.addEventListener('click', () => galApplyLang(b.dataset.lang))
+);
+galApplyLang(gLang);
 </script>
 </body>
 </html>

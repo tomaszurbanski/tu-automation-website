@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>O mnie – Tomasz Urbański | TU Automation</title>
+  <meta name="description" content="Tomasz Urbański — inżynier automatyki przemysłowej z ponad 20-letnim doświadczeniem. PLC Siemens, TIA Portal, Lenze, EPLAN. Projekty w całej Europie."/>
+  <meta name="author" content="Tomasz Urbański"/>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css?v=4"/>
+  <style>
+    .omnie-hero {
+      padding: 140px 0 80px;
+      text-align: center;
+    }
+    .omnie-hero .section-tag { margin: 0 auto 12px; }
+    .omnie-hero .section-title { margin-bottom: 16px; }
+    .omnie-hero .section-desc { max-width: 560px; margin: 0 auto; }
+    .omnie-body {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 100px;
+    }
+    .omnie-layout {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 64px;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .omnie-layout { grid-template-columns: 1fr; gap: 40px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+<div class="scanline"></div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a class="nav-logo" href="index.html">TU<span>Automation</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html#services" data-i18n="nav.services">Usługi</a></li>
+    <li><a href="index.html#tech" data-i18n="nav.tech">Technologie</a></li>
+    <li><a href="index.html#projects" data-i18n="nav.projects">Projekty</a></li>
+    <li><a href="index.html#process" data-i18n="nav.process">Proces</a></li>
+    <li><a href="omnie.html" class="active" data-i18n="nav.about">O mnie</a></li>
+    <li><a href="index.html#contact" data-i18n="nav.contact">Kontakt</a></li>
+    <li><a href="gallery.html" data-i18n="nav.gallery">Galeria</a></li>
+    <li><a href="blog.html" data-i18n="nav.blog">Blog</a></li>
+    <li><a href="plcbridge.html" style="color:#00D4FF;font-weight:600">PLCbridge ⚡</a></li>
+    <li class="nav-cta-mob"><a href="index.html#contact" class="btn-primary" data-i18n="nav.cta">Zapytaj o projekt</a></li>
+    <li class="nav-lang-row">
+      <button class="lang-btn" data-lang="pl">PL</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="tr">TR</button>
+      <button class="lang-btn" data-lang="ar">AR</button>
+    </li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switcher">
+      <button class="lang-btn active" data-lang="pl">PL</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="de">DE</button>
+      <button class="lang-btn" data-lang="tr">TR</button>
+      <button class="lang-btn" data-lang="ar">AR</button>
+    </div>
+    <a href="index.html#contact" class="nav-cta" data-i18n="nav.cta">Zapytaj o projekt</a>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="omnie-hero">
+  <div class="section-tag" data-i18n="sec.about.tag">O mnie</div>
+  <h1 class="section-title" data-i18n="sec.about.title">Tomasz Urbański</h1>
+  <p class="section-desc" data-i18n="sec.about.desc">Inżynier automatyki z ponad 20-letnim doświadczeniem w przemyśle europejskim</p>
+</section>
+
+<!-- CONTENT -->
+<div class="omnie-body">
+  <div class="omnie-layout">
+
+    <!-- Photo column -->
+    <div class="about-photo-col">
+      <div class="about-photo-frame">
+        <img src="tomasz.jpg" alt="Tomasz Urbański — inżynier automatyki przemysłowej" class="about-photo" loading="lazy">
+        <div class="about-photo-overlay"></div>
+        <div class="about-photo-scanline"></div>
+        <span class="aph-corner aph-tl"></span>
+        <span class="aph-corner aph-tr"></span>
+        <span class="aph-corner aph-bl"></span>
+        <span class="aph-corner aph-br"></span>
+        <div class="aph-badge">
+          <span class="aph-dot"></span>
+          Tomasz Urbański &middot; TU Automation
+        </div>
+      </div>
+    </div>
+
+    <!-- Content column -->
+    <div class="about-content">
+      <div class="about-stats-row">
+        <div class="about-stat">
+          <span class="stat-num">20<span style="font-size:1rem">+</span></span>
+          <span class="stat-label" data-i18n="about.s1">lat doświadczenia</span>
+        </div>
+        <div class="about-stat">
+          <span class="stat-num">EU</span>
+          <span class="stat-label" data-i18n="about.s2">projekty w Europie</span>
+        </div>
+        <div class="about-stat">
+          <span class="stat-num">S7</span>
+          <span class="stat-label" data-i18n="about.s3">TIA Portal expert</span>
+        </div>
+      </div>
+
+      <div class="about-bio">
+        <p data-i18n="about.p1">Ponad 20 lat doświadczenia w automatyce przemysłowej, utrzymaniu ruchu oraz projektowaniu systemów sterowania.</p>
+        <p data-i18n="about.p2">Specjalizuję się w programowaniu sterowników <strong>PLC&nbsp;Siemens&nbsp;S7&nbsp;/&nbsp;TIA&nbsp;Portal</strong>, systemach <strong>Lenze</strong>, projektowaniu instalacji elektrycznych w <strong>EPLAN</strong> oraz uruchamianiu maszyn i kompletnych linii produkcyjnych. Realizowałem projekty dla klientów w wielu krajach Europy — modernizacje, optymalizacja procesów, zwiększanie niezawodności produkcji.</p>
+        <p data-i18n="about.p3">Posiadam doświadczenie w integracji napędów przemysłowych, uruchamianiu maszyn oraz rozwiązywaniu złożonych problemów technicznych w środowisku produkcyjnym. Moim celem jest dostarczanie praktycznych i niezawodnych rozwiązań zwiększających <strong>wydajność, bezpieczeństwo</strong> i dostępność maszyn.</p>
+      </div>
+
+      <div class="about-tags">
+        <span class="about-tag">PLC Siemens S7</span>
+        <span class="about-tag">TIA Portal</span>
+        <span class="about-tag">Lenze</span>
+        <span class="about-tag">EPLAN</span>
+        <span class="about-tag">Uruchamianie maszyn</span>
+        <span class="about-tag">Napędy przemysłowe</span>
+        <span class="about-tag">OPC UA</span>
+        <span class="about-tag">Modernizacje UR</span>
+        <span class="about-tag">Sieci przemysłowe</span>
+        <span class="about-tag">AI w automatyce</span>
+      </div>
+
+      <div class="about-cta">
+        <a href="index.html#contact" class="btn-primary" data-i18n="about.cta">Porozmawiajmy o projekcie</a>
+        <a href="blog.html" class="btn-ghost" data-i18n="about.blog">Czytaj blog</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer style="text-align:center;padding:32px 24px;border-top:1px solid var(--border);color:var(--muted);font-size:13px">
+  © 2026 <a href="index.html" style="color:var(--accent)">TU Automation</a> — Tomasz Urbański &nbsp;|&nbsp;
+  <a href="index.html#contact" data-i18n="nav.contact" style="color:var(--muted)">Kontakt</a>
+</footer>
+
+<script>
+const OT = {
+  pl: {
+    'nav.services':'Usługi','nav.tech':'Technologie','nav.projects':'Projekty','nav.process':'Proces',
+    'nav.about':'O mnie','nav.contact':'Kontakt','nav.cta':'Zapytaj o projekt','nav.gallery':'Galeria','nav.blog':'Blog',
+    'sec.about.tag':'O mnie','sec.about.title':'Tomasz Urbański',
+    'sec.about.desc':'Inżynier automatyki z ponad 20-letnim doświadczeniem w przemyśle europejskim',
+    'about.s1':'lat doświadczenia','about.s2':'projekty w Europie','about.s3':'TIA Portal expert',
+    'about.p1':'Ponad 20 lat doświadczenia w automatyce przemysłowej, utrzymaniu ruchu oraz projektowaniu systemów sterowania.',
+    'about.p2':'Specjalizuję się w programowaniu sterowników <strong>PLC Siemens S7 / TIA Portal</strong>, systemach <strong>Lenze</strong>, projektowaniu instalacji elektrycznych w <strong>EPLAN</strong> oraz uruchamianiu maszyn i kompletnych linii produkcyjnych. Realizowałem projekty dla klientów w wielu krajach Europy — modernizacje, optymalizacja procesów, zwiększanie niezawodności produkcji.',
+    'about.p3':'Posiadam doświadczenie w integracji napędów przemysłowych, uruchamianiu maszyn oraz rozwiązywaniu złożonych problemów technicznych w środowisku produkcyjnym. Moim celem jest dostarczanie praktycznych i niezawodnych rozwiązań zwiększających <strong>wydajność, bezpieczeństwo</strong> i dostępność maszyn.',
+    'about.cta':'Porozmawiajmy o projekcie','about.blog':'Czytaj blog',
+  },
+  en: {
+    'nav.services':'Services','nav.tech':'Technologies','nav.projects':'Projects','nav.process':'Process',
+    'nav.about':'About me','nav.contact':'Contact','nav.cta':'Request a quote','nav.gallery':'Gallery','nav.blog':'Blog',
+    'sec.about.tag':'About me','sec.about.title':'Tomasz Urbański',
+    'sec.about.desc':'Automation engineer with 20+ years of experience in European industry',
+    'about.s1':'years experience','about.s2':'projects in Europe','about.s3':'TIA Portal expert',
+    'about.p1':'Over 20 years of experience in industrial automation, maintenance, and control system design.',
+    'about.p2':'I specialize in <strong>Siemens S7 / TIA Portal PLC</strong> programming, <strong>Lenze</strong> drive systems, electrical design in <strong>EPLAN</strong>, and commissioning of machines and complete production lines. I have delivered projects for clients across Europe — modernizations, process optimization, and reliability improvements.',
+    'about.p3':'My goal is to deliver practical and reliable solutions that increase <strong>efficiency, safety</strong>, and machine availability.',
+    'about.cta':"Let's talk about your project",'about.blog':'Read the blog',
+  },
+  de: {
+    'nav.services':'Leistungen','nav.tech':'Technologien','nav.projects':'Projekte','nav.process':'Prozess',
+    'nav.about':'Über mich','nav.contact':'Kontakt','nav.cta':'Anfrage stellen','nav.gallery':'Galerie','nav.blog':'Blog',
+    'sec.about.tag':'Über mich','sec.about.title':'Tomasz Urbański',
+    'sec.about.desc':'Automatisierungsingenieur mit über 20 Jahren Erfahrung in der europäischen Industrie',
+    'about.s1':'Jahre Erfahrung','about.s2':'Projekte in Europa','about.s3':'TIA Portal Experte',
+    'about.p1':'Über 20 Jahre Erfahrung in industrieller Automatisierung, Instandhaltung und Steuerungssystementwicklung.',
+    'about.p2':'Spezialisiert auf <strong>Siemens S7 / TIA Portal SPS</strong>-Programmierung, <strong>Lenze</strong>-Antriebssysteme, elektrisches Design in <strong>EPLAN</strong> sowie Inbetriebnahme von Maschinen und Produktionslinien. Projekte in ganz Europa realisiert.',
+    'about.p3':'Mein Ziel ist es, praktische und zuverlässige Lösungen zu liefern, die <strong>Effizienz, Sicherheit</strong> und Maschinenverfügbarkeit steigern.',
+    'about.cta':'Über ein Projekt sprechen','about.blog':'Blog lesen',
+  },
+  tr: {
+    'nav.services':'Hizmetler','nav.tech':'Teknolojiler','nav.projects':'Projeler','nav.process':'Süreç',
+    'nav.about':'Hakkımda','nav.contact':'İletişim','nav.cta':'Teklif İste','nav.gallery':'Galeri','nav.blog':'Blog',
+    'sec.about.tag':'Hakkımda','sec.about.title':'Tomasz Urbański',
+    'sec.about.desc':'Avrupa sanayiinde 20+ yıl deneyime sahip otomasyon mühendisi',
+    'about.s1':'yıl deneyim','about.s2':'Avrupa projeleri','about.s3':'TIA Portal uzmanı',
+    'about.p1':'Endüstriyel otomasyon, bakım ve kontrol sistemi tasarımında 20 yılı aşkın deneyim.',
+    'about.p2':'<strong>Siemens S7 / TIA Portal PLC</strong> programlama, <strong>Lenze</strong> sürücü sistemleri, <strong>EPLAN</strong>\'da elektrik tasarımı ve makinaların ve komple üretim hatlarının devreye alınması konularında uzmanlaşmış. Avrupa genelinde modernizasyon, süreç optimizasyonu ve güvenilirlik iyileştirme projeleri gerçekleştirdim.',
+    'about.p3':'Hedefim, <strong>verimlilik, güvenlik</strong> ve makine kullanılabilirliğini artıran pratik ve güvenilir çözümler sunmaktır.',
+    'about.cta':'Proje hakkında konuşalım','about.blog':'Blogu oku',
+  },
+  ar: {
+    'nav.services':'الخدمات','nav.tech':'التقنيات','nav.projects':'المشاريع','nav.process':'العملية',
+    'nav.about':'عني','nav.contact':'اتصل بنا','nav.cta':'طلب عرض سعر','nav.gallery':'معرض','nav.blog':'مدونة',
+    'sec.about.tag':'عني','sec.about.title':'Tomasz Urbański',
+    'sec.about.desc':'مهندس أتمتة بخبرة أكثر من 20 عامًا في الصناعة الأوروبية',
+    'about.s1':'سنوات خبرة','about.s2':'مشاريع في أوروبا','about.s3':'خبير TIA Portal',
+    'about.p1':'أكثر من 20 عامًا من الخبرة في الأتمتة الصناعية والصيانة وتصميم أنظمة التحكم.',
+    'about.p2':'متخصص في برمجة <strong>Siemens S7 / TIA Portal PLC</strong>، وأنظمة محركات <strong>Lenze</strong>، والتصميم الكهربائي في <strong>EPLAN</strong>، وتشغيل الآلات وخطوط الإنتاج الكاملة.',
+    'about.p3':'هدفي تقديم حلول عملية وموثوقة تزيد <strong>الكفاءة والسلامة</strong> وإتاحة الآلات.',
+    'about.cta':'لنتحدث عن مشروعك','about.blog':'قراءة المدونة',
+  },
+};
+const OKEY = 'tuLang';
+let oLang = localStorage.getItem(OKEY) || 'pl';
+function omnieApplyLang(l) {
+  oLang = l;
+  localStorage.setItem(OKEY, l);
+  document.documentElement.lang = l;
+  document.documentElement.dir = l === 'ar' ? 'rtl' : 'ltr';
+  const dict = OT[l] || OT.pl;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (dict[k] !== undefined) el.innerHTML = dict[k];
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+}
+document.querySelectorAll('.lang-btn').forEach(b => b.addEventListener('click', () => omnieApplyLang(b.dataset.lang)));
+document.addEventListener('DOMContentLoaded', () => omnieApplyLang(oLang));
+
+// hamburger menu
+const hb = document.getElementById('hamburger');
+const nl = document.getElementById('navLinks');
+if (hb && nl) hb.addEventListener('click', () => { hb.classList.toggle('open'); nl.classList.toggle('open'); });
+
+// nav scroll effect
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+</script>
+</body>
+</html>
