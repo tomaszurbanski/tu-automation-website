@@ -265,7 +265,7 @@
       grid-template-columns: 1fr 1fr;
       border: 1px solid var(--border);
       border-top: none;
-      border-radius: 0 0 12px 12px;
+      border-radius: 0;
       overflow: hidden;
       min-height: 420px;
     }
@@ -332,7 +332,6 @@
       font-weight: 600;
       border-radius: 0 0 12px 12px;
       overflow: hidden;
-      margin-top: -12px;
     }
     .conv-status .s-item {
       display: flex;
@@ -346,7 +345,7 @@
     .conv-status .s-right { margin-left: auto; border-right: none; border-left: 1px solid rgba(0,0,0,0.15); cursor: pointer; }
     .conv-status .s-right:hover { background: rgba(0,0,0,0.1); }
     .conv-status.error { background: var(--error); color: #fff; }
-    .conv-status.idle { background: var(--bg3); color: var(--muted2); border: 1px solid var(--border); border-top: none; }
+    .conv-status.idle { background: var(--bg3); color: var(--muted2); border: 1px solid var(--border); border-top: none; border-radius: 0 0 12px 12px; }
 
     /* warnings */
     .conv-warning {
