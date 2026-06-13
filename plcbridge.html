@@ -6,7 +6,7 @@
   <title>PLCbridge — PLC Language Converter | TU Automation</title>
   <meta name="description" content="Free online PLC language converter. Convert STL/AWL to SCL, SCL to ST (CODESYS), IL and more. Powered by AI. By TU Automation."/>
   <meta name="keywords" content="PLC converter, STL to SCL, AWL to SCL, CODESYS converter, TIA Portal, IEC 61131-3"/>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+  <link rel="icon" href="logo-tu.png" type="image/png"/>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -69,6 +69,9 @@
       border-bottom: 1px solid var(--border);
     }
     .topbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-family: var(--head);
       font-size: 22px;
       font-weight: 700;
@@ -76,6 +79,7 @@
       text-decoration: none;
       letter-spacing: 0.04em;
     }
+    .topbar-logo img { height: 36px; width: auto; display: block; filter: drop-shadow(0 0 6px rgba(0,212,255,0.5)); }
     .topbar-logo span { color: var(--text); }
     .topbar-nav { display: flex; align-items: center; gap: 24px; }
     .topbar-nav a {
@@ -643,7 +647,7 @@
 
 <!-- ── TOPBAR ── -->
 <nav class="topbar">
-  <a class="topbar-logo" href="https://tuautomation.de/">TU<span>Automation</span></a>
+  <a class="topbar-logo" href="https://tuautomation.de/"><img src="logo-tu.png" height="38" alt="TU"><span>Automation</span></a>
   <div class="topbar-nav">
     <a href="https://tuautomation.de/" data-i18n="plc.nav.home">Home</a>
     <a href="https://tuautomation.de/#services" data-i18n="plc.nav.services">Services</a>

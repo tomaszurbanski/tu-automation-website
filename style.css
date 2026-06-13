@@ -73,13 +73,18 @@ nav {
   transition: all 0.3s;
 }
 .nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: 'Rajdhani', sans-serif;
   font-size: 1.3rem;
   font-weight: 700;
   color: var(--cyan);
   letter-spacing: 2px;
   text-shadow: var(--glow);
+  text-decoration: none;
 }
+.nav-logo img { height: 38px; width: auto; display: block; filter: drop-shadow(0 0 6px rgba(0,212,255,0.5)); }
 .nav-logo span { color: var(--text); }
 .nav-links { display: flex; gap: 28px; list-style: none; }
 .nav-links a {
