@@ -711,6 +711,7 @@ section { position: relative; z-index: 2; }
 .project-body p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 16px; }
 .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
 .project-tag { font-size: 0.7rem; padding: 3px 8px; border: 1px solid var(--border); color: var(--muted); }
+.project-scope { font-size: 0.8rem; color: var(--muted); margin: -4px 0 12px; line-height: 1.5; border-left: 2px solid var(--cyan); padding-left: 10px; }
 
 /* ── CONTACT ── */
 #contact { padding: 100px 5%; }
