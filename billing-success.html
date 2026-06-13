@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PLCbridge Pro — Activated | TU Automation</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:   #080C14; --bg2: #0D1220; --bg3: #111827;
+      --border: #1E293B; --border2: #243348;
+      --cyan: #00D4FF; --text: #E2E8F0; --muted: #64748B; --muted2: #94A3B8;
+      --green: #22c55e; --error: #f87171;
+      --glow: rgba(0,212,255,0.15);
+      --mono: 'JetBrains Mono', monospace;
+      --head: 'Rajdhani', sans-serif;
+      --body: 'Inter', sans-serif;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      max-width: 520px;
+      width: 100%;
+      padding: 48px 40px;
+      text-align: center;
+    }
+    .icon { font-size: 56px; margin-bottom: 20px; }
+    h1 {
+      font-family: var(--head);
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    h1 span { color: var(--cyan); }
+    .subtitle { color: var(--muted2); font-size: 15px; margin-bottom: 32px; }
+
+    .api-key-block {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+    .api-key-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .api-key-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .api-key-val {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--cyan);
+      flex: 1;
+      word-break: break-all;
+      background: var(--bg);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      padding: 10px 12px;
+    }
+    .btn-copy {
+      background: var(--bg3);
+      border: 1px solid var(--border2);
+      border-radius: 6px;
+      color: var(--muted2);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 10px 14px;
+      white-space: nowrap;
+      transition: color 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .btn-copy:hover { color: var(--cyan); border-color: var(--cyan); }
+    .warning-note {
+      background: rgba(251,191,36,0.08);
+      border: 1px solid rgba(251,191,36,0.2);
+      border-radius: 8px;
+      color: #fbbf24;
+      font-size: 13px;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      text-align: left;
+    }
+    .plan-badge {
+      display: inline-block;
+      background: rgba(0,212,255,0.1);
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 20px;
+      color: var(--cyan);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 4px 16px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .btn-primary {
+      display: block;
+      background: var(--cyan);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      cursor: pointer;
+      font-family: var(--head);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 14px 32px;
+      text-decoration: none;
+      text-align: center;
+      transition: opacity 0.15s;
+      box-shadow: 0 0 20px var(--glow);
+      margin-bottom: 12px;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary {
+      color: var(--muted2);
+      font-size: 13px;
+      text-decoration: none;
+    }
+    .btn-secondary:hover { color: var(--cyan); }
+    .loading { color: var(--muted2); font-size: 15px; }
+    .error-msg { color: var(--error); font-size: 14px; margin-bottom: 20px; }
+    .spinner { display: inline-block; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<div class="card" id="loadingCard">
+  <div class="icon"><span class="spinner">⚙</span></div>
+  <h1>Activating…</h1>
+  <p class="subtitle loading">Please wait while we set up your account.</p>
+</div>
+
+<div class="card" id="successCard" style="display:none">
+  <div class="icon">✅</div>
+  <div class="plan-badge" id="planBadge">Pro</div>
+  <h1>Welcome to <span>PLCbridge</span></h1>
+  <p class="subtitle">Your account is active. Save your API key below — you'll need it in the converter.</p>
+
+  <div class="api-key-block">
+    <div class="api-key-label">Your API Key</div>
+    <div class="api-key-row">
+      <div class="api-key-val" id="apiKeyDisplay">plcb_…</div>
+      <button class="btn-copy" onclick="copyKey()">⎘ Copy</button>
+    </div>
+  </div>
+
+  <div class="warning-note">
+    ⚠ Save this key now — it won't be shown again. Paste it into PLCbridge under the ⚙ Settings button.
+  </div>
+
+  <a class="btn-primary" href="plcbridge.html">Open PLCbridge →</a>
+  <a class="btn-secondary" href="https://tuautomation.de/#contact">Need help? Contact us</a>
+</div>
+
+<div class="card" id="errorCard" style="display:none">
+  <div class="icon">❌</div>
+  <h1>Something went wrong</h1>
+  <p class="error-msg" id="errorMsg"></p>
+  <a class="btn-primary" href="plcbridge.html">← Back to PLCbridge</a>
+</div>
+
+<script>
+  const API_URL = 'https://api.plcbridge.tuautomation.de';
+  const params  = new URLSearchParams(location.search);
+  const sid     = params.get('session_id');
+
+  async function activate() {
+    if (!sid) {
+      showError('No session ID found. Did you come from Stripe checkout?');
+      return;
+    }
+    try {
+      const res  = await fetch(`${API_URL}/api/billing/activate?session_id=${encodeURIComponent(sid)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || 'Activation failed');
+
+      // store in localStorage for plcbridge.html
+      localStorage.setItem('plcbridge_api_key', data.api_key);
+      localStorage.setItem('plcbridge_tier', data.plan);
+      localStorage.setItem('plcbridge_email', data.email || '');
+
+      document.getElementById('apiKeyDisplay').textContent = data.api_key;
+      document.getElementById('planBadge').textContent =
+        data.plan === 'business' ? 'Business' : 'Pro';
+
+      document.getElementById('loadingCard').style.display = 'none';
+      document.getElementById('successCard').style.display = '';
+    } catch (e) {
+      showError(e.message);
+    }
+  }
+
+  function showError(msg) {
+    document.getElementById('errorMsg').textContent = msg;
+    document.getElementById('loadingCard').style.display = 'none';
+    document.getElementById('errorCard').style.display  = '';
+  }
+
+  function copyKey() {
+    const key = document.getElementById('apiKeyDisplay').textContent;
+    navigator.clipboard.writeText(key).then(() => {
+      const btn = document.querySelector('.btn-copy');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => btn.textContent = '⎘ Copy', 2000);
+    });
+  }
+
+  activate();
+</script>
+</body>
+</html>
