@@ -4,7 +4,7 @@
 const T = {
   pl: {
     'nav.services': 'Usługi', 'nav.tech': 'Technologie', 'nav.projects': 'Projekty',
-    'nav.process': 'Proces', 'nav.about': 'O mnie', 'nav.contact': 'Kontakt', 'nav.cta': 'Zapytaj o projekt',
+    'nav.process': 'Proces', 'nav.about': 'O mnie', 'nav.contact': 'Kontakt', 'nav.cta': 'Zapytaj o projekt', 'nav.offer': 'Serwis',
     'hero.badge': 'Automatyka Przemysłowa',
     'hero.title1': 'Inteligentne systemy',
     'hero.subtitle': 'Projektuję i wdrażam systemy sterowania PLC, SCADA i HMI dla przemysłu produkcyjnego i tekstylnego. Od analizy wymagań po uruchomienie i serwis — kompleksowe rozwiązania automatyki pod klucz.',
@@ -71,7 +71,7 @@ const T = {
   },
   en: {
     'nav.services': 'Services', 'nav.tech': 'Technologies', 'nav.projects': 'Projects',
-    'nav.process': 'Process', 'nav.about': 'About me', 'nav.contact': 'Contact', 'nav.cta': 'Request a quote',
+    'nav.process': 'Process', 'nav.about': 'About me', 'nav.contact': 'Contact', 'nav.cta': 'Request a quote', 'nav.offer': 'Service',
     'hero.badge': 'Industrial Automation',
     'hero.title1': 'Intelligent systems',
     'hero.subtitle': 'I design and implement PLC, SCADA and HMI control systems for manufacturing and textile industries. From requirements analysis to commissioning and service — complete turnkey automation solutions.',
@@ -138,7 +138,7 @@ const T = {
   },
   de: {
     'nav.services': 'Leistungen', 'nav.tech': 'Technologien', 'nav.projects': 'Projekte',
-    'nav.process': 'Prozess', 'nav.about': 'Über mich', 'nav.contact': 'Kontakt', 'nav.cta': 'Anfrage stellen',
+    'nav.process': 'Prozess', 'nav.about': 'Über mich', 'nav.contact': 'Kontakt', 'nav.cta': 'Anfrage stellen', 'nav.offer': 'Service',
     'hero.badge': 'Industrieautomatisierung',
     'hero.title1': 'Intelligente Systeme',
     'hero.subtitle': 'Ich entwickle und implementiere SPS-, SCADA- und HMI-Steuerungssysteme für Fertigungs- und Textilindustrie. Von der Anforderungsanalyse bis zur Inbetriebnahme und Wartung — schlüsselfertige Automatisierungslösungen.',
