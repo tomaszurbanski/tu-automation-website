@@ -46,6 +46,15 @@
   </div>
 
   <div class="blog-grid">
+    <a href="blog/crosslapper-control-s7-1200-mitsubishi.html" class="blog-card reveal" id="crosslapperCard">
+      <div class="blog-card-inner">
+        <div class="blog-card-tag" data-i18n="a5.tag">Crosslapper · Siemens S7-1200 · Mitsubishi</div>
+        <div class="blog-card-title" data-i18n="a5.title">Sterowanie układacza / crosslappera — Siemens S7-1200 i napędy Mitsubishi</div>
+        <div class="blog-card-excerpt" data-i18n="a5.excerpt">Nowe sterowanie crosslappera oparte na Siemens S7-1200 i napędach Mitsubishi. Kinematyka maszyny, prędkości sukien i taśmy odciągowej, ruch wózków, liczba warstw — plus interaktywne demo PL/DE/EN.</div>
+        <div class="blog-card-meta"><span>Tomasz Urbański</span><span data-i18n="a5.date">Czerwiec 2026</span><span data-i18n="a5.read">9 min czytania</span></div>
+      </div>
+    </a>
+
     <a href="blog/ai-predictive-maintenance.html" class="blog-card reveal">
       <div class="blog-card-inner">
         <div class="blog-card-tag" data-i18n="a1.tag">AI · Utrzymanie ruchu</div>
@@ -118,6 +127,10 @@
       'a4.title': 'SCADA czy HMI? Jak wybrać właściwą wizualizację dla Twojego zakładu',
       'a4.excerpt': 'Porównanie systemów SCADA i HMI — kiedy wystarczy panel operatorski, a kiedy potrzebujesz pełnego systemu nadzoru. Analiza WinCC, Ignition, FactoryTalk i innych platform.',
       'a4.date': 'Marzec 2025', 'a4.read': '7 min czytania',
+      'a5.tag': 'Crosslapper · Siemens S7-1200 · Mitsubishi',
+      'a5.title': 'Sterowanie układacza / crosslappera — Siemens S7-1200 i napędy Mitsubishi',
+      'a5.excerpt': 'Nowe sterowanie crosslappera oparte na Siemens S7-1200 i napędach Mitsubishi. Kinematyka maszyny, prędkości sukien i taśmy odciągowej, ruch wózków, liczba warstw — plus interaktywne demo PL/DE/EN.',
+      'a5.date': 'Czerwiec 2026', 'a5.read': '9 min czytania',
       'footer.tagline': 'Automatyka przemysłowa · Tomasz Urbański',
       'footer.home': 'Strona główna', 'footer.privacy': 'Polityka prywatności',
       'footer.location': 'Deutschland · Europa · Świat',
@@ -143,6 +156,10 @@
       'a4.title': 'SCADA oder HMI? Die richtige Visualisierung für Ihre Anlage wählen',
       'a4.excerpt': 'Vergleich von SCADA- und HMI-Systemen — wann ein Bedienterminal ausreicht und wann Sie ein vollständiges Überwachungssystem benötigen. Analyse von WinCC, Ignition, FactoryTalk und weiteren Plattformen.',
       'a4.date': 'März 2025', 'a4.read': '7 min Lesezeit',
+      'a5.tag': 'Crosslapper · Siemens S7-1200 · Mitsubishi',
+      'a5.title': 'Crosslapper-Steuerung mit Siemens S7-1200 und Mitsubishi-Antrieben',
+      'a5.excerpt': 'Neue Crosslapper-Steuerung mit Siemens S7-1200 und Mitsubishi-Antrieben. Maschinenkinematik, Tuch- und Abzugbandgeschwindigkeiten, Wagenbewegung, Lagenzahl — plus interaktives Demo PL/DE/EN.',
+      'a5.date': 'Juni 2026', 'a5.read': '9 min Lesezeit',
       'footer.tagline': 'Industrieautomation · Tomasz Urbański',
       'footer.home': 'Startseite', 'footer.privacy': 'Datenschutz',
       'footer.location': 'Deutschland · Europa · Welt',
@@ -168,6 +185,10 @@
       'a4.title': 'SCADA or HMI? Choosing the Right Visualization for Your Plant',
       'a4.excerpt': 'Comparison of SCADA and HMI systems — when a panel is enough and when you need a full supervisory system. Analysis of WinCC, Ignition, FactoryTalk and other platforms.',
       'a4.date': 'March 2025', 'a4.read': '7 min read',
+      'a5.tag': 'Crosslapper · Siemens S7-1200 · Mitsubishi',
+      'a5.title': 'Crosslapper Control with Siemens S7-1200 and Mitsubishi Drives',
+      'a5.excerpt': 'New crosslapper control based on Siemens S7-1200 and Mitsubishi drives. Machine kinematics, apron and take-off belt speeds, carriage motion, number of layers — plus an interactive PL/DE/EN demo.',
+      'a5.date': 'June 2026', 'a5.read': '9 min read',
       'footer.tagline': 'Industrial Automation · Tomasz Urbański',
       'footer.home': 'Home', 'footer.privacy': 'Privacy Policy',
       'footer.location': 'Germany · Europe · World',
@@ -245,6 +266,16 @@
     document.querySelectorAll('.lang-btn').forEach(b => {
       b.classList.toggle('active', b.dataset.lang === lang);
     });
+    // language-aware link tylko dla karty crosslappera (PL/DE/EN; inne języki -> PL)
+    const cc = document.getElementById('crosslapperCard');
+    if (cc) {
+      const ccMap = {
+        pl: 'blog/crosslapper-control-s7-1200-mitsubishi.html',
+        de: 'blog/crosslapper-control-s7-1200-mitsubishi-de.html',
+        en: 'blog/crosslapper-control-s7-1200-mitsubishi-en.html'
+      };
+      cc.setAttribute('href', ccMap[lang] || ccMap.pl);
+    }
     if (lang === 'ar' && !document.getElementById('arabic-font')) {
       const lnk = document.createElement('link');
       lnk.id = 'arabic-font';

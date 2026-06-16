@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crosslapper-Steuerung — Siemens S7-1200 und Mitsubishi | TU Automation</title>
+  <meta name="description" content="Neue Crosslapper-Steuerung mit Siemens S7-1200 und Mitsubishi-Antrieben. Analyse von Bandgeschwindigkeiten, Wagenbewegung und Lagenbildung."/>
+  <link rel="canonical" href="https://tuautomation.de/blog/crosslapper-control-s7-1200-mitsubishi-de.html"/>
+  <link rel="icon" href="../logo-tu.png" type="image/png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style.css"/>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav id="nav" style="position:fixed">
+  <div class="nav-logo"><img src="../logo-tu.png" height="38" alt="TU"><span>Automation</span></div>
+  <div class="nav-right"><a href="../blog.html" class="nav-cta" style="font-size:0.75rem">← Blog</a></div>
+</nav>
+
+<div class="article-page">
+  <div class="article-hero">
+    <div class="article-tag">Crosslapper · Siemens S7-1200 · Mitsubishi · Motion</div>
+    <h1 class="article-title">Crosslapper-Steuerung mit Siemens S7-1200 und Mitsubishi-Antrieben</h1>
+    <div class="article-meta"><span>Tomasz Urbański</span><span>Juni 2026</span><span>9 min Lesezeit</span></div>
+    <div style="margin-top:14px;font-size:0.85rem;color:var(--muted)">Sprachversion:
+      <a href="crosslapper-control-s7-1200-mitsubishi.html" style="color:var(--muted2)">PL</a> ·
+      <strong style="color:var(--cyan)">DE</strong> ·
+      <a href="crosslapper-control-s7-1200-mitsubishi-en.html" style="color:var(--muted2)">EN</a>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <p>Ein Kreuzleger (engl. <em>Crosslapper</em>) ist eine Maschine in Linien für Vliesstoffe und technische Textilien. Aus einer dünnen Materialbahn (Vlies), die seitlich einläuft, legt er <strong>quer</strong> ein mehrlagiges Vlies definierter Breite ab. Die Bahn wird über ein Tuchsystem und zwei Wagen — Ober- und Unterwagen — geführt; das fertige Vlies übernimmt ein quer laufendes Abzugband. Klingt einfach, ist aber eine der anspruchsvollsten Bewegungsanwendungen der Branche.</p>
+
+    <div class="article-callout">
+      <p>Die Schwierigkeit liegt nicht in einem einzelnen Antrieb, sondern in der <strong>gleichzeitigen Synchronisation mehrerer Achsen</strong>, damit die Ablegegeschwindigkeit konstant bleibt, die Vlieskante gerade ist und das Material weder gedehnt noch gestaucht wird.</p>
+    </div>
+
+    <h2>Warum die Crosslapper-Steuerung anspruchsvoll ist</h2>
+    <p>In einem Zyklus muss der Unterwagen an jedem Tischende stark beschleunigen und abbremsen — und dennoch soll die pro Längeneinheit abgelegte Materialmenge konstant bleiben. Das erfordert eine kontinuierliche, koordinierte Berechnung der Geschwindigkeiten aller Bahntransport-Elemente in Echtzeit, für variable Produktionsvorgaben.</p>
+
+    <h2>Kinematische Zusammenhänge</h2>
+    <p>Die wichtigsten Größen und ihre Abhängigkeiten:</p>
+    <ul>
+      <li><strong>Einlaufgeschwindigkeit</strong> — mit der die Bahn in die Maschine einläuft; Bezugsgröße für alle weiteren Geschwindigkeiten.</li>
+      <li><strong>Tuch 1</strong> — führt das Material vom Einlauf zum Oberwagen.</li>
+      <li><strong>Tuch 2</strong> — übergibt das Material vom Oberwagen an den Unterwagen.</li>
+      <li><strong>Oberwagen</strong> — bewegt sich quer mit dem halben Hub des Unterwagens; seine Bewegung hält die Tuchschleife auf konstanter Länge.</li>
+      <li><strong>Unterwagen</strong> — legt das Material auf dem Tisch ab und fährt über die volle Legebreite hin und her.</li>
+      <li><strong>Abzugband</strong> — übernimmt das fertige Vlies quer zur Wagenbewegung; seine Geschwindigkeit ergibt sich aus Einlaufgeschwindigkeit und Lagenzahl.</li>
+      <li><strong>Legebreite</strong> — definiert den Verfahrbereich des Unterwagens.</li>
+      <li><strong>Lagenzahl</strong> — beeinflusst die Vliesdicke und direkt die Geschwindigkeit des Abzugbandes.</li>
+    </ul>
+    <p>Diese Größen sind nicht unabhängig — eine geänderte Vorgabe (z. B. Legebreite oder Lagenzahl) berechnet sofort die Geschwindigkeitsprofile von Wagen und Bändern neu. Genau dieses Abhängigkeitsnetz bestimmt die Vliesqualität.</p>
+
+    <h2>Steuerungsplattform</h2>
+    <ul>
+      <li><strong>Steuerung:</strong> Siemens <strong>S7-1200</strong> — kompakt, mit ausreichender Leistung für Bewegungskoordination und Ablegetechnologie.</li>
+      <li><strong>Antriebe:</strong> <strong>Mitsubishi</strong> — Servo/Frequenzumrichter, die die Geschwindigkeitsprofile der einzelnen Achsen umsetzen.</li>
+      <li><strong>Schlüssel:</strong> präzise <strong>Synchronisation von Wagen und Bändern</strong> — sie entscheidet über gerade Kante und konstante Flächenmasse.</li>
+    </ul>
+
+    <div class="article-callout">
+      <p>Das Bewegungsprofil des Wagens (z. B. S-Kurve statt Trapez) wirkt sich direkt auf Schwingungen, Spitzenlasten der Antriebe und die Qualität der Vlieskante aus.</p>
+    </div>
+
+    <h2>Interaktive Visualisierung des Kreuzlegers</h2>
+    <p>Das folgende Demo ist ein interaktives Modell in der Draufsicht: Es zeigt die Bewegung von Ober- und Unterwagen, die Tücher, das Abzugband und die abgelegten Lagen. Über Schieberegler ändern Sie Einlaufgeschwindigkeit, Legebreite und Lagenzahl — die übrigen Geschwindigkeiten werden automatisch neu berechnet. So lassen sich die kinematischen Zusammenhänge <strong>schon vor Implementierung und Inbetriebnahme</strong> verstehen.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px">
+      <a href="../assets/demos/crosslapper-demo-de.html" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block">▶ Demo auf Deutsch öffnen</a>
+      <a href="../assets/demos/crosslapper-demo-pl.html" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block;background:transparent;border:1px solid var(--border2);color:var(--muted2)">Otwórz demo PL</a>
+      <a href="../assets/demos/crosslapper-demo-en.html" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block;background:transparent;border:1px solid var(--border2);color:var(--muted2)">Open EN demo</a>
+    </div>
+    <p style="font-size:0.82rem;color:var(--muted)">Anschauliches Modell — zeigt kinematische Zusammenhänge, nicht die vollständige Antriebsdynamik oder PLC-Logik.</p>
+
+    <div class="article-cta">
+      <h3>Planen Sie eine neue Maschinensteuerung?</h3>
+      <p>Wenn Sie eine neue Maschinensteuerung, eine Crosslapper-Modernisierung oder eine Analyse von Antriebsabhängigkeiten planen, kontaktieren Sie mich.</p>
+      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Kontakt aufnehmen</a>
+    </div>
+  </div>
+
+  <div class="article-nav">
+    <a href="../blog.html">← Alle Artikel</a>
+    <a href="scada-hmi-wybor.html">SCADA oder HMI? →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo"><img src="../logo-tu.png" height="38" alt="TU"><span>Automation</span></div></div>
+    <div class="footer-links"><a href="../index.html">Startseite</a><a href="../blog.html">Blog</a><a href="../index.html#contact">Kontakt</a><a href="../impressum.html">Impressum</a></div>
+    <div class="footer-location"><div>© 2025 TU Automation</div></div>
+  </div>
+</footer>
+<script>const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});</script>
+</body>
+</html>

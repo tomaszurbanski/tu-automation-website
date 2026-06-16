@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crosslapper Control — Siemens S7-1200 and Mitsubishi | TU Automation</title>
+  <meta name="description" content="New crosslapper control system based on Siemens S7-1200 and Mitsubishi drives. Analysis of belt speeds, carriage movement and web layering."/>
+  <link rel="canonical" href="https://tuautomation.de/blog/crosslapper-control-s7-1200-mitsubishi-en.html"/>
+  <link rel="icon" href="../logo-tu.png" type="image/png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style.css"/>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav id="nav" style="position:fixed">
+  <div class="nav-logo"><img src="../logo-tu.png" height="38" alt="TU"><span>Automation</span></div>
+  <div class="nav-right"><a href="../blog.html" class="nav-cta" style="font-size:0.75rem">← Blog</a></div>
+</nav>
+
+<div class="article-page">
+  <div class="article-hero">
+    <div class="article-tag">Crosslapper · Siemens S7-1200 · Mitsubishi · Motion</div>
+    <h1 class="article-title">Crosslapper Control with Siemens S7-1200 and Mitsubishi Drives</h1>
+    <div class="article-meta"><span>Tomasz Urbański</span><span>June 2026</span><span>9 min read</span></div>
+    <div style="margin-top:14px;font-size:0.85rem;color:var(--muted)">Language version:
+      <a href="crosslapper-control-s7-1200-mitsubishi.html" style="color:var(--muted2)">PL</a> ·
+      <a href="crosslapper-control-s7-1200-mitsubishi-de.html" style="color:var(--muted2)">DE</a> ·
+      <strong style="color:var(--cyan)">EN</strong>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <p>A crosslapper (German <em>Kreuzleger</em>) is a machine used in nonwoven and technical-textile lines. From a thin material web entering from one side, it lays a multi-layer batt of a defined width <strong>transversely</strong>. The web runs through a system of aprons and two carriages — upper and lower — while a perpendicular take-off belt removes the finished batt. It sounds simple, yet it is one of the most demanding motion applications in the industry.</p>
+
+    <div class="article-callout">
+      <p>The challenge is not a single drive, but <strong>synchronizing several axes at once</strong> so that the laydown rate stays constant, the batt edge is straight, and the material is neither stretched nor crumpled.</p>
+    </div>
+
+    <h2>Why crosslapper control is demanding</h2>
+    <p>Within one cycle the lower carriage must accelerate and decelerate sharply at each end of the table — yet the amount of material laid per unit length must remain constant. This requires continuous, coordinated computation of the speeds of all web-transport elements in real time, for variable production settings.</p>
+
+    <h2>Kinematic relationships</h2>
+    <p>The key quantities and how they interrelate:</p>
+    <ul>
+      <li><strong>Infeed speed</strong> — the speed at which the web enters the machine; the reference for all other speeds.</li>
+      <li><strong>Apron 1</strong> — feeds material from the infeed to the upper carriage.</li>
+      <li><strong>Apron 2</strong> — transfers material from the upper carriage to the lower carriage.</li>
+      <li><strong>Upper carriage</strong> — moves transversely at half the stroke of the lower carriage; its motion keeps the apron loop at a constant length.</li>
+      <li><strong>Lower carriage</strong> — lays the material onto the table, travelling back and forth across the full laydown width.</li>
+      <li><strong>Take-off belt</strong> — removes the finished batt perpendicular to the carriage motion; its speed results from the infeed speed and the number of layers.</li>
+      <li><strong>Laydown width</strong> — defines the travel range of the lower carriage.</li>
+      <li><strong>Number of layers</strong> — affects the batt thickness and directly the take-off belt speed.</li>
+    </ul>
+    <p>These quantities are not independent — changing one setting (e.g. laydown width or number of layers) immediately recomputes the speed profiles of the carriages and belts. It is exactly this web of dependencies that determines batt quality.</p>
+
+    <h2>Control platform</h2>
+    <ul>
+      <li><strong>Controller:</strong> Siemens <strong>S7-1200</strong> — compact, with enough performance to coordinate the motion and handle the laydown technology.</li>
+      <li><strong>Drives:</strong> <strong>Mitsubishi</strong> — servo/inverters executing the speed profiles of the individual axes.</li>
+      <li><strong>Key point:</strong> precise <strong>synchronization of carriages and belts</strong> — it determines a straight edge and a constant basis weight.</li>
+    </ul>
+
+    <div class="article-callout">
+      <p>The carriage motion profile (e.g. S-curve instead of trapezoid) directly affects vibration, peak drive loads and the quality of the laid batt edge.</p>
+    </div>
+
+    <h2>Interactive crosslapper visualization</h2>
+    <p>The demo below is an interactive top-view model: it shows the motion of the upper and lower carriage, the aprons, the take-off belt and the laid layers. Sliders let you change the infeed speed, laydown width and number of layers — the other speeds recompute automatically. This helps to understand the kinematic relationships <strong>before implementation and commissioning</strong>.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px">
+      <a href="../assets/demos/crosslapper-demo-en.html" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block">▶ Open EN demo</a>
+      <a href="../assets/demos/crosslapper-demo-pl.html" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block;background:transparent;border:1px solid var(--border2);color:var(--muted2)">Otwórz demo PL</a>
+      <a href="../assets/demos/crosslapper-demo-de.html" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block;background:transparent;border:1px solid var(--border2);color:var(--muted2)">Demo auf Deutsch öffnen</a>
+    </div>
+    <p style="font-size:0.82rem;color:var(--muted)">Illustrative model — shows kinematic relationships, not full drive dynamics or complete PLC logic.</p>
+
+    <div class="article-cta">
+      <h3>Planning a new machine control system?</h3>
+      <p>If you are planning a new machine control system, crosslapper modernization or drive synchronization analysis, feel free to contact me.</p>
+      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Get in touch</a>
+    </div>
+  </div>
+
+  <div class="article-nav">
+    <a href="../blog.html">← All articles</a>
+    <a href="scada-hmi-wybor.html">SCADA or HMI? →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo"><img src="../logo-tu.png" height="38" alt="TU"><span>Automation</span></div></div>
+    <div class="footer-links"><a href="../index.html">Home</a><a href="../blog.html">Blog</a><a href="../index.html#contact">Contact</a><a href="../impressum.html">Impressum</a></div>
+    <div class="footer-location"><div>© 2025 TU Automation</div></div>
+  </div>
+</footer>
+<script>const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});</script>
+</body>
+</html>

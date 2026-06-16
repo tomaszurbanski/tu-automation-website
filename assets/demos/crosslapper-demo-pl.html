@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crosslapper — symulacja interaktywna | TU Automation</title>
+<link rel="icon" href="logo-tu.png" type="image/png"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --bg:#080C14; --bg2:#0D1220; --bg3:#111827;
+    --border:#1E293B; --border2:#243348;
+    --cyan:#00D4FF; --text:#E2E8F0; --muted:#64748B; --muted2:#94A3B8;
+    --green:#22C55E; --error:#F87171; --amber:#F59E0B; --violet:#A78BFA; --teal:#2DD4BF;
+    --glow:rgba(0,212,255,.15);
+    --head:'Rajdhani',sans-serif; --body:'Inter',sans-serif; --mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;} html,body{margin:0;padding:0;}
+  body{font-family:var(--body);color:var(--text);background:var(--bg);
+    background-image:radial-gradient(circle at 20% 0%,rgba(0,212,255,.05),transparent 45%),radial-gradient(circle at 90% 10%,rgba(0,212,255,.04),transparent 40%);}
+  header{display:flex;align-items:center;gap:16px;padding:16px 24px;border-bottom:1px solid var(--border);
+    background:linear-gradient(180deg,rgba(13,18,32,.9),rgba(8,12,20,.6));backdrop-filter:blur(6px);}
+  .nav-logo{display:flex;align-items:center;gap:9px;}
+  .nav-logo img{height:34px;display:block;}
+  .nav-logo span{font-family:var(--head);font-weight:700;font-size:20px;letter-spacing:.5px;color:#fff;}
+  .kicker{font-family:var(--mono);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--cyan);opacity:.75;
+    border-left:1px solid var(--border2);padding-left:14px;}
+  header h1{font-family:var(--head);font-size:16px;margin:0 0 0 auto;font-weight:500;color:var(--muted2);letter-spacing:.4px;}
+  .stage{max-width:1240px;margin:18px auto 0;padding:0 18px;}
+  .grid2{max-width:1240px;margin:14px auto 0;padding:0 18px;display:grid;grid-template-columns:1.15fr 1fr;gap:14px;align-items:start;}
+  .card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:16px;}
+  .card h2{font-family:var(--head);font-size:15px;font-weight:600;color:#fff;margin:0 0 12px;
+    border-left:3px solid var(--cyan);padding-left:10px;letter-spacing:.4px;text-transform:uppercase;}
+  /* HUD KPI poziomy */
+  .hud{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:14px;}
+  .kpi{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:10px 12px;transition:border-color .2s;}
+  .kpi:hover{border-color:var(--border2);}
+  .kpi .n{font-family:var(--mono);font-size:8.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .kpi .v{font-family:var(--head);font-size:21px;font-weight:700;color:#fff;line-height:1.15;margin-top:2px;}
+  .kpi .v small{font-family:var(--body);font-size:9px;color:var(--muted);font-weight:500;margin-left:3px;}
+  .kpi .b{height:4px;background:var(--bg);border-radius:3px;margin-top:7px;overflow:hidden;}
+  .kpi .b i{display:block;height:100%;border-radius:3px;transition:width .08s linear;}
+  .kpi.warn .v{color:var(--error);}
+  label{display:block;font-size:11px;color:var(--muted2);margin:10px 0 3px;}
+  .val{float:right;font-family:var(--head);color:var(--cyan);font-weight:700;font-size:13px;}
+  input[type=range]{width:100%;height:5px;-webkit-appearance:none;appearance:none;background:var(--bg);border-radius:4px;outline:none;}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;border-radius:50%;background:var(--cyan);cursor:pointer;box-shadow:0 0 8px var(--glow);}
+  input[type=range]::-moz-range-thumb{width:15px;height:15px;border:0;border-radius:50%;background:var(--cyan);cursor:pointer;}
+  .rowc{display:flex;gap:8px;align-items:center;margin-top:12px;flex-wrap:wrap;}
+  button{font-family:var(--head);background:var(--cyan);color:#08111E;border:0;border-radius:8px;padding:8px 15px;font-weight:700;cursor:pointer;font-size:13px;letter-spacing:.3px;transition:filter .15s;}
+  button:hover{filter:brightness(1.12);}
+  button.sec{background:transparent;color:var(--muted2);border:1px solid var(--border2);}
+  button.sec:hover{color:var(--cyan);border-color:var(--cyan);}
+  canvas{width:100%;border-radius:10px;display:block;}
+  #anim{background:#0A0E18;border:1px solid var(--border);}
+  #chart{background:#0A0E18;border:1px solid var(--border);}
+  .legend{display:flex;flex-wrap:wrap;gap:7px 16px;margin-top:10px;font-size:11px;color:var(--muted2);}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .sw{width:14px;height:3px;border-radius:2px;display:inline-block;}
+  .toggle{display:flex;border:1px solid var(--border2);border-radius:8px;overflow:hidden;}
+  .toggle button{flex:1;border-radius:0;background:transparent;color:var(--muted2);font-size:12px;}
+  .toggle button.on{background:var(--cyan);color:#08111E;}
+  .note{font-size:10px;color:var(--muted);margin-top:9px;line-height:1.5;}
+  .note b{color:var(--muted2);}
+  details.adv{margin-top:12px;border-top:1px solid var(--border);padding-top:9px;}
+  details.adv summary{font-size:11px;color:var(--muted);cursor:pointer;outline:none;font-family:var(--head);letter-spacing:.3px;}
+  details.adv[open] summary{color:var(--cyan);}
+  details.chartbox summary{font-family:var(--head);font-size:15px;color:#fff;font-weight:600;cursor:pointer;outline:none;list-style:none;text-transform:uppercase;letter-spacing:.4px;}
+  details.chartbox summary::-webkit-details-marker{display:none;}
+  details.chartbox summary::before{content:"▸ ";color:var(--cyan);}
+  details.chartbox[open] summary::before{content:"▾ ";}
+  .calc .r{display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid var(--border);}
+  .calc .r b{font-family:var(--head);color:#fff;font-weight:600;} .calc .k{color:var(--muted2);}
+  .flag{margin-top:11px;font-size:11px;border-radius:8px;padding:8px 10px;font-weight:500;}
+  .flag.ok{background:rgba(34,197,94,.1);color:var(--green);border:1px solid rgba(34,197,94,.3);}
+  .flag.bad{background:rgba(248,113,113,.1);color:var(--error);border:1px solid rgba(248,113,113,.3);}
+  footer{max-width:1240px;margin:14px auto 30px;padding:0 18px;font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:.3px;}
+  footer b{color:var(--muted2);}
+  @media(max-width:980px){.grid2{grid-template-columns:1fr;}.hud{grid-template-columns:repeat(3,1fr);}header h1{display:none;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav-logo"><img src="logo-tu.png" alt="TU"><span>Automation</span></div>
+  <div class="kicker">Crosslapper · symulacja</div>
+  <h1>Układacz krzyżowy — zasada działania (widok z góry)</h1>
+</header>
+
+<!-- HUD KPI + DUŻA ANIMACJA -->
+<div class="stage">
+  <div class="hud" id="hud">
+    <div class="kpi" id="k_wlot"><div class="n">Wlot</div><div class="v">—</div><div class="b"><i style="background:#94A3B8"></i></div></div>
+    <div class="kpi" id="k_s1"><div class="n">Sukno 1</div><div class="v">—</div><div class="b"><i style="background:#F59E0B"></i></div></div>
+    <div class="kpi" id="k_s2"><div class="n">Sukno 2</div><div class="v">—</div><div class="b"><i style="background:#A78BFA"></i></div></div>
+    <div class="kpi" id="k_abz"><div class="n">Taśma odciągowa</div><div class="v">—</div><div class="b"><i style="background:#22C55E"></i></div></div>
+    <div class="kpi" id="k_wd"><div class="n">Wózek dolny</div><div class="v">—</div><div class="b"><i style="background:#00D4FF"></i></div></div>
+    <div class="kpi" id="k_wg"><div class="n">Wózek górny</div><div class="v">—</div><div class="b"><i style="background:#2DD4BF"></i></div></div>
+  </div>
+  <div class="card">
+    <canvas id="anim" width="1180" height="520"></canvas>
+  </div>
+</div>
+
+<!-- STEROWANIE · KALKULACJA -->
+<div class="grid2">
+  <div class="card">
+    <h2>Parametry (na żywo)</h2>
+    <label>Prędkość wlotowa (Wlot) <span class="val" id="vVin">10.0</span> m/min</label>
+    <input type="range" id="Vin" min="0.5" max="20" step="0.5" value="10">
+    <label>Szerokość układania LB <span class="val" id="vLB">2.00</span> m</label>
+    <input type="range" id="LB" min="0.5" max="3.0" step="0.1" value="2.0">
+    <label>Liczba warstw LZ <span class="val" id="vLZ">4</span></label>
+    <input type="range" id="LZ" min="1" max="10" step="1" value="4">
+    <div class="rowc">
+      <button id="play">▶ Start</button>
+      <button id="reset" class="sec">⟲ Reset</button>
+      <label style="margin:0;">Tempo</label>
+      <input type="range" id="speed" min="0.2" max="4" step="0.1" value="1.4" style="width:80px;">
+      <span style="margin-left:auto;font-size:11px;color:var(--muted);">Profil</span>
+      <div class="toggle" style="width:150px;"><button id="bS" class="on">S-curve</button><button id="bT">Trapez</button></div>
+    </div>
+    <details class="adv">
+      <summary>Zaawansowane — ograniczenia techniczne</summary>
+      <label>Ograniczenie przyspieszenia profilu a_max <span class="val" id="vA">1.50</span> m/s²</label>
+      <input type="range" id="Amax" min="0.1" max="5" step="0.1" value="1.5">
+      <div class="note">a_max ogranicza dynamikę profilu wózka. Limit ostrzegawczy prędkości wózka = <b>20 m/min</b> (stała techniczna).</div>
+    </details>
+    <div class="note">Prędkość wózków <b>nie jest ustawiana ręcznie</b> — wynika z LB, LZ, Vin i profilu ruchu.</div>
+  </div>
+
+  <div class="card calc">
+    <h2>Kalkulacja</h2>
+    <div class="r"><span class="k">Vin (wlot)</span><b id="cVin">—</b></div>
+    <div class="r"><span class="k">LB (szerokość)</span><b id="cLB">—</b></div>
+    <div class="r"><span class="k">LZ (warstwy)</span><b id="cLZ">—</b></div>
+    <div class="r"><span class="k">Vabz (odciąg) = Vin/LZ</span><b id="cVabz">—</b></div>
+    <div class="r"><span class="k">Okres cyklu T</span><b id="cT">—</b></div>
+    <div class="r"><span class="k">Półcykl</span><b id="cHalf">—</b></div>
+    <div class="r"><span class="k">Wózek dolny (akt. / max)</span><b id="cVuw">—</b></div>
+    <div class="r"><span class="k">Wózek górny (akt.)</span><b id="cVow">—</b></div>
+    <div class="r"><span class="k">Pozycja dolnego</span><b id="cPos">—</b></div>
+    <div class="r"><span class="k">Nr warstwy</span><b id="cLayer">—</b></div>
+    <div id="flag" class="flag ok">Profil w limicie ✓</div>
+    <div class="note">Model poglądowy — pokazuje zależności kinematyczne, nie pełną dynamikę napędów ani kompletną logikę PLC.</div>
+  </div>
+</div>
+
+<!-- WYKRES (zwijany) -->
+<div class="stage" style="margin-top:14px;">
+  <details class="card chartbox" open>
+    <summary>Wykres prędkości elementów w cyklu [m/min]</summary>
+    <canvas id="chart" width="1180" height="250" style="margin-top:12px;"></canvas>
+    <div class="legend" id="legend"></div>
+  </details>
+</div>
+<footer>TU Automation · info@tuautomation.de · Vabz = Vin/LZ · prędkość wózków liczona z LB/Vin/profilu · skala wskaźników 0–20 m/min, limit ostrzegawczy 20 m/min</footer>
+
+<script>
+const $=id=>document.getElementById(id);
+const MMIN=60, SCALE=20, WARN_MMIN=20, TABLE_M=3.0; // stół wyjazdowy = 3 m, STAŁA skala
+const ELS=[
+ {key:"Vuw", name:"Wózek dolny",     col:"#00D4FF"},
+ {key:"Vow", name:"Wózek górny",     col:"#2DD4BF"},
+ {key:"Vaus",name:"Wylot wózka",     col:"#F87171"},
+ {key:"VT1", name:"Sukno 1",         col:"#F59E0B"},
+ {key:"VT2", name:"Sukno 2",         col:"#A78BFA"},
+ {key:"Vabz",name:"Taśma odciągowa", col:"#22C55E"},
+ {key:"Vein",name:"Wlot",            col:"#94A3B8"},
+];
+let scurve=true;
+const smoother=x=>{x=Math.max(0,Math.min(1,x));return 6*x*x*x*x*x-15*x*x*x*x+10*x*x*x;};
+const interp=(a,f)=>{const i=Math.floor(f),fr=f-i,j=Math.min(i+1,a.length-1);return a[i]+(a[j]-a[i])*fr;};
+
+function compute(){
+  const Vin=(+$("Vin").value)/MMIN, LB=+$("LB").value, LZ=+$("LZ").value,
+        amax=+$("Amax").value, F=scurve?1.875:1.0;
+  const t_ideal=LB/Vin, t_min=2*Math.sqrt(F*LB/amax);
+  let t_half, Vpeak, accelLimited=false;
+  if(t_ideal>=t_min){ t_half=t_ideal; const a=F/amax,b=-t_half,c=LB,disc=b*b-4*a*c;
+    Vpeak=(-b-Math.sqrt(Math.max(disc,0)))/(2*a); }
+  else { accelLimited=true; t_half=t_min; Vpeak=amax*t_half/(2*F); }
+  const Vuwmax=Vpeak*MMIN, vmaxExceeded=Vuwmax>WARN_MMIN;
+  let t_acc=F*Vpeak/amax; if(2*t_acc>t_half){t_acc=t_half/2;}
+  const t_cru=t_half-2*t_acc, T=2*t_half, N=360, t=[],vh=[];
+  for(let k=0;k<N/2;k++){ const tk=t_half*k/(N/2-1); let v;
+    if(tk<t_acc){const f=scurve?smoother(tk/t_acc):tk/t_acc; v=Vpeak*f;}
+    else if(tk<t_acc+t_cru) v=Vpeak;
+    else {const tt=(tk-t_acc-t_cru)/t_acc; v=Vpeak*(scurve?1-smoother(tt):1-tt);}
+    t.push(tk); vh.push(v);
+  }
+  const vuw=vh.concat(vh.map(v=>-v)); const tt2=t.concat(t.map(x=>x+t_half));
+  const Vaus=vuw.map(Math.abs), Vow=vuw.map((v,i)=>Vin/2+v/2-Vaus[i]/2),
+        VT1=vuw.map(_=>Vin), VT2=vuw.map((v,i)=>Vaus[i]+v), Vabz_c=Vin/LZ,
+        Vabz=vuw.map(_=>Vabz_c);
+  // pozycja dolnego (całka), wyśrodkowana: 0 = środek stołu
+  const xL=[0]; for(let i=1;i<vuw.length;i++)xL.push(xL[i-1]+(vuw[i]+vuw[i-1])/2*(tt2[i]-tt2[i-1]));
+  const xLc=xL.map(x=>x-LB/2);
+  // pozycja górnego = CAŁKA z kinematycznej Vow; zero STAŁE na końcu stołu (+TABLE_M/2)
+  const xU=[0]; for(let i=1;i<Vow.length;i++)xU.push(xU[i-1]+(Vow[i]+Vow[i-1])/2*(tt2[i]-tt2[i-1]));
+  const xUc=xU.map(x=>x+(TABLE_M/2-LB/4));
+  const xUmin=Math.min(...xUc), xUmax=Math.max(...xUc);
+  return {t:tt2,T,Vin,LB,LZ,Vpeak,accelLimited,vmaxExceeded,
+          series:{Vuw:vuw,Vow,Vaus,VT1,VT2,Vabz,Vein:VT1},Vabz_c,xLc,xUc,xUmin,xUmax,
+          Vuwmax, VT2max:Math.max(...VT2)*MMIN};
+}
+let S=compute();
+
+// ---------- WYKRES (ciemny motyw) ----------
+function drawChart(cF){
+  const c=$("chart"),x=c.getContext("2d"),W=c.width,H=c.height,pL=48,pB=24,pT=12,pR=12;
+  x.clearRect(0,0,W,H);
+  let all=[];ELS.forEach(e=>all=all.concat(S.series[e.key].map(v=>v*MMIN)));
+  let vmin=Math.min(...all,0),vmax=Math.max(...all,SCALE*0.6);const sp=(vmax-vmin)||1;vmin-=sp*0.08;vmax+=sp*0.08;
+  const X=i=>pL+(W-pL-pR)*i/(S.t.length-1),Y=v=>H-pB-(H-pB-pT)*(v-vmin)/(vmax-vmin);
+  x.strokeStyle="rgba(255,255,255,.05)";for(let g=0;g<=5;g++){const yy=pT+(H-pB-pT)*g/5;x.beginPath();x.moveTo(pL,yy);x.lineTo(W-pR,yy);x.stroke();}
+  if(vmax>=SCALE){x.strokeStyle="rgba(248,113,113,.5)";x.setLineDash([5,4]);x.beginPath();x.moveTo(pL,Y(SCALE));x.lineTo(W-pR,Y(SCALE));x.stroke();x.setLineDash([]);x.fillStyle="#F87171";x.font="9px Inter,sans-serif";x.fillText("20 m/min",W-pR-54,Y(SCALE)-3);}
+  x.strokeStyle="rgba(255,255,255,.16)";x.beginPath();x.moveTo(pL,Y(0));x.lineTo(W-pR,Y(0));x.stroke();
+  x.fillStyle="#64748B";x.font="10px Inter,sans-serif";x.fillText(vmax.toFixed(0),8,Y(vmax)+4);x.fillText("0",8,Y(0)+4);x.fillText(vmin.toFixed(0),8,Y(vmin)+4);
+  x.fillText("czas [s] · T="+S.T.toFixed(2)+" s",W-150,H-7);
+  ELS.forEach(e=>{const d=S.series[e.key];x.strokeStyle=e.col;x.lineWidth=e.key==="Vuw"?2.4:1.4;x.beginPath();d.forEach((v,i)=>{const yy=Y(v*MMIN);i?x.lineTo(X(i),yy):x.moveTo(X(i),yy);});x.stroke();});
+  if(cF!=null){const xc=X(cF);x.strokeStyle="rgba(0,212,255,.5)";x.setLineDash([4,3]);x.beginPath();x.moveTo(xc,pT);x.lineTo(xc,H-pB);x.stroke();x.setLineDash([]);}
+}
+const buildLegend=()=>$("legend").innerHTML=ELS.map(e=>`<span><i class="sw" style="background:${e.col}"></i>${e.name}</span>`).join("");
+
+// ---------- ANIMACJA (widok z góry, ciemny motyw TU) ----------
+let trail=[];
+function rr(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath();}
+function chip(x,cxp,cyp,w,h,fill,txt,txtcol){rr(x,cxp-w/2,cyp-h/2,w,h,4);x.fillStyle=fill;x.fill();
+  x.fillStyle=txtcol||"#08111E";x.font="600 9px Inter,sans-serif";x.textAlign="center";x.textBaseline="middle";x.fillText(txt,cxp,cyp+0.5);x.textBaseline="alphabetic";}
+function drawAnim(iF,dt){
+  const c=$("anim"),x=c.getContext("2d"),W=c.width,H=c.height; x.clearRect(0,0,W,H);
+  x.fillStyle="#0A0E18";x.fillRect(0,0,W,H);
+  const beltX=64, beltRight=W-90, beltW=beltRight-beltX;
+  const beltTop=124, beltBot=H-36, cx=beltX+beltW/2;
+  // SKALA STAŁA: stół = TABLE_M (3 m) niezależnie od LB; mieści wyjazd górnego poza obrys
+  const viewHalf=TABLE_M*0.90;
+  const mToX=m=>cx+(m/viewHalf)*(beltW/2);
+  // STÓŁ — stała szerokość ±TABLE_M/2; mniejsze LB => proporcjonalnie mniejszy obszar runa
+  const tblL=mToX(-TABLE_M/2), tblR=mToX(TABLE_M/2), tblW=tblR-tblL;
+  x.fillStyle="#0D1220";rr(x,tblL,beltTop,tblW,beltBot-beltTop,9);x.fill();
+  x.strokeStyle="#243348";x.lineWidth=1.4;x.stroke();
+  // tekstura stołu (przewija się w dół wg Vabz)
+  const sc=(window._sc=((window._sc||0)+(S.Vabz_c*MMIN)*dt*2.2))%34;
+  x.strokeStyle="rgba(100,130,180,.06)";x.lineWidth=1;for(let yy=beltTop+sc;yy<beltBot;yy+=34){x.beginPath();x.moveTo(tblL+1,yy);x.lineTo(tblR-1,yy);x.stroke();}
+  // pasmo użytecznej szerokości układania (±LB/2) — kurczy się z LB
+  const xLmin=mToX(-S.LB/2),xLmax=mToX(S.LB/2);
+  x.fillStyle="rgba(0,212,255,.06)";x.fillRect(xLmin,beltTop,xLmax-xLmin,beltBot-beltTop);
+  x.strokeStyle="rgba(0,212,255,.16)";x.lineWidth=1;x.setLineDash([3,5]);
+  [xLmin,xLmax].forEach(xx=>{x.beginPath();x.moveTo(xx,beltTop);x.lineTo(xx,beltBot);x.stroke();});x.setLineDash([]);
+  // środek (0 dolny)
+  x.strokeStyle="rgba(0,212,255,.4)";x.setLineDash([5,5]);x.beginPath();x.moveTo(cx,beltTop);x.lineTo(cx,beltBot);x.stroke();x.setLineDash([]);
+  x.textAlign="center";x.fillStyle="#64748B";x.font="9.5px Inter,sans-serif";
+  x.fillText("−"+(S.LB/2).toFixed(2)+" m",xLmin,beltBot+16);
+  x.fillText("+"+(S.LB/2).toFixed(2)+" m",xLmax,beltBot+16);
+  x.fillStyle="#00D4FF";x.fillText("0 dolny",cx,beltBot+16);
+  x.fillStyle="#475569";x.font="9px Inter,sans-serif";x.fillText("Stół wyjazdowy "+TABLE_M.toFixed(1)+" m · obszar runa = LB",cx,beltBot+30);
+
+  // ślad runa (deponowany u góry stołu, scrolluje w dół; przycięty do stołu)
+  trail.forEach(p=>p.y += (S.Vabz_c*MMIN)*dt*2.2);
+  const xLow=interp(S.xLc,iF), pxLow=mToX(xLow), pxUp=mToX(interp(S.xUc,iF));
+  trail.push({x:pxLow,y:beltTop+2});
+  while(trail.length && trail[0].y>beltBot) trail.shift();
+  if(trail.length>3000) trail.shift();
+  x.save();x.beginPath();rr(x,tblL,beltTop,tblW,beltBot-beltTop,9);x.clip();
+  x.lineWidth=1.8;x.strokeStyle="rgba(0,212,255,.6)";x.shadowColor="rgba(0,212,255,.5)";x.shadowBlur=4;x.beginPath();
+  trail.forEach((p,k)=>{k?x.lineTo(p.x,p.y):x.moveTo(p.x,p.y);});x.stroke();x.shadowBlur=0;x.restore();
+
+  // strzałka kierunku wyjazdu (w dół, po prawej)
+  const ax=beltX+beltW+22;
+  x.strokeStyle="rgba(34,197,94,.85)";x.lineWidth=1.6;x.beginPath();x.moveTo(ax,beltTop+20);x.lineTo(ax,beltBot-20);x.stroke();
+  x.fillStyle="#22C55E";x.beginPath();x.moveTo(ax,beltBot-9);x.lineTo(ax-5,beltBot-21);x.lineTo(ax+5,beltBot-21);x.fill();
+  x.save();x.translate(ax+15,(beltTop+beltBot)/2);x.rotate(Math.PI/2);x.fillStyle="#22C55E";x.font="10px Inter,sans-serif";x.textAlign="center";x.fillText("Kierunek wyjazdu",0,0);x.restore();
+
+  // tory (cienkie) — górny wyżej, dolny niżej; oba w tym samym układzie X
+  const railL=beltTop-30, railU=beltTop-62;
+  const xUmnX=mToX(S.xUmin), xUmxX=mToX(S.xUmax);
+  x.strokeStyle="#243348";x.lineWidth=1.5;x.beginPath();x.moveTo(xUmnX,railU);x.lineTo(xUmxX,railU);x.stroke();
+  // zero górnego = STAŁE na końcu stołu (+TABLE_M/2)
+  const xZeroU=mToX(TABLE_M/2);
+  x.strokeStyle="rgba(148,163,184,.6)";x.lineWidth=1;x.beginPath();x.moveTo(xZeroU,railU-5);x.lineTo(xZeroU,railU+5);x.stroke();
+  x.fillStyle="#94A3B8";x.font="8.5px Inter,sans-serif";x.textAlign="center";x.fillText("0 górny",xZeroU,railU-9);
+  x.strokeStyle="#2D3F57";x.lineWidth=1.5;x.beginPath();x.moveTo(xLmin,railL);x.lineTo(xLmax,railL);x.stroke();
+  // Wlot materiału — z LEWEJ strony (układacz poprzeczny: materiał wchodzi lewo→prawo)
+  const inX=beltX+30, inY=railU;
+  x.strokeStyle="#94A3B8";x.lineWidth=1.7;x.beginPath();x.moveTo(beltX-2,inY);x.lineTo(inX-10,inY);x.stroke();
+  x.fillStyle="#94A3B8";x.beginPath();x.moveTo(inX-10,inY);x.lineTo(inX-17,inY-4);x.lineTo(inX-17,inY+4);x.closePath();x.fill();
+  x.fillStyle="#94A3B8";x.beginPath();x.arc(inX,inY,6,0,7);x.fill();
+  x.fillStyle="#94A3B8";x.font="9.5px Inter,sans-serif";x.textAlign="left";x.fillText("Wlot materiału →",beltX-2,inY-12);
+  // Sukno 1: Wlot → wózek górny ; Sukno 2: wózek górny → wózek dolny
+  x.strokeStyle="rgba(245,158,11,.9)";x.lineWidth=1.6;x.beginPath();x.moveTo(inX+6,inY);x.lineTo(pxUp,railU-8);x.stroke();
+  x.strokeStyle="rgba(167,139,250,.9)";x.lineWidth=1.6;x.beginPath();x.moveTo(pxUp,railU+8);x.lineTo(pxLow,railL-8);x.stroke();
+  // sukno dolny → stół (punkt układania)
+  x.strokeStyle="rgba(0,212,255,.45)";x.setLineDash([2,3]);x.lineWidth=1.4;x.beginPath();x.moveTo(pxLow,railL+8);x.lineTo(pxLow,beltTop);x.stroke();x.setLineDash([]);
+  // markery wózków + etykiety nad torami
+  chip(x,pxUp,railU,58,15,"#2DD4BF","Wózek górny","#08211C");
+  chip(x,pxLow,railL,60,16,"#00D4FF","Wózek dolny","#08111E");
+  x.fillStyle="#7DD3FC";x.font="9px Inter,sans-serif";x.textAlign="center";x.fillText("x="+(xLow>=0?"+":"")+xLow.toFixed(2)+" m",pxLow,railL-13);
+}
+
+// ---------- HUD KPI ----------
+function setKpi(id,col,val){const el=$(id);el.querySelector(".v").innerHTML=val.toFixed(2)+'<small>m/min</small>';
+  el.querySelector("i").style.width=Math.max(0,Math.min(100,val/SCALE*100))+"%";
+  el.classList.toggle("warn",val>SCALE);}
+function updateHud(iF){
+  const vt1=S.Vin*MMIN, vt2=interp(S.series.VT2,iF)*MMIN, vabz=S.Vabz_c*MMIN,
+        vow=Math.abs(interp(S.series.Vow,iF))*MMIN, vuw=Math.abs(interp(S.series.Vuw,iF))*MMIN;
+  setKpi("k_wlot","",vt1);setKpi("k_s1","",vt1);setKpi("k_s2","",vt2);
+  setKpi("k_abz","",vabz);setKpi("k_wd","",vuw);setKpi("k_wg","",vow);
+}
+
+// ---------- PĘTLA + KALKULACJA ----------
+let playing=false,tSim=0,raf=null,last=0,halfCount=0,prevSign=1;
+function updateCalc(iF){
+  const vuw=interp(S.series.Vuw,iF),vow=interp(S.series.Vow,iF),pos=interp(S.xLc,iF);
+  $("cVin").textContent=(S.Vin*MMIN).toFixed(1)+" m/min";
+  $("cLB").textContent=S.LB.toFixed(2)+" m"; $("cLZ").textContent=S.LZ;
+  $("cVabz").textContent=(S.Vabz_c*MMIN).toFixed(2)+" m/min";
+  $("cT").textContent=S.T.toFixed(2)+" s";
+  $("cHalf").textContent=(halfCount%2===0?"1 (→ w prawo)":"2 (← w lewo)");
+  $("cVuw").textContent=(Math.abs(vuw)*MMIN).toFixed(2)+" / "+S.Vuwmax.toFixed(2)+" m/min";
+  $("cVow").textContent=(Math.abs(vow)*MMIN).toFixed(2)+" m/min";
+  $("cPos").textContent=(pos>=0?"+":"")+pos.toFixed(2)+" m";
+  $("cLayer").textContent=(halfCount+1);
+  const f=$("flag");
+  if(S.vmaxExceeded){f.className="flag bad";f.textContent="⚠ Prędkość wózka "+S.Vuwmax.toFixed(1)+" m/min przekracza limit ostrzegawczy 20 m/min";}
+  else if(S.accelLimited){f.className="flag bad";f.textContent="⚠ Ograniczenie przyspieszenia — wózek nie nadąża za Vin (zwiększ a_max lub zmniejsz Vin)";}
+  else {f.className="flag ok";f.textContent="Profil w limicie prędkości i przyspieszenia ✓";}
+}
+function frameAt(dt){const cyc=(tSim%S.T)/S.T;let iF=cyc*(S.t.length-1);
+  const sign=interp(S.series.Vuw,iF)>=0?1:-1;if(sign!==prevSign){halfCount++;prevSign=sign;}
+  drawAnim(iF,dt);updateHud(iF);updateCalc(iF);if($("chart").offsetParent!==null)drawChart(iF);}
+function loop(ts){if(!playing)return;if(!last)last=ts;let dt=(ts-last)/1000;last=ts;dt=Math.min(dt,0.05)*(+$("speed").value);tSim+=dt;frameAt(dt);raf=requestAnimationFrame(loop);}
+function recompute(){
+  // zachowaj POZYCJĘ i kierunek dolnego wózka -> płynne przejście (bez cofnięcia) przy zmianie Vin/LB
+  let xCur=null, dirCur=1;
+  if(S){ const i0=(tSim%S.T)/S.T*(S.t.length-1); xCur=interp(S.xLc,i0); dirCur=interp(S.series.Vuw,i0)>=0?1:-1; }
+  S=compute();
+  if(xCur!==null){
+    let best=0,bestErr=1e9,bestAny=0,bestAnyErr=1e9;
+    for(let i=0;i<S.xLc.length;i++){
+      const e=Math.abs(S.xLc[i]-xCur);
+      if(e<bestAnyErr){bestAnyErr=e;bestAny=i;}
+      if((S.series.Vuw[i]>=0?1:-1)===dirCur && e<bestErr){bestErr=e;best=i;}
+    }
+    if(bestErr===1e9) best=bestAny;
+    tSim=(best/(S.xLc.length-1))*S.T;
+    prevSign=(S.series.Vuw[best]>=0?1:-1);
+  }
+  $("vVin").textContent=(+$("Vin").value).toFixed(1);$("vLB").textContent=(+$("LB").value).toFixed(2);
+  $("vLZ").textContent=$("LZ").value;$("vA").textContent=(+$("Amax").value).toFixed(2);
+  const iF=(tSim%S.T)/S.T*(S.t.length-1);drawAnim(iF,0);updateHud(iF);updateCalc(iF);drawChart(iF);}
+["Vin","LB","LZ","Amax"].forEach(id=>$(id).addEventListener("input",recompute));
+$("bS").onclick=()=>{scurve=true;$("bS").classList.add("on");$("bT").classList.remove("on");recompute();};
+$("bT").onclick=()=>{scurve=false;$("bT").classList.add("on");$("bS").classList.remove("on");recompute();};
+$("play").onclick=()=>{playing=!playing;$("play").textContent=playing?"⏸ Pauza":"▶ Start";last=0;if(playing)raf=requestAnimationFrame(loop);};
+$("reset").onclick=()=>{tSim=0;halfCount=0;prevSign=1;trail=[];window._sc=0;recompute();};
+buildLegend();recompute();
+</script>
+</body>
+</html>

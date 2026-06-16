@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Sterowanie crosslappera — Siemens S7-1200 i Mitsubishi | TU Automation</title>
+  <meta name="description" content="Nowe sterowanie układacza / crosslappera oparte na Siemens S7-1200 i napędach Mitsubishi. Analiza prędkości taśm, wózków i odkładania warstw."/>
+  <link rel="canonical" href="https://tuautomation.de/blog/crosslapper-control-s7-1200-mitsubishi.html"/>
+  <link rel="icon" href="../logo-tu.png" type="image/png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../style.css"/>
+</head>
+<body>
+<div class="grid-bg"></div>
+<nav id="nav" style="position:fixed">
+  <div class="nav-logo"><img src="../logo-tu.png" height="38" alt="TU"><span>Automation</span></div>
+  <div class="nav-right"><a href="../blog.html" class="nav-cta" style="font-size:0.75rem">← Blog</a></div>
+</nav>
+
+<div class="article-page">
+  <div class="article-hero">
+    <div class="article-tag">Crosslapper · Siemens S7-1200 · Mitsubishi · Motion</div>
+    <h1 class="article-title">Sterowanie układacza / crosslappera — Siemens S7-1200 i napędy Mitsubishi</h1>
+    <div class="article-meta"><span>Tomasz Urbański</span><span>Czerwiec 2026</span><span>9 min czytania</span></div>
+    <div style="margin-top:14px;font-size:0.85rem;color:var(--muted)">Wersja językowa:
+      <strong style="color:var(--cyan)">PL</strong> ·
+      <a href="crosslapper-control-s7-1200-mitsubishi-de.html" style="color:var(--muted2)">DE</a> ·
+      <a href="crosslapper-control-s7-1200-mitsubishi-en.html" style="color:var(--muted2)">EN</a>
+    </div>
+  </div>
+
+  <div class="article-body">
+    <p>Układacz krzyżowy (ang. <em>crosslapper</em>, niem. <em>Kreuzleger</em>) to maszyna w liniach włóknin i materiałów technicznych, która z cienkiej wstęgi materiału (runa) wpadającej z jednej strony układa <strong>poprzecznie</strong> wielowarstwowy płat o zadanej szerokości. Wstęga jest prowadzona przez układ sukien (taśm) i dwa wózki — górny i dolny — a gotowy płat odbiera prostopadła taśma odciągowa. Brzmi prosto, ale to jedna z trudniejszych aplikacji ruchu w branży.</p>
+
+    <div class="article-callout">
+      <p>Trudność crosslappera nie leży w pojedynczym napędzie, lecz w <strong>zsynchronizowaniu kilku osi naraz</strong> tak, aby prędkość odkładania była stała, brzeg płata równy, a materiał nie był rozciągany ani marszczony.</p>
+    </div>
+
+    <h2>Dlaczego sterowanie crosslappera jest wymagające</h2>
+    <p>W trakcie jednego cyklu wózek dolny musi gwałtownie przyspieszać i hamować na każdym krańcu stołu, a mimo to ilość materiału odkładana na jednostkę długości ma pozostać stała. Wymaga to ciągłego, skoordynowanego przeliczania prędkości wszystkich elementów transportu wstęgi — w czasie rzeczywistym, dla zmiennych nastaw produkcyjnych.</p>
+
+    <h2>Zależności kinematyczne</h2>
+    <p>Kluczowe wielkości i ich wzajemne powiązania:</p>
+    <ul>
+      <li><strong>Prędkość wlotowa</strong> — z jaką wstęga wchodzi do maszyny; punkt odniesienia dla pozostałych prędkości.</li>
+      <li><strong>Sukno 1</strong> — podaje materiał z wlotu do wózka górnego.</li>
+      <li><strong>Sukno 2</strong> — przekazuje materiał z wózka górnego do wózka dolnego.</li>
+      <li><strong>Wózek górny</strong> — porusza się poprzecznie z połową skoku wózka dolnego; jego ruch utrzymuje stałą długość pętli sukna.</li>
+      <li><strong>Wózek dolny</strong> — odkłada materiał na stole, jeżdżąc tam i z powrotem na pełnej szerokości układania.</li>
+      <li><strong>Taśma odciągowa</strong> — odbiera gotowy płat prostopadle do ruchu wózków; jej prędkość wynika z prędkości wlotowej i liczby warstw.</li>
+      <li><strong>Szerokość układania</strong> — definiuje zakres ruchu wózka dolnego.</li>
+      <li><strong>Liczba warstw</strong> — wpływa na grubość płata i bezpośrednio na prędkość taśmy odciągowej.</li>
+    </ul>
+    <p>Te wielkości nie są niezależne — zmiana jednej nastawy (np. szerokości układania albo liczby warstw) natychmiast przelicza profile prędkości wózków i taśm. To właśnie ta sieć zależności decyduje o jakości płata.</p>
+
+    <h2>Platforma sterowania</h2>
+    <ul>
+      <li><strong>Sterownik:</strong> Siemens <strong>S7-1200</strong> — kompaktowy, z wystarczającą wydajnością do koordynacji ruchu i obsługi technologii układania.</li>
+      <li><strong>Napędy:</strong> <strong>Mitsubishi</strong> — serwo/falowniki realizujące profile prędkości poszczególnych osi.</li>
+      <li><strong>Klucz:</strong> precyzyjne <strong>zsynchronizowanie ruchu wózków i taśm</strong> — to ono decyduje o równym brzegu i stałej gramaturze.</li>
+    </ul>
+
+    <div class="article-callout">
+      <p>Profil ruchu wózka (np. S-curve zamiast trapezu) wprost przekłada się na drgania, obciążenia szczytowe napędów i jakość brzegu odkładanego płata.</p>
+    </div>
+
+    <h2>Interaktywna wizualizacja pracy układacza</h2>
+    <p>Poniższe demo to interaktywny model widoku z góry: pokazuje ruch wózka górnego i dolnego, sukna, taśmę odciągową oraz odkładane warstwy. Suwakami zmienisz prędkość wlotową, szerokość układania i liczbę warstw — prędkości pozostałych elementów przeliczają się automatycznie. To pomaga zrozumieć zależności kinematyczne <strong>jeszcze przed implementacją i uruchomieniem</strong>.</p>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px">
+      <a href="../assets/demos/crosslapper-demo-pl.html" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block">▶ Otwórz demo PL</a>
+      <a href="../assets/demos/crosslapper-demo-de.html" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block;background:transparent;border:1px solid var(--border2);color:var(--muted2)">Demo auf Deutsch öffnen</a>
+      <a href="../assets/demos/crosslapper-demo-en.html" target="_blank" rel="noopener" class="btn-primary" style="display:inline-block;background:transparent;border:1px solid var(--border2);color:var(--muted2)">Open EN demo</a>
+    </div>
+    <p style="font-size:0.82rem;color:var(--muted)">Model poglądowy — pokazuje zależności kinematyczne, nie pełną dynamikę napędów ani kompletną logikę PLC.</p>
+
+    <div class="article-cta">
+      <h3>Planujesz nowe sterowanie maszyny?</h3>
+      <p>Jeżeli planujesz nowe sterowanie maszyny, modernizację układacza / crosslappera albo analizę zależności napędów, skontaktuj się ze mną.</p>
+      <a href="../index.html#contact" class="btn-primary" style="display:inline-block;margin-top:4px">Skontaktuj się</a>
+    </div>
+  </div>
+
+  <div class="article-nav">
+    <a href="../blog.html">← Wszystkie artykuły</a>
+    <a href="scada-hmi-wybor.html">SCADA czy HMI? →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div><div class="footer-logo"><img src="../logo-tu.png" height="38" alt="TU"><span>Automation</span></div></div>
+    <div class="footer-links"><a href="../index.html">Strona główna</a><a href="../blog.html">Blog</a><a href="../index.html#contact">Kontakt</a><a href="../impressum.html">Impressum</a></div>
+    <div class="footer-location"><div>© 2025 TU Automation</div></div>
+  </div>
+</footer>
+<script>const nav=document.getElementById('nav');window.addEventListener('scroll',()=>{nav.style.background=window.scrollY>50?'rgba(8,12,20,0.97)':'rgba(8,12,20,0.85)';},{passive:true});</script>
+</body>
+</html>
