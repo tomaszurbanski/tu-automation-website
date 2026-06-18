@@ -1119,5 +1119,276 @@ function startCounters() {
 updateUI();
 progEl.style.width = `${1/slides.length*100}%`;
 </script>
+
+<!-- LineMind AI Presenter (lmfa) — ported from linemind-ai-presentation.html (reference only); narrates #deck .slide via /api/linemind-present-slide -->
+<style id="lmfa-style">
+.lmfa *{box-sizing:border-box}
+.lmfa-dock{position:fixed;right:22px;bottom:22px;z-index:99999;display:flex;align-items:center;gap:10px;
+  font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;user-select:none}
+.lmfa-pill{display:flex;align-items:center;gap:9px;background:rgba(9,15,27,.82);border:1px solid #233247;
+  border-radius:14px;padding:7px 10px 7px 8px;backdrop-filter:blur(9px);box-shadow:0 8px 28px rgba(0,0,0,.45)}
+.lmfa-info{display:flex;flex-direction:column;gap:2px;min-width:96px}
+.lmfa-stat{font-size:10px;font-weight:800;letter-spacing:.4px;color:#7B8CA3;line-height:1.2}
+.lmfa-stat.on{color:#39ff9e}
+.lmfa-wf{display:flex;align-items:center;gap:2.5px;height:11px}
+.lmfa-wf i{width:2.5px;height:3px;border-radius:2px;background:#3a4a5e;transition:height .2s,background .2s}
+.lmfa-wf.speaking i{background:#39ff9e;animation:lmfa-bar .8s ease-in-out infinite}
+.lmfa-wf.speaking i:nth-child(2){animation-delay:.12s}.lmfa-wf.speaking i:nth-child(3){animation-delay:.24s}
+.lmfa-wf.speaking i:nth-child(4){animation-delay:.36s}.lmfa-wf.speaking i:nth-child(5){animation-delay:.08s}
+.lmfa-wf.thinking i{background:#f59e0b;animation:lmfa-think 1.1s ease-in-out infinite}
+@keyframes lmfa-bar{0%,100%{height:3px}50%{height:11px}}
+@keyframes lmfa-think{0%,100%{opacity:.3}50%{opacity:1}}
+.lmfa-pwr{border:1px solid #2C3A4E;background:rgba(30,41,59,.85);color:#9fb1c6;border-radius:10px;
+  font-size:10.5px;font-weight:800;letter-spacing:.6px;padding:6px 11px;cursor:pointer;transition:all .15s}
+.lmfa-pwr:hover{border-color:#14b8a6}
+.lmfa-pwr.on{border-color:#39ff9e;background:rgba(57,255,158,.16);color:#dffff0;box-shadow:0 0 14px rgba(57,255,158,.25)}
+.lmfa-orb{width:54px;height:54px;border-radius:50%;position:relative;cursor:pointer;flex:0 0 auto;
+  background:radial-gradient(circle at 36% 30%,rgba(34,211,238,.30),rgba(9,15,27,.96));
+  border:1px solid rgba(20,184,166,.5);box-shadow:0 0 24px rgba(20,184,166,.4);
+  display:flex;align-items:center;justify-content:center;transition:transform .15s,box-shadow .25s}
+.lmfa-orb:hover{transform:translateY(-2px)}
+.lmfa-orb.on{box-shadow:0 0 30px rgba(57,255,158,.55);border-color:rgba(57,255,158,.65)}
+.lmfa-orb.speaking{animation:lmfa-glow 1.4s ease-in-out infinite}
+@keyframes lmfa-glow{0%,100%{box-shadow:0 0 24px rgba(57,255,158,.45)}50%{box-shadow:0 0 40px rgba(57,255,158,.8)}}
+.lmfa-led{position:absolute;top:5px;right:6px;width:8px;height:8px;border-radius:50%;background:#3a4a5e}
+.lmfa-orb.on .lmfa-led{background:#39ff9e;box-shadow:0 0 9px #39ff9e}
+.lmfa-orb svg{display:block;overflow:visible}
+.lmfa-dring{transform-origin:center;animation:lmfa-spin 18s linear infinite}
+@keyframes lmfa-spin{to{transform:rotate(360deg)}}
+.lmfa-core{fill:#14b8a6;filter:drop-shadow(0 0 5px rgba(20,184,166,.95));transform-origin:center;animation:lmfa-breathe 3.2s ease-in-out infinite}
+.lmfa-orb.on .lmfa-core{fill:#39ff9e;filter:drop-shadow(0 0 6px rgba(57,255,158,.95))}
+@keyframes lmfa-breathe{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.14)}}
+.lmfa-head{fill:rgba(20,184,166,.05);stroke:#14b8a6;stroke-width:1.6}
+.lmfa-orb.on .lmfa-head{stroke:#39ff9e}
+.lmfa-eye{stroke:#39ff9e;stroke-width:3;stroke-linecap:round}
+@media(max-width:560px){.lmfa-info{min-width:0}.lmfa-stat{max-width:120px}}
+</style>
+
+<div class="lmfa">
+  <div class="lmfa-dock">
+    <div class="lmfa-pill">
+      <div class="lmfa-info">
+        <span class="lmfa-stat" id="lmfa-stat">AI Presenter Off</span>
+        <div class="lmfa-wf" id="lmfa-wf"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <button class="lmfa-pwr" type="button" id="lmfa-pwr">ON</button>
+    </div>
+    <div class="lmfa-orb" id="lmfa-orb" title="LineMind AI Co-Presenter (click to toggle)">
+      <span class="lmfa-led"></span>
+      <svg width="38" height="38" viewBox="0 0 120 120" aria-hidden="true">
+        <circle class="lmfa-dring" cx="60" cy="60" r="54" fill="none" stroke="rgba(20,184,166,.4)" stroke-width="2" stroke-dasharray="3 8"/>
+        <path class="lmfa-head" d="M60 22 L90 38 L90 72 L60 98 L30 72 L30 38 Z"/>
+        <line class="lmfa-eye" x1="49" y1="54" x2="55" y2="54"/><line class="lmfa-eye" x1="65" y1="54" x2="71" y2="54"/>
+        <circle class="lmfa-core" cx="60" cy="68" r="7"/>
+      </svg>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  function $(id){ return document.getElementById(id); }
+
+  // ── config (no secrets in frontend) ──
+  // Default ALWAYS the production Render backend (works on localhost:8080, tuautomation.de, file://).
+  var LINEMIND_API_BASE_URL = "https://linemind-ai-backend.onrender.com";
+  // Local backend used ONLY with an explicit dev flag: ?localBackend=1 or localStorage LINEMIND_USE_LOCAL_BACKEND=1.
+  var _useLocal = false;
+  try {
+    _useLocal = /[?&]localBackend=1(\b|&|$)/.test((location && location.search) || '') ||
+      (window.localStorage && localStorage.getItem('LINEMIND_USE_LOCAL_BACKEND') === '1');
+  } catch(e) {}
+  var BACKEND = _useLocal ? "http://localhost:8787" : LINEMIND_API_BASE_URL;
+  try { console.log('[linemind] API base: ' + (_useLocal ? 'local dev' : 'render')); } catch(e) {}
+  var ENDPOINT="/api/linemind-present-slide";
+
+  var on=false, speaking=false, busy=false;
+  var curAudio=null, curCtrl=null, debTimer=null, watchTimer=null, lastIdx=-2;
+  var ttsOK=('speechSynthesis' in window)&&(typeof window.SpeechSynthesisUtterance!=='undefined');
+
+  // ── status / waveform ──
+  function setStat(text, st){ // st: off | on | thinking | speaking
+    var s=$('lmfa-stat'); if(s){ s.textContent=text; s.classList.toggle('on', st==='on'||st==='speaking'); }
+    var wf=$('lmfa-wf'); if(wf){ wf.className='lmfa-wf'+(st==='speaking'?' speaking':st==='thinking'?' thinking':''); }
+    var orb=$('lmfa-orb'); if(orb){ orb.classList.toggle('speaking', st==='speaking'); }
+  }
+
+  // ── slide helpers ──
+  function slides(){ try{ return document.querySelectorAll('#deck .slide'); }catch(e){ return []; } }
+  function slideIndex(){
+    var s=slides(); for(var i=0;i<s.length;i++){ if(s[i].classList.contains('active')) return i; }
+    try{ var el=document.getElementById('slideNum'); if(el){ var m=(el.textContent||'').match(/(\d+)/); if(m){ var k=parseInt(m[1],10)-1; if(k>=0) return k; } } }catch(e){}
+    return -1;
+  }
+  function slideCount(){ var n=slides().length; return n>0?n:13; }
+  function slideEl(idx){ var s=slides(); if(idx>=0 && s[idx]) return s[idx]; return document.querySelector('#deck .slide.active'); }
+  function slideTitle(idx){ var el=slideEl(idx); if(!el) return ''; var t=el.querySelector('.title,.big,h1,h2,.label'); return t?((t.textContent||'').replace(/\s+/g,' ').trim()):''; }
+  function slideText(idx){ var el=slideEl(idx); if(!el) return '';
+    // exclude censored/confidential values so the AI never reads exact prices or amounts
+    var c=el.cloneNode(true);
+    var rm=c.querySelectorAll('[data-ai-ignore="true"],[aria-hidden="true"]');
+    for(var i=0;i<rm.length;i++){ if(rm[i].parentNode) rm[i].parentNode.removeChild(rm[i]); }
+    return (c.textContent||'').replace(/\s+/g,' ').trim().slice(0,600); }
+
+  // ── automatic language (no UI switch) — from the ACTIVE/visible slide, not the whole document ──
+  function logLang(lang, src, idx){ try{
+    console.log('[linemind] detected language: ' + lang);
+    console.log('[linemind] language source: ' + src);
+    console.log('[linemind] slide index: ' + idx);
+  }catch(e){} }
+  function detectLang(idx){
+    // 1) Deck's current language state (the lang toggle): the strongest signal of what is shown now.
+    //    Button shows "🌐 EN" while Polish is active, "🌐 PL" while English is active.
+    try{
+      var tg=document.getElementById('langToggle');
+      if(tg){ var tt=(tg.textContent||'').toUpperCase();
+        if(tt.indexOf('PL')>=0){ logLang('en','active-slide-lang(deck-toggle)',idx); return 'en'; }
+        if(tt.indexOf('EN')>=0){ logLang('pl','active-slide-lang(deck-toggle)',idx); return 'pl'; }
+      }
+    }catch(e){}
+    // 2) Explicit lang / data-lang on the active slide, if present.
+    var el=slideEl(idx);
+    if(el && el.getAttribute){
+      var sl=((el.getAttribute('lang')||el.getAttribute('data-lang')||el.getAttribute('data-language'))||'').toLowerCase();
+      if(sl.indexOf('pl')===0){ logLang('pl','active-slide-data-lang',idx); return 'pl'; }
+      if(sl.indexOf('de')===0){ logLang('de','active-slide-data-lang',idx); return 'de'; }
+      if(sl.indexOf('en')===0){ logLang('en','active-slide-data-lang',idx); return 'en'; }
+    }
+    // 3) Score ONLY the active/visible slide text (never the whole document / hidden slides).
+    var t=slideText(idx).toLowerCase();
+    if(t){
+      var pl=0, en=0, de=0, m;
+      if(/[ąćęłńóśźż]/.test(t)) pl+=3;
+      if(/[äöüß]/.test(t)) de+=3;
+      m=t.match(/\b(oraz|dla|maszyn|maszyny|utrzymanie|utrzymania|produkcji|produkcja|wdrożenie|wdrozenie|pilotaż|pilotaz|awarii|jakość|jakosc|przemysłowy|przemyslowy|kontakt)\b/g); if(m) pl+=m.length;
+      m=t.match(/\b(und|für|fur|maschinen|instandhaltung|produktion|ausfall|qualität|qualitat|automatisierung|industrie|einführung|einfuhrung|wartung)\b/g); if(m) de+=m.length;
+      m=t.match(/\b(the|and|for|machine|machines|maintenance|production|deployment|pilot|industrial|automation|quality|downtime|monitoring|contact)\b/g); if(m) en+=m.length;
+      var best=Math.max(pl,en,de);
+      if(best>0){ var L=(best===de)?'de':(best===pl)?'pl':'en'; logLang(L,'active-slide-text',idx); return L; }
+    }
+    // 4) Fallback: document language.
+    var dl=(document.documentElement.lang||'').toLowerCase();
+    if(dl.indexOf('de')===0){ logLang('de','document-lang',idx); return 'de'; }
+    if(dl.indexOf('en')===0){ logLang('en','document-lang',idx); return 'en'; }
+    if(dl.indexOf('pl')===0){ logLang('pl','document-lang',idx); return 'pl'; }
+    // 5) Final fallback.
+    logLang('en','fallback',idx); return 'en';
+  }
+
+  // ── local fallback narration (backend down) — varied, no "on this slide" ──
+  function localText(idx, lang, first, last){
+    if(first) return (lang==='pl')
+      ? 'Cześć, jestem wirtualnym współprezenterem LineMind AI. W kilku kolejnych slajdach pokażę, jak sztuczna inteligencja może wspierać produkcję, utrzymanie ruchu i decyzje techniczne.'
+      : "Hi, I'm the LineMind AI virtual co-presenter. Over the next few slides I'll show how industrial AI can support production, maintenance and the technical decisions that keep a plant running.";
+    if(last) return (lang==='pl')
+      ? 'To istota LineMind AI: mniej przestojów, szybsza diagnostyka i wiedza techniczna, która zostaje w zakładzie. Dziękuję za uwagę — chętnie omówię pilotaż dla Waszej linii.'
+      : "That's the core of LineMind AI: less downtime, faster diagnostics and technical knowledge that stays in the plant. Thank you — I'd be glad to walk through a pilot for your line.";
+    var t=slideTitle(idx)||'LineMind AI';
+    return (lang==='pl')
+      ? ('Najważniejsze tutaj to '+t+': zamiana danych z maszyn i wiedzy technicznej w szybszą diagnostykę, krótsze przestoje i lepsze decyzje na linii.')
+      : ('The point here is '+t+': turning machine data and technical knowledge into faster diagnostics, shorter downtime and better decisions on the line.');
+  }
+
+  // ── audio (priority: ElevenLabs base64, else browser speech; never both) ──
+  function stopSpeechAll(){ if(curAudio){ try{ curAudio.pause(); }catch(e){} curAudio=null; } if(ttsOK){ try{ window.speechSynthesis.cancel(); }catch(e){} } speaking=false; }
+  function playBase64(b64, mime, statusLabel){
+    try{
+      stopSpeechAll();
+      var bin=atob(b64), len=bin.length, bytes=new Uint8Array(len); for(var i=0;i<len;i++) bytes[i]=bin.charCodeAt(i);
+      var url=URL.createObjectURL(new Blob([bytes],{type:mime||'audio/mpeg'}));
+      curAudio=new Audio(url); speaking=true; setStat(statusLabel||'ElevenLabs voice active','speaking');
+      curAudio.onended=function(){ speaking=false; if(on) setStat('AI Presenter On','on'); else setStat('AI Presenter Off','off'); try{URL.revokeObjectURL(url);}catch(e){} };
+      curAudio.onerror=function(){ speaking=false; if(on) setStat('AI Presenter On','on'); };
+      var p=curAudio.play(); if(p&&p.catch) p.catch(function(){ /* autoplay blocked → browser speech */ browserSpeak(currentText, currentLang, 'Browser voice fallback'); });
+      return true;
+    }catch(e){ return false; }
+  }
+  function browserSpeak(text, lang, statusLabel){
+    if(!ttsOK){ setStat('Voice not supported','on'); return; }
+    stopSpeechAll();
+    var u=new SpeechSynthesisUtterance(text); u.lang=(lang==='pl')?'pl-PL':'en-US';
+    var vs=window.speechSynthesis.getVoices()||[], pref=(lang==='pl')?'pl':'en';
+    for(var i=0;i<vs.length;i++){ if((vs[i].lang||'').toLowerCase().indexOf(pref)===0){ u.voice=vs[i]; break; } }
+    speaking=true; setStat(statusLabel||'Browser voice fallback','speaking');
+    u.onend=function(){ speaking=false; if(on) setStat('AI Presenter On','on'); else setStat('AI Presenter Off','off'); };
+    u.onerror=function(){ speaking=false; if(on) setStat('AI Presenter On','on'); };
+    window.speechSynthesis.speak(u);
+  }
+
+  var currentText='', currentLang='en';
+  // ── present current slide via backend (with fallbacks) ──
+  function present(idx){
+    if(!on) return;
+    if(idx<0) idx=slideIndex();
+    var lang=detectLang(idx);
+    var first=(idx===0), last=(idx===slideCount()-1);
+    currentLang=lang;
+    setStat('Preparing…','thinking');
+    // cancel any in-flight request
+    if(curCtrl){ try{ curCtrl.abort(); }catch(e){} }
+    var ctrl=(typeof AbortController!=='undefined')?new AbortController():null; curCtrl=ctrl;
+    var body=JSON.stringify({ slideIndex:idx, slideTitle:slideTitle(idx), slideText:slideText(idx),
+      language:lang, isFirstSlide:first, isLastSlide:last, mode:'auto',
+      context:'LineMind AI presentation for industrial maintenance and production customers' });
+    var opts={ method:'POST', headers:{'Content-Type':'application/json'}, body:body };
+    if(ctrl) opts.signal=ctrl.signal;
+    fetch(BACKEND+ENDPOINT, opts)
+      .then(function(r){ if(!r.ok) throw new Error('status'); return r.json(); })
+      .then(function(d){ if(!on) return; if(!d||!d.ok) throw new Error('bad');
+        currentText=d.text||localText(idx,lang,first,last);
+        if(d.audioProvider==='elevenlabs' && d.ttsAvailable && d.audioBase64){
+          var ok=playBase64(d.audioBase64, d.audioMimeType||'audio/mpeg', 'ElevenLabs voice active');
+          if(!ok) browserSpeak(currentText, lang, 'Browser voice fallback');
+        } else {
+          browserSpeak(currentText, lang, 'Browser voice fallback');
+        }
+      })
+      .catch(function(err){ if(err && err.name==='AbortError') return; if(!on) return;
+        currentText=localText(idx,lang,first,last);
+        browserSpeak(currentText, lang, 'Backend unavailable — browser voice fallback');
+      });
+  }
+
+  // ── slide-change watcher (auto narrate on change, debounced) ──
+  function watch(){
+    if(!on) return;
+    var cur=slideIndex();
+    if(cur>=0 && cur!==lastIdx){
+      lastIdx=cur;
+      stopSpeechAll(); setStat('Preparing…','thinking');
+      if(debTimer) clearTimeout(debTimer);
+      debTimer=setTimeout(function(){ if(on && slideIndex()===cur) present(cur); }, 750);
+    }
+  }
+
+  function turnOn(){
+    if(on) return; on=true;
+    $('lmfa-orb').classList.add('on'); $('lmfa-pwr').classList.add('on'); $('lmfa-pwr').textContent='OFF';
+    setStat('AI Presenter On','on');
+    lastIdx=-2;                 // force present of current slide
+    if(watchTimer) clearInterval(watchTimer);
+    watchTimer=setInterval(watch, 400);
+    var cur=slideIndex(); lastIdx=cur; present(cur);
+  }
+  function turnOff(){
+    on=false;
+    $('lmfa-orb').classList.remove('on','speaking'); $('lmfa-pwr').classList.remove('on'); $('lmfa-pwr').textContent='ON';
+    if(watchTimer){ clearInterval(watchTimer); watchTimer=null; }
+    if(debTimer){ clearTimeout(debTimer); debTimer=null; }
+    if(curCtrl){ try{ curCtrl.abort(); }catch(e){} curCtrl=null; }
+    stopSpeechAll(); setStat('AI Presenter Off','off');
+  }
+  function toggle(){ on?turnOff():turnOn(); }
+
+  document.addEventListener('click', function(ev){
+    var t=ev.target.closest?ev.target.closest('#lmfa-pwr,#lmfa-orb'):null; if(!t) return; toggle();
+  });
+
+  if(ttsOK && window.speechSynthesis.getVoices().length===0){ try{ window.speechSynthesis.onvoiceschanged=function(){}; }catch(e){} }
+  window.LINE_MIND_PRESENTER={backend:BACKEND}; // no secrets
+})();
+</script>
+
 </body>
 </html>
