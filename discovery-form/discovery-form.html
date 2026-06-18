@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>LineMind AI — Discovery / Requirements</title>
+<link rel="stylesheet" href="discovery-form.css" />
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<div id="progress"></div>
+
+<!-- ═══ HEADER ═══ -->
+<header class="app-header">
+  <div class="brand">
+    <div class="logo-mark">L</div>
+    <div>
+      <div class="logo-name">Line<span>Mind</span> AI</div>
+      <span class="logo-sub">Discovery · Requirements</span>
+    </div>
+  </div>
+  <div class="header-meta">
+    <span class="hide-sm" data-pl="TU Automation · Karta wymagań projektu" data-en="TU Automation · Project requirements sheet" data-de="TU Automation · Projektanforderungsbogen">TU Automation · Karta wymagań projektu</span>
+    <span class="save-state"><span class="save-dot" id="saveDot"></span><span id="saveLabel" data-pl="Zapisano lokalnie" data-en="Saved locally" data-de="Lokal gespeichert">Zapisano lokalnie</span></span>
+    <button type="button" id="langToggle">🌐 EN</button>
+  </div>
+</header>
+
+<div class="app">
+  <nav class="stepper" id="stepper" aria-label="Sekcje"></nav>
+
+  <main class="main" id="main">
+
+    <!-- 1 · DANE FIRMY -->
+    <section class="section" data-title="Dane firmy">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Dane firmy" data-en="Company details" data-de="Firmendaten">Dane firmy</h2>
+      <p class="sub" data-pl="Podstawowe informacje o Państwa organizacji i osobie kontaktowej." data-en="Basic information about your organisation and contact person." data-de="Grundlegende Informationen zu Ihrem Unternehmen und Ansprechpartner.">Podstawowe informacje o Państwa organizacji i osobie kontaktowej.</p>
+      <div class="grid grid-2">
+        <div class="field"><label><span data-pl="Nazwa firmy" data-en="Company name" data-de="Firmenname">Nazwa firmy</span> <span class="req">*</span></label><input type="text" id="companyName" data-label="Nazwa firmy" data-ph-pl="np. Przykład Sp. z o.o." data-ph-en="e.g. Example Ltd." data-ph-de="z. B. Beispiel GmbH" placeholder="np. Przykład Sp. z o.o."></div>
+        <div class="field"><label data-pl="Branża" data-en="Industry" data-de="Branche">Branża</label><input type="text" id="industry" data-label="Branża" data-ph-pl="np. przemysł włókienniczy, motoryzacja" data-ph-en="e.g. textile, automotive" data-ph-de="z. B. Textil, Automobil" placeholder="np. przemysł włókienniczy, motoryzacja"></div>
+        <div class="field"><label data-pl="Kraj" data-en="Country" data-de="Land">Kraj</label><input type="text" id="country" data-label="Kraj" data-ph-pl="np. Polska / Niemcy" data-ph-en="e.g. Poland / Germany" data-ph-de="z. B. Polen / Deutschland" placeholder="np. Polska / Niemcy"></div>
+        <div class="field"><label data-pl="Lokalizacja (miasto)" data-en="Location (city)" data-de="Standort (Stadt)">Lokalizacja (miasto)</label><input type="text" id="location" data-label="Lokalizacja" data-ph-pl="np. Łódź" data-ph-en="e.g. Łódź" data-ph-de="z. B. Łódź" placeholder="np. Łódź"></div>
+        <div class="field"><label data-pl="Liczba zakładów" data-en="Number of plants" data-de="Anzahl der Werke">Liczba zakładów</label><input type="number" id="sites" min="1" data-label="Liczba zakładów" data-ph-pl="np. 2" data-ph-en="e.g. 2" data-ph-de="z. B. 2" placeholder="np. 2"></div>
+        <div class="field"><label data-pl="Osoba kontaktowa" data-en="Contact person" data-de="Ansprechpartner">Osoba kontaktowa</label><input type="text" id="contactPerson" data-label="Osoba kontaktowa" data-ph-pl="Imię i nazwisko" data-ph-en="Full name" data-ph-de="Vor- und Nachname" placeholder="Imię i nazwisko"></div>
+        <div class="field"><label><span data-pl="E-mail" data-en="E-mail" data-de="E-Mail">E-mail</span> <span class="req">*</span></label><input type="email" id="email" data-label="E-mail" placeholder="kontakt@firma.pl"></div>
+        <div class="field"><label data-pl="Telefon" data-en="Phone" data-de="Telefon">Telefon</label><input type="tel" id="phone" data-label="Telefon" placeholder="+48 ..."></div>
+      </div>
+    </section>
+
+    <!-- 2 · OPIS PROJEKTU -->
+    <section class="section" data-title="Opis projektu">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Opis projektu" data-en="Project description" data-de="Projektbeschreibung">Opis projektu</h2>
+      <p class="sub" data-pl="Czego dotyczy projekt i jaki rezultat ma przynieść." data-en="What the project is about and what result it should bring." data-de="Worum es im Projekt geht und welches Ergebnis erzielt werden soll.">Czego dotyczy projekt i jaki rezultat ma przynieść.</p>
+      <div class="grid">
+        <div class="field"><label data-pl="Jaki problem ma zostać rozwiązany?" data-en="What problem should be solved?" data-de="Welches Problem soll gelöst werden?">Jaki problem ma zostać rozwiązany?</label><textarea id="problem" data-label="Problem do rozwiązania" data-ph-pl="Opisz główny problem lub potrzebę…" data-ph-en="Describe the main problem or need…" data-ph-de="Beschreiben Sie das Hauptproblem oder den Bedarf…" placeholder="Opisz główny problem lub potrzebę…"></textarea></div>
+        <div class="field"><label data-pl="Obecna sytuacja" data-en="Current situation" data-de="Aktuelle Situation">Obecna sytuacja</label><textarea id="currentSituation" data-label="Obecna sytuacja" data-ph-pl="Jak wygląda proces / monitoring dzisiaj?" data-ph-en="How does the process / monitoring look today?" data-ph-de="Wie sieht der Prozess / das Monitoring heute aus?" placeholder="Jak wygląda proces / monitoring dzisiaj?"></textarea></div>
+        <div class="field"><label data-pl="Oczekiwany rezultat" data-en="Expected result" data-de="Erwartetes Ergebnis">Oczekiwany rezultat</label><textarea id="expectedResult" data-label="Oczekiwany rezultat" data-ph-pl="Co ma się zmienić po wdrożeniu?" data-ph-en="What should change after deployment?" data-ph-de="Was soll sich nach der Einführung ändern?" placeholder="Co ma się zmienić po wdrożeniu?"></textarea></div>
+      </div>
+      <div class="subhead" data-pl="Priorytet projektu" data-en="Project priority" data-de="Projektpriorität">Priorytet projektu</div>
+      <div class="radio-cards" data-key="priority">
+        <label class="rcard"><input type="radio" name="priority" value="Niski"><div class="rc-body"><div class="rc-ico">🟢</div><div class="rc-title" data-pl="Niski" data-en="Low" data-de="Niedrig">Niski</div><div class="rc-desc" data-pl="Rozpoznanie, plan długoterminowy" data-en="Exploration, long-term plan" data-de="Sondierung, langfristiger Plan">Rozpoznanie, plan długoterminowy</div></div></label>
+        <label class="rcard"><input type="radio" name="priority" value="Średni"><div class="rc-body"><div class="rc-ico">🟡</div><div class="rc-title" data-pl="Średni" data-en="Medium" data-de="Mittel">Średni</div><div class="rc-desc" data-pl="Planowany w tym roku" data-en="Planned this year" data-de="Dieses Jahr geplant">Planowany w tym roku</div></div></label>
+        <label class="rcard"><input type="radio" name="priority" value="Wysoki"><div class="rc-body"><div class="rc-ico">🟠</div><div class="rc-title" data-pl="Wysoki" data-en="High" data-de="Hoch">Wysoki</div><div class="rc-desc" data-pl="Pilna potrzeba biznesowa" data-en="Urgent business need" data-de="Dringender geschäftlicher Bedarf">Pilna potrzeba biznesowa</div></div></label>
+        <label class="rcard"><input type="radio" name="priority" value="Krytyczny"><div class="rc-body"><div class="rc-ico">🔴</div><div class="rc-title" data-pl="Krytyczny" data-en="Critical" data-de="Kritisch">Krytyczny</div><div class="rc-desc" data-pl="Wpływ na ciągłość produkcji" data-en="Impacts production continuity" data-de="Betrifft die Produktionskontinuität">Wpływ na ciągłość produkcji</div></div></label>
+      </div>
+    </section>
+
+    <!-- 3 · STEROWNIKI PLC -->
+    <section class="section" data-title="Sterowniki PLC">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Sterowniki PLC" data-en="PLC controllers" data-de="SPS-Steuerungen">Sterowniki PLC</h2>
+      <p class="sub" data-pl="Dodaj każdy typ sterownika osobno — producent, model i ilość." data-en="Add each controller type separately — manufacturer, model and quantity." data-de="Fügen Sie jeden Steuerungstyp einzeln hinzu — Hersteller, Modell und Menge.">Dodaj każdy typ sterownika osobno — producent, model i ilość.</p>
+      <div class="repeat" id="plcRows"></div>
+      <button type="button" class="btn-add" data-add="plc" data-pl="＋ Dodaj sterownik" data-en="＋ Add controller" data-de="＋ Steuerung hinzufügen">＋ Dodaj sterownik</button>
+    </section>
+
+    <!-- 4 · ROBOTY -->
+    <section class="section" data-title="Roboty">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Roboty" data-en="Robots" data-de="Roboter">Roboty</h2>
+      <p class="sub" data-pl="Roboty przemysłowe i koboty — producent, model i ilość." data-en="Industrial robots and cobots — manufacturer, model and quantity." data-de="Industrieroboter und Cobots — Hersteller, Modell und Menge.">Roboty przemysłowe i koboty — producent, model i ilość.</p>
+      <div class="repeat" id="robotRows"></div>
+      <button type="button" class="btn-add" data-add="robot" data-pl="＋ Dodaj robota" data-en="＋ Add robot" data-de="＋ Roboter hinzufügen">＋ Dodaj robota</button>
+    </section>
+
+    <!-- 5 · NAPĘDY -->
+    <section class="section" data-title="Napędy">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Napędy" data-en="Drives" data-de="Antriebe">Napędy</h2>
+      <p class="sub" data-pl="Falowniki i serwonapędy — producent, model i ilość." data-en="Inverters and servo drives — manufacturer, model and quantity." data-de="Frequenzumrichter und Servoantriebe — Hersteller, Modell und Menge.">Falowniki i serwonapędy — producent, model i ilość.</p>
+      <div class="repeat" id="driveRows"></div>
+      <button type="button" class="btn-add" data-add="drive" data-pl="＋ Dodaj napęd" data-en="＋ Add drive" data-de="＋ Antrieb hinzufügen">＋ Dodaj napęd</button>
+    </section>
+
+    <!-- 6 · SYSTEMY WIZJI -->
+    <section class="section" data-title="Systemy wizji">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Systemy wizji" data-en="Vision systems" data-de="Bildverarbeitung">Systemy wizji</h2>
+      <p class="sub" data-pl="Kamery i systemy wizyjne — producent, model i ilość." data-en="Cameras and vision systems — manufacturer, model and quantity." data-de="Kameras und Bildverarbeitungssysteme — Hersteller, Modell und Menge.">Kamery i systemy wizyjne — producent, model i ilość.</p>
+      <div class="repeat" id="visionRows"></div>
+      <button type="button" class="btn-add" data-add="vision" data-pl="＋ Dodaj system wizji" data-en="＋ Add vision system" data-de="＋ Bildverarbeitung hinzufügen">＋ Dodaj system wizji</button>
+    </section>
+
+    <!-- 7 · CZUJNIKI I SYSTEMY KONTROLNE -->
+    <section class="section" data-title="Czujniki i systemy">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Czujniki i pozostałe systemy kontrolne" data-en="Sensors and other control systems" data-de="Sensoren und weitere Kontrollsysteme">Czujniki i pozostałe systemy kontrolne</h2>
+      <p class="sub" data-pl="Czujniki i inne urządzenia kontrolne. Wybierz typ i wpisz producenta/model, a poniżej opisz dowolne systemy nieujęte na liście." data-en="Sensors and other control devices. Pick a type and enter manufacturer/model, then describe any systems not on the list below." data-de="Sensoren und weitere Kontrollgeräte. Wählen Sie einen Typ und geben Sie Hersteller/Modell ein; beschreiben Sie unten beliebige nicht gelistete Systeme.">Czujniki i inne urządzenia kontrolne. Wybierz typ i wpisz producenta/model, a poniżej opisz dowolne systemy nieujęte na liście.</p>
+      <div class="repeat" id="sensorRows"></div>
+      <button type="button" class="btn-add" data-add="sensor" data-pl="＋ Dodaj czujnik / urządzenie" data-en="＋ Add sensor / device" data-de="＋ Sensor / Gerät hinzufügen">＋ Dodaj czujnik / urządzenie</button>
+      <div class="subhead" data-pl="Inne systemy kontrolne" data-en="Other control systems" data-de="Weitere Kontrollsysteme">Inne systemy kontrolne</div>
+      <div class="field"><textarea id="otherControl" data-label="Inne systemy kontrolne" data-ph-pl="Opisz dowolne systemy nieujęte na liście — panele HMI, sterowniki bezpieczeństwa, motion, RFID / kody, BMS, systemy ważące itp." data-ph-en="Describe any systems not listed — HMI panels, safety controllers, motion, RFID / barcodes, BMS, weighing systems, etc." data-ph-de="Beschreiben Sie nicht gelistete Systeme — HMI-Panels, Sicherheitssteuerungen, Motion, RFID / Barcodes, GLT, Wägesysteme usw." placeholder="Opisz dowolne systemy nieujęte na liście…"></textarea></div>
+    </section>
+
+    <!-- 8 · PROTOKOŁY -->
+    <section class="section" data-title="Protokoły">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Protokoły komunikacyjne" data-en="Communication protocols" data-de="Kommunikationsprotokolle">Protokoły komunikacyjne</h2>
+      <p class="sub" data-pl="Zaznacz wszystkie protokoły obecne w instalacji." data-en="Select all protocols present in the installation." data-de="Wählen Sie alle in der Anlage vorhandenen Protokolle.">Zaznacz wszystkie protokoły obecne w instalacji.</p>
+      <div class="chips" data-key="protocols">
+        <label class="chip"><input type="checkbox" value="Profinet"><span>Profinet</span></label>
+        <label class="chip"><input type="checkbox" value="Profibus"><span>Profibus</span></label>
+        <label class="chip"><input type="checkbox" value="OPC UA"><span>OPC UA</span></label>
+        <label class="chip"><input type="checkbox" value="Modbus TCP"><span>Modbus TCP</span></label>
+        <label class="chip"><input type="checkbox" value="Modbus RTU"><span>Modbus RTU</span></label>
+        <label class="chip"><input type="checkbox" value="Ethernet/IP"><span>Ethernet/IP</span></label>
+        <label class="chip"><input type="checkbox" value="MQTT"><span>MQTT</span></label>
+        <label class="chip"><input type="checkbox" value="BACnet"><span>BACnet</span></label>
+        <label class="chip"><input type="checkbox" value="CAN"><span>CAN</span></label>
+        <label class="chip"><input type="checkbox" value="RS232"><span>RS232</span></label>
+        <label class="chip"><input type="checkbox" value="RS485"><span>RS485</span></label>
+        <label class="chip"><input type="checkbox" value="Inne" data-other="protocolsOther"><span data-pl="Inne" data-en="Other" data-de="Andere">Inne</span></label>
+      </div>
+      <div class="other-wrap" id="protocolsOther"><div class="field"><label data-pl="Inne protokoły" data-en="Other protocols" data-de="Weitere Protokolle">Inne protokoły</label><input type="text" data-label="Inne protokoły" data-ph-pl="Wpisz pozostałe protokoły…" data-ph-en="Enter other protocols…" data-ph-de="Weitere Protokolle eingeben…" placeholder="Wpisz pozostałe protokoły…"></div></div>
+    </section>
+
+    <!-- 9 · SYSTEMY NADRZĘDNE -->
+    <section class="section" data-title="Systemy nadrzędne">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Systemy nadrzędne" data-en="Supervisory systems" data-de="Übergeordnete Systeme">Systemy nadrzędne</h2>
+      <p class="sub" data-pl="Istniejące systemy, z którymi LineMind AI ma się integrować." data-en="Existing systems LineMind AI should integrate with." data-de="Bestehende Systeme, mit denen sich LineMind AI integrieren soll.">Istniejące systemy, z którymi LineMind AI ma się integrować.</p>
+      <div class="chips" data-key="supervisory">
+        <label class="chip"><input type="checkbox" value="SCADA"><span>SCADA</span></label>
+        <label class="chip"><input type="checkbox" value="MES"><span>MES</span></label>
+        <label class="chip"><input type="checkbox" value="ERP"><span>ERP</span></label>
+        <label class="chip"><input type="checkbox" value="SAP"><span>SAP</span></label>
+        <label class="chip"><input type="checkbox" value="Historian"><span>Historian</span></label>
+        <label class="chip"><input type="checkbox" value="CMMS"><span>CMMS</span></label>
+        <label class="chip"><input type="checkbox" value="Inne" data-other="supervisoryOther"><span data-pl="Inne" data-en="Other" data-de="Andere">Inne</span></label>
+      </div>
+      <div class="other-wrap" id="supervisoryOther"><div class="field"><label data-pl="Inne systemy nadrzędne" data-en="Other supervisory systems" data-de="Weitere übergeordnete Systeme">Inne systemy nadrzędne</label><input type="text" data-label="Inne systemy nadrzędne" data-ph-pl="Wpisz pozostałe systemy…" data-ph-en="Enter other systems…" data-ph-de="Weitere Systeme eingeben…" placeholder="Wpisz pozostałe systemy…"></div></div>
+    </section>
+
+    <!-- 10 · FUNKCJONALNOŚCI -->
+    <section class="section" data-title="Funkcjonalności">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Funkcjonalności" data-en="Functionalities" data-de="Funktionen">Funkcjonalności</h2>
+      <p class="sub" data-pl="Zaznacz funkcje, które mają znaleźć się w zakresie projektu." data-en="Select the features to be included in the project scope." data-de="Wählen Sie die Funktionen für den Projektumfang.">Zaznacz funkcje, które mają znaleźć się w zakresie projektu.</p>
+      <div class="chips" data-key="features">
+        <label class="chip"><input type="checkbox" value="Alarmy AI"><span data-pl="Alarmy AI" data-en="AI alarms" data-de="KI-Alarme">Alarmy AI</span></label>
+        <label class="chip"><input type="checkbox" value="Analiza PLC"><span data-pl="Analiza PLC" data-en="PLC analysis" data-de="SPS-Analyse">Analiza PLC</span></label>
+        <label class="chip"><input type="checkbox" value="OEE"><span>OEE</span></label>
+        <label class="chip"><input type="checkbox" value="KPI"><span>KPI</span></label>
+        <label class="chip"><input type="checkbox" value="Raporty PDF"><span data-pl="Raporty PDF" data-en="PDF reports" data-de="PDF-Berichte">Raporty PDF</span></label>
+        <label class="chip"><input type="checkbox" value="Raporty Excel"><span data-pl="Raporty Excel" data-en="Excel reports" data-de="Excel-Berichte">Raporty Excel</span></label>
+        <label class="chip"><input type="checkbox" value="Dashboardy"><span data-pl="Dashboardy" data-en="Dashboards" data-de="Dashboards">Dashboardy</span></label>
+        <label class="chip"><input type="checkbox" value="Monitoring produkcji"><span data-pl="Monitoring produkcji" data-en="Production monitoring" data-de="Produktionsüberwachung">Monitoring produkcji</span></label>
+        <label class="chip"><input type="checkbox" value="Monitoring energii"><span data-pl="Monitoring energii" data-en="Energy monitoring" data-de="Energieüberwachung">Monitoring energii</span></label>
+        <label class="chip"><input type="checkbox" value="Predykcyjne utrzymanie ruchu"><span data-pl="Predykcyjne utrzymanie ruchu" data-en="Predictive maintenance" data-de="Vorausschauende Wartung">Predykcyjne utrzymanie ruchu</span></label>
+        <label class="chip"><input type="checkbox" value="Analiza przestojów"><span data-pl="Analiza przestojów" data-en="Downtime analysis" data-de="Stillstandsanalyse">Analiza przestojów</span></label>
+        <label class="chip"><input type="checkbox" value="Zarządzanie recepturami"><span data-pl="Zarządzanie recepturami" data-en="Recipe management" data-de="Rezepturverwaltung">Zarządzanie recepturami</span></label>
+        <label class="chip"><input type="checkbox" value="Analiza jakości"><span data-pl="Analiza jakości" data-en="Quality analysis" data-de="Qualitätsanalyse">Analiza jakości</span></label>
+        <label class="chip"><input type="checkbox" value="Integracja z AI"><span data-pl="Integracja z AI" data-en="AI integration" data-de="KI-Integration">Integracja z AI</span></label>
+      </div>
+    </section>
+
+    <!-- 11 · EKSPORT DANYCH -->
+    <section class="section" data-title="Eksport danych">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Eksport danych" data-en="Data export" data-de="Datenexport">Eksport danych</h2>
+      <p class="sub" data-pl="Wymagane formaty i kanały eksportu danych." data-en="Required data export formats and channels." data-de="Erforderliche Formate und Kanäle für den Datenexport.">Wymagane formaty i kanały eksportu danych.</p>
+      <div class="chips" data-key="export">
+        <label class="chip"><input type="checkbox" value="PDF"><span>PDF</span></label>
+        <label class="chip"><input type="checkbox" value="Excel"><span>Excel</span></label>
+        <label class="chip"><input type="checkbox" value="CSV"><span>CSV</span></label>
+        <label class="chip"><input type="checkbox" value="SQL"><span>SQL</span></label>
+        <label class="chip"><input type="checkbox" value="REST API"><span>REST API</span></label>
+        <label class="chip"><input type="checkbox" value="OPC UA"><span>OPC UA</span></label>
+        <label class="chip"><input type="checkbox" value="MQTT"><span>MQTT</span></label>
+        <label class="chip"><input type="checkbox" value="Inne" data-other="exportOther"><span data-pl="Inne" data-en="Other" data-de="Andere">Inne</span></label>
+      </div>
+      <div class="other-wrap" id="exportOther"><div class="field"><label data-pl="Inne formaty eksportu" data-en="Other export formats" data-de="Weitere Exportformate">Inne formaty eksportu</label><input type="text" data-label="Inne formaty eksportu" data-ph-pl="Wpisz pozostałe formaty…" data-ph-en="Enter other formats…" data-ph-de="Weitere Formate eingeben…" placeholder="Wpisz pozostałe formaty…"></div></div>
+    </section>
+
+    <!-- 12 · UŻYTKOWNICY -->
+    <section class="section" data-title="Użytkownicy">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Użytkownicy i uprawnienia" data-en="Users and permissions" data-de="Benutzer und Berechtigungen">Użytkownicy i uprawnienia</h2>
+      <p class="sub" data-pl="Zdefiniuj grupy użytkowników, ich liczebność i poziom uprawnień." data-en="Define user groups, their size and permission level." data-de="Definieren Sie Benutzergruppen, deren Größe und Berechtigungsstufe.">Zdefiniuj grupy użytkowników, ich liczebność i poziom uprawnień.</p>
+      <div class="repeat" id="userRows"></div>
+      <button type="button" class="btn-add" data-add="user" data-pl="＋ Dodaj grupę użytkowników" data-en="＋ Add user group" data-de="＋ Benutzergruppe hinzufügen">＋ Dodaj grupę użytkowników</button>
+    </section>
+
+    <!-- 13 · BEZPIECZEŃSTWO -->
+    <section class="section" data-title="Bezpieczeństwo">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Bezpieczeństwo i uwierzytelnianie" data-en="Security and authentication" data-de="Sicherheit und Authentifizierung">Bezpieczeństwo i uwierzytelnianie</h2>
+      <p class="sub" data-pl="Mechanizmy logowania i zarządzania tożsamością." data-en="Login and identity management mechanisms." data-de="Anmelde- und Identitätsverwaltungsmechanismen.">Mechanizmy logowania i zarządzania tożsamością.</p>
+      <div class="chips" data-key="security">
+        <label class="chip"><input type="checkbox" value="Active Directory"><span>Active Directory</span></label>
+        <label class="chip"><input type="checkbox" value="Azure AD"><span>Azure AD</span></label>
+        <label class="chip"><input type="checkbox" value="LDAP"><span>LDAP</span></label>
+        <label class="chip"><input type="checkbox" value="Lokalni użytkownicy"><span data-pl="Lokalni użytkownicy" data-en="Local users" data-de="Lokale Benutzer">Lokalni użytkownicy</span></label>
+        <label class="chip"><input type="checkbox" value="MFA"><span>MFA</span></label>
+        <label class="chip"><input type="checkbox" value="SSO"><span>SSO</span></label>
+      </div>
+    </section>
+
+    <!-- 14 · INFRASTRUKTURA -->
+    <section class="section" data-title="Infrastruktura">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Infrastruktura" data-en="Infrastructure" data-de="Infrastruktur">Infrastruktura</h2>
+      <p class="sub" data-pl="Preferowany model wdrożenia." data-en="Preferred deployment model." data-de="Bevorzugtes Bereitstellungsmodell.">Preferowany model wdrożenia.</p>
+      <div class="radio-cards" data-key="infrastructure">
+        <label class="rcard"><input type="radio" name="infrastructure" value="Lokalnie (on-premise)"><div class="rc-body"><div class="rc-ico">🏭</div><div class="rc-title" data-pl="Lokalnie" data-en="On-premise" data-de="Lokal">Lokalnie</div><div class="rc-desc" data-pl="On-premise, w sieci zakładowej" data-en="On-premise, in the plant network" data-de="On-Premise, im Werksnetz">On-premise, w sieci zakładowej</div></div></label>
+        <label class="rcard"><input type="radio" name="infrastructure" value="Cloud"><div class="rc-body"><div class="rc-ico">☁️</div><div class="rc-title" data-pl="Cloud" data-en="Cloud" data-de="Cloud">Cloud</div><div class="rc-desc" data-pl="Hosting w chmurze" data-en="Cloud hosting" data-de="Cloud-Hosting">Hosting w chmurze</div></div></label>
+        <label class="rcard"><input type="radio" name="infrastructure" value="Hybryda"><div class="rc-body"><div class="rc-ico">🔗</div><div class="rc-title" data-pl="Hybryda" data-en="Hybrid" data-de="Hybrid">Hybryda</div><div class="rc-desc" data-pl="Lokalnie + chmura" data-en="On-premise + cloud" data-de="Lokal + Cloud">Lokalnie + chmura</div></div></label>
+      </div>
+    </section>
+
+    <!-- 15 · DODATKOWE WYMAGANIA -->
+    <section class="section" data-title="Dodatkowe wymagania">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Dodatkowe wymagania" data-en="Additional requirements" data-de="Zusätzliche Anforderungen">Dodatkowe wymagania</h2>
+      <p class="sub" data-pl="Wszystko, co istotne, a nie zostało ujęte powyżej — terminy, normy, ograniczenia, integracje, oczekiwania." data-en="Anything important not covered above — deadlines, standards, constraints, integrations, expectations." data-de="Alles Wichtige, das oben nicht erfasst wurde — Termine, Normen, Einschränkungen, Integrationen, Erwartungen.">Wszystko, co istotne, a nie zostało ujęte powyżej.</p>
+      <div class="field"><textarea id="additional" data-label="Dodatkowe wymagania" style="min-height:200px" data-ph-pl="Wpisz dodatkowe wymagania, kontekst lub uwagi…" data-ph-en="Enter additional requirements, context or notes…" data-ph-de="Zusätzliche Anforderungen, Kontext oder Anmerkungen eingeben…" placeholder="Wpisz dodatkowe wymagania, kontekst lub uwagi…"></textarea></div>
+    </section>
+
+    <!-- 16 · PODSUMOWANIE -->
+    <section class="section" data-title="Podsumowanie">
+      <div class="label"></div>
+      <h2 class="title" data-pl="Podsumowanie projektu" data-en="Project summary" data-de="Projektzusammenfassung">Podsumowanie projektu</h2>
+      <p class="sub" data-pl="Automatyczne podsumowanie wszystkich zebranych informacji — gotowa baza do specyfikacji i oferty." data-en="Automatic summary of all collected information — a ready basis for the specification and quote." data-de="Automatische Zusammenfassung aller erfassten Informationen — eine fertige Basis für Spezifikation und Angebot.">Automatyczne podsumowanie wszystkich zebranych informacji.</p>
+      <div id="summaryOut"></div>
+      <div class="export-bar">
+        <button type="button" class="btn btn-primary" id="btnCopy" data-pl="⧉ Kopiuj podsumowanie" data-en="⧉ Copy summary" data-de="⧉ Zusammenfassung kopieren">⧉ Kopiuj podsumowanie</button>
+        <button type="button" class="btn btn-ghost" id="btnJson" data-pl="⬇ Pobierz JSON" data-en="⬇ Download JSON" data-de="⬇ JSON herunterladen">⬇ Pobierz JSON</button>
+        <button type="button" class="btn btn-ghost" id="btnMd" data-pl="⬇ Pobierz Markdown" data-en="⬇ Download Markdown" data-de="⬇ Markdown herunterladen">⬇ Pobierz Markdown</button>
+        <button type="button" class="btn btn-ghost" id="btnPrint" data-pl="🖨 Drukuj / PDF" data-en="🖨 Print / PDF" data-de="🖨 Drucken / PDF">🖨 Drukuj / PDF</button>
+        <button type="button" class="btn btn-ghost" id="btnReset" data-pl="↺ Wyczyść formularz" data-en="↺ Reset form" data-de="↺ Formular zurücksetzen">↺ Wyczyść formularz</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ═══ FOOTER NAV ═══ -->
+<div class="formnav">
+  <button type="button" class="btn btn-ghost" id="btnBack" data-pl="← Wstecz" data-en="← Back" data-de="← Zurück">← Wstecz</button>
+  <span class="count" id="navCount">01 / 16</span>
+  <button type="button" class="btn btn-primary" id="btnNext" data-pl="Dalej →" data-en="Next →" data-de="Weiter →">Dalej →</button>
+</div>
+
+<script src="discovery-form.js"></script>
+</body>
+</html>
