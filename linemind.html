@@ -333,7 +333,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 <div id="deck">
 
 <!-- ═══ SLIDE 1 — HERO ═══ -->
-<div class="slide active" id="s0">
+<div class="slide active" id="s0"
+  data-narration-pl="Cześć. To jest prezentacja projektu LineMind AI. To system, który pomaga przenieść informacje z hali produkcyjnej do jednego, uporządkowanego miejsca. Operator, utrzymanie ruchu i kierownictwo widzą szybciej, co dzieje się z maszynami i gdzie zaczynają się przestoje. W kolejnych krokach pokażę, jak to działa w praktyce."
+  data-narration-en="Hello. This is the LineMind AI project presentation. LineMind AI brings information from the production floor into one structured system. Operators, maintenance teams and managers can see faster what is happening with the machines and where downtime begins. In the next steps, I'll show how it works in practice.">
   <div class="logo-wrap">
     <div class="logo-mark">L</div>
     <div class="logo-name">Line<span>Mind</span>&nbsp;AI</div>
@@ -362,7 +364,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 2 — PROBLEM ═══ -->
-<div class="slide" id="s1">
+<div class="slide" id="s1"
+  data-narration-pl="Zacznijmy od problemu, który zna każdy zakład. Nieplanowane przestoje kosztują przemysł ogromne pieniądze, a najwięcej czasu traci się nie na samej naprawie, tylko na szukaniu przyczyny. Większość takich awarii dałoby się przewidzieć, gdyby dane z maszyn były pod ręką. LineMind AI powstał właśnie po to, żeby te dane zbierać i zamieniać w szybką decyzję."
+  data-narration-en="Let's start with a problem every plant knows. Unplanned downtime costs industry enormous money, and most of the time is lost not on the repair itself, but on finding the cause. Many of these failures could be predicted if machine data were within reach. LineMind AI exists precisely to collect that data and turn it into a fast decision.">
   <div class="label" data-pl="WYZWANIE" data-en="THE CHALLENGE" data-de="DIE HERAUSFORDERUNG">WYZWANIE</div>
   <h2 class="title"
     data-pl="Awarie kosztują miliony"
@@ -393,7 +397,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 3 — ARCHITECTURE ═══ -->
-<div class="slide" id="s2">
+<div class="slide" id="s2"
+  data-narration-pl="Zobaczmy, jak LineMind AI jest zbudowany. Dane płyną prosto z maszyny przez standardowe protokoły, takie jak Modbus, OPC UA czy Siemens S7, do silnika AI. Stamtąd trafiają na panel webowy i do aplikacji mobilnej. W praktyce maszyna raportuje swój stan co kilka sekund, a diagnoza pojawia się w ciągu minut, z pełną historią zdarzeń."
+  data-narration-en="Let's look at how LineMind AI is built. Data flows straight from the machine through standard protocols like Modbus, OPC UA or Siemens S7 into the AI engine. From there it reaches a web panel and a mobile app. In practice, the machine reports its condition every few seconds, and a diagnosis appears within minutes, with a full event history.">
   <div class="label" data-pl="ROZWIĄZANIE" data-en="SOLUTION" data-de="LÖSUNG">ROZWIĄZANIE</div>
   <h2 class="title"
     data-pl="Jak działa LineMind AI?"
@@ -441,7 +447,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 4 — INTEGRATION: PLC ═══ -->
-<div class="slide" id="s3">
+<div class="slide" id="s3"
+  data-narration-pl="Jeśli maszyna ma sterownik PLC, integracja jest naprawdę prosta. LineMind AI odczytuje bloki danych z Siemens S7, Modbusa czy OPC UA — prądy, prędkości, temperatury i kody alarmów — bez zmiany programu sterownika. Co ważne, system pracuje tylko do odczytu i nigdy nie zapisuje do PLC bez zgody operatora. To bezpieczne wejście w istniejącą produkcję."
+  data-narration-en="If a machine has a PLC, integration is genuinely simple. LineMind AI reads data blocks from Siemens S7, Modbus or OPC UA — currents, speeds, temperatures and alarm codes — without touching the controller's program. Importantly, it runs read-only and never writes to the PLC without operator approval. It's a safe way into an existing production line.">
   <div class="label" data-pl="INTEGRACJA — WARIANT 1" data-en="INTEGRATION — OPTION 1" data-de="INTEGRATION — OPTION 1">INTEGRACJA — WARIANT 1</div>
   <h2 class="title"
     data-pl="Masz dostęp do PLC ✓"
@@ -482,7 +490,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 5 — INTEGRATION: NO PLC ═══ -->
-<div class="slide" id="s4">
+<div class="slide" id="s4"
+  data-narration-pl="A co, jeśli maszyna nie ma nowoczesnego sterownika? To też nie jest problem. Dane można pobrać wprost z falowników Lenze, Siemens czy Danfoss, z czujników temperatury i wibracji, albo z wejść analogowych. Mały komputer, na przykład Raspberry Pi, działa jako lokalna bramka. Dzięki temu nawet starsza maszyna staje się źródłem danych, a instalacja zajmuje jeden dzień."
+  data-narration-en="And what if a machine has no modern controller? That's not a problem either. Data can come straight from Lenze, Siemens or Danfoss drives, from temperature and vibration sensors, or from simple analog inputs. A small computer, like a Raspberry Pi, works as a local gateway. So even an older machine becomes a data source, and the install takes about a day.">
   <div class="label" data-pl="INTEGRACJA — WARIANT 2" data-en="INTEGRATION — OPTION 2" data-de="INTEGRATION — OPTION 2">INTEGRACJA — WARIANT 2</div>
   <h2 class="title"
     data-pl="Brak PLC? To też działa."
@@ -523,7 +533,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 6 — HOW AI WORKS ═══ -->
-<div class="slide" id="s5">
+<div class="slide" id="s5"
+  data-narration-pl="Przejdźmy do tego, jak AI stawia diagnozę. Najpierw system zbiera sygnały z każdej maszyny co kilka sekund. Potem łączy kilka warstw wiedzy — reguły z instrukcji producentów, trendy prądu i podciśnienia, historię wcześniejszych awarii oraz model językowy. Efektem jest konkretna diagnoza z kontekstem: opis usterki, lista kroków i podpowiedź, co pomogło przy podobnym problemie wcześniej."
+  data-narration-en="Let's move to how the AI reaches a diagnosis. First, the system gathers signals from every machine every few seconds. Then it combines several layers of knowledge — rules from manufacturer manuals, current and vacuum trends, the history of earlier failures, and a language model. The result is a concrete, contextual diagnosis: a description of the fault, a list of steps, and what helped with a similar problem before.">
   <div class="label" data-pl="DIAGNOSTYKA AI" data-en="AI DIAGNOSTICS" data-de="KI-DIAGNOSE">DIAGNOSTYKA AI</div>
   <h2 class="title"
     data-pl="Jak działa diagnoza AI?"
@@ -556,7 +568,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 7 — AUTO TUNING ═══ -->
-<div class="slide" id="s6">
+<div class="slide" id="s6"
+  data-narration-pl="LineMind AI potrafi też reagować w czasie rzeczywistym. Wyobraź sobie, że prędkość linii rośnie i prąd silnika zbliża się do progu awaryjnego. System wykrywa ten trend i delikatnie koryguje napędy, zanim pojawi się błąd, a gdy prędkość wraca do normy, korekty same się resetują. Operator decyduje o trybie pracy — od samego monitoringu, przez sugestie, aż po pełną automatykę z limitami bezpieczeństwa."
+  data-narration-en="LineMind AI can also react in real time. Imagine line speed rising and the motor current approaching its fault threshold. The system spots the trend and gently corrects the drives before an error appears, and when the speed returns to normal, the corrections reset themselves. The operator chooses the mode — from monitoring only, through suggestions, up to full automation with safety limits.">
   <div class="label">AI AUTO TUNING</div>
   <h2 class="title"
     data-pl="AI koryguje napędy w czasie rzeczywistym"
@@ -606,7 +620,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 8 — MOBILE ═══ -->
-<div class="slide" id="s7">
+<div class="slide" id="s7"
+  data-narration-pl="Cała linia mieści się też w telefonie. Aplikacja mobilna pokazuje status maszyn, awarie i jakość na żywo, a do tego ma czat w stylu komunikatora z osobnymi pokojami dla każdej linii. Technik może dodać zdjęcie z maszyny, krótki opis albo nagranie głosowe. Powiadomienia o awarii przychodzą natychmiast, w trzech językach — po polsku, angielsku i niemiecku."
+  data-narration-en="The whole line also fits in your pocket. The mobile app shows machine status, failures and quality live, and it includes a messenger-style chat with separate rooms for each line. A technician can attach a photo from the machine, a short note or a voice message. Failure alerts arrive instantly, in three languages — Polish, English and German.">
   <div class="label" data-pl="APLIKACJA MOBILNA" data-en="MOBILE APPLICATION" data-de="MOBILE ANWENDUNG">APLIKACJA MOBILNA</div>
   <h2 class="title"
     data-pl="Cała linia w kieszeni"
@@ -652,7 +668,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 9 — KPI & REPORTING ═══ -->
-<div class="slide" id="s_kpi">
+<div class="slide" id="s_kpi"
+  data-narration-pl="Dla kadry zarządzającej liczą się liczby, i tu LineMind AI daje gotowe wskaźniki. Pięć dashboardów pokazuje OEE, dostępność, przestoje, jakość i predykcję awarii — osobno dla utrzymania ruchu, produkcji, jakości i dyrekcji. Zamiast zbierać dane ręcznie, kierownik od razu widzi, która maszyna odstaje i dlaczego, z automatycznym komentarzem od AI."
+  data-narration-en="For management, the numbers matter, and this is where LineMind AI delivers ready metrics. Five dashboards cover OEE, availability, stoppages, quality and failure prediction — separately for maintenance, production, quality and the director. Instead of collecting data by hand, a manager immediately sees which machine is underperforming and why, with an automatic AI comment.">
   <div class="label" data-pl="KPI I RAPORTOWANIE" data-en="KPI &amp; REPORTING" data-de="KPI &amp; BERICHTSWESEN">KPI I RAPORTOWANIE</div>
   <h2 class="title"
     data-pl="Zarządzaj przez liczby"
@@ -721,7 +739,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 10 — DATA EXPORT ═══ -->
-<div class="slide" id="s_export">
+<div class="slide" id="s_export"
+  data-narration-pl="Dane z LineMind AI nie zostają zamknięte w jednym systemie. Każde zdarzenie, wskaźnik i alarm można przekazać dalej — przez otwarte REST API, do systemów MES i ERP, takich jak SAP czy Oracle, albo strumieniowo przez MQTT do platform IoT i Grafany. Raporty zmianowe i zestawienia OEE powstają automatycznie i trafiają mailem do zarządu, bez ręcznego przepisywania."
+  data-narration-en="Data from LineMind AI doesn't stay locked in one system. Every event, metric and alert can flow further — through an open REST API, into MES and ERP systems like SAP or Oracle, or streamed over MQTT to IoT platforms and Grafana. Shift reports and OEE summaries are generated automatically and emailed to management, with no manual re-entry.">
   <div class="label" data-pl="INTEGRACJA DANYCH" data-en="DATA INTEGRATION" data-de="DATENINTEGRATION">INTEGRACJA DANYCH</div>
   <h2 class="title"
     data-pl="Twoje dane idą dalej"
@@ -768,7 +788,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 11 — TECH STACK ═══ -->
-<div class="slide" id="s8">
+<div class="slide" id="s8"
+  data-narration-pl="Za prostym interfejsem stoi solidna technologia. Backend działa na Pythonie i FastAPI, dane trzyma lekka baza, a analizę wspiera model OpenAI. Aplikacja mobilna powstała w React Native, a komunikacja z maszynami opiera się na Modbus, OPC UA i Siemens S7. To dojrzałe, sprawdzone narzędzia, dzięki czemu system jest stabilny i łatwy w utrzymaniu."
+  data-narration-en="Behind the simple interface sits solid technology. The backend runs on Python and FastAPI, data lives in a lightweight database, and analysis is supported by an OpenAI model. The mobile app is built in React Native, and machine communication relies on Modbus, OPC UA and Siemens S7. These are mature, proven tools, which keeps the system stable and easy to maintain.">
   <div class="label" data-pl="TECHNOLOGIE" data-en="TECHNOLOGIES" data-de="TECHNOLOGIEN">TECHNOLOGIE</div>
   <h2 class="title"
     data-pl="Stack technologiczny"
@@ -793,7 +815,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 10 — RESULTS ═══ -->
-<div class="slide" id="s9">
+<div class="slide" id="s9"
+  data-narration-pl="Liczą się jednak realne efekty w zakładzie. Pilotaże w przemyśle włókienniczym pokazują około czterdzieści procent mniej nieplanowanych przestojów i wykrycie problemu nawet kilkanaście minut wcześniej, zanim zamieni się w awarię. W pierwszym roku zwrot z inwestycji sięga od trzech do pięciu razy, głównie dzięki uniknięciu kosztownych postojów."
+  data-narration-en="What ultimately counts are the real results on the floor. Pilots in the textile industry show around forty percent fewer unplanned stoppages, and problems caught up to fifteen minutes earlier, before they turn into a failure. In the first year, the return on investment reaches three to five times, mostly by avoiding costly downtime.">
   <div class="label" data-pl="WYNIKI" data-en="RESULTS" data-de="ERGEBNISSE">WYNIKI</div>
   <h2 class="title"
     data-pl="Mierzalne efekty wdrożenia"
@@ -824,7 +848,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE — SECURITY & BACKUP ═══ -->
-<div class="slide" id="s_security">
+<div class="slide" id="s_security"
+  data-narration-pl="Bezpieczeństwo danych jest tu fundamentem. LineMind AI działa lokalnie w zakładzie, w oddzielonej sieci, i nic nie wychodzi na zewnątrz bez zgody klienta. Pełna baza kopiuje się co godzinę na lokalny serwer, a opcjonalny backup w chmurze jest szyfrowany jeszcze przed wysłaniem. System nie przetwarza danych osobowych, więc jest w pełni zgodny z RODO."
+  data-narration-en="Data security is the foundation here. LineMind AI runs locally on-site, in an isolated network, and nothing leaves without the client's consent. The full database is backed up every hour to a local server, and an optional cloud backup is encrypted before it's even sent. The system processes no personal data, so it's fully compliant with GDPR.">
   <div class="label" data-pl="BEZPIECZEŃSTWO" data-en="SECURITY" data-de="SICHERHEIT">BEZPIECZEŃSTWO</div>
   <h2 class="title"
     data-pl="Dane produkcyjne pod ochroną"
@@ -891,7 +917,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE — PAKIETY LICENCYJNE ═══ -->
-<div class="slide" id="s_pricing">
+<div class="slide" id="s_pricing"
+  data-narration-pl="Wdrożenie można dopasować do skali zakładu. Pakiet podstawowy skupia się na diagnostyce i monitoringu maszyn. Wyższy poziom dokłada aplikację mobilną i automatyczną korektę napędów. Najszerszy obejmuje pełne KPI, predykcję awarii i integrację z systemami ERP. Zakres dobieramy wspólnie, a wycenę zawsze ustalamy indywidualnie, po rozmowie o Twoich potrzebach."
+  data-narration-en="The rollout can match the scale of your plant. The entry package focuses on machine diagnostics and monitoring. The next level adds the mobile app and automatic drive correction. The most complete one covers full KPIs, failure prediction and ERP integration. We choose the scope together, and pricing is always defined individually, after a conversation about your needs.">
   <div class="label" data-pl="PAKIETY LICENCYJNE" data-en="LICENSE PACKAGES" data-de="LIZENZPAKETE">PAKIETY LICENCYJNE</div>
   <h2 class="title"
     data-pl="Wybierz pakiet dla swojego zakładu"
@@ -946,7 +974,9 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
 </div>
 
 <!-- ═══ SLIDE 11 — CTA ═══ -->
-<div class="slide" id="s10">
+<div class="slide" id="s10"
+  data-narration-pl="LineMind AI można zacząć od małego pilotażu i rozwijać krok po kroku. Najpierw porządkujemy zgłoszenia i dane z hali. Później dokładamy raporty, integracje i analizę AI. Jeśli chcesz porozmawiać o wdrożeniu w swoim zakładzie, napisz na info@tuautomation.de. Dziękuję za obejrzenie prezentacji i do usłyszenia."
+  data-narration-en="LineMind AI can start with a focused pilot and grow step by step. First, we organize reports and shop-floor data. Later, the system gains reports, integrations and AI analysis. If you'd like to discuss a rollout in your plant, write to info@tuautomation.de. Thank you for watching the presentation, and speak to you soon.">
   <div class="logo-wrap" style="margin-bottom:20px">
     <div class="logo-mark">L</div>
     <div class="logo-name">Line<span>Mind</span>&nbsp;AI</div>
@@ -1230,6 +1260,10 @@ progEl.style.width = `${1/slides.length*100}%`;
     var rm=c.querySelectorAll('[data-ai-ignore="true"],[aria-hidden="true"]');
     for(var i=0;i<rm.length;i++){ if(rm[i].parentNode) rm[i].parentNode.removeChild(rm[i]); }
     return (c.textContent||'').replace(/\s+/g,' ').trim().slice(0,600); }
+  // dedicated voice-over script for the slide (PL/EN only); priority over raw slide text
+  function slideNarration(idx, lang){ var el=slideEl(idx); if(!el||!el.getAttribute) return '';
+    var t=(el.getAttribute(lang==='pl'?'data-narration-pl':'data-narration-en')||'').replace(/\s+/g,' ').trim();
+    return t; }
 
   // ── automatic language (no UI switch) — from the ACTIVE/visible slide, not the whole document ──
   function logLang(lang, src, idx){ try{
@@ -1276,7 +1310,7 @@ progEl.style.width = `${1/slides.length*100}%`;
     logLang('en','fallback',idx); return 'en';
   }
 
-  // ── local fallback narration (backend down) — varied, no "on this slide" ──
+  // ── local fallback narration (backend down) — only used if a slide has no dedicated narration ──
   function localText(idx, lang, first, last){
     if(first) return (lang==='pl')
       ? 'Cześć, jestem wirtualnym współprezenterem LineMind AI. W kilku kolejnych slajdach pokażę, jak sztuczna inteligencja może wspierać produkcję, utrzymanie ruchu i decyzje techniczne.'
@@ -1286,8 +1320,8 @@ progEl.style.width = `${1/slides.length*100}%`;
       : "That's the core of LineMind AI: less downtime, faster diagnostics and technical knowledge that stays in the plant. Thank you — I'd be glad to walk through a pilot for your line.";
     var t=slideTitle(idx)||'LineMind AI';
     return (lang==='pl')
-      ? ('Najważniejsze tutaj to '+t+': zamiana danych z maszyn i wiedzy technicznej w szybszą diagnostykę, krótsze przestoje i lepsze decyzje na linii.')
-      : ('The point here is '+t+': turning machine data and technical knowledge into faster diagnostics, shorter downtime and better decisions on the line.');
+      ? ('LineMind AI zamienia dane z maszyn i wiedzę techniczną w szybszą diagnostykę, krótsze przestoje i lepsze decyzje na linii. To sens tego, o czym mówi ' + t + '.')
+      : ('LineMind AI turns machine data and technical knowledge into faster diagnostics, shorter downtime and better decisions on the line. That is the idea behind ' + t + '.');
   }
 
   // ── audio (priority: ElevenLabs base64, else browser speech; never both) ──
@@ -1322,31 +1356,37 @@ progEl.style.width = `${1/slides.length*100}%`;
     if(!on) return;
     if(idx<0) idx=slideIndex();
     var lang=detectLang(idx);
+    // dedicated narration is PL/EN only; if page is in another language, narrate in English
+    var narration=slideNarration(idx, lang);
+    var ttsLang = narration ? (lang==='pl'?'pl':'en') : lang;
     var first=(idx===0), last=(idx===slideCount()-1);
-    currentLang=lang;
+    currentLang=ttsLang;
     setStat('Preparing…','thinking');
     // cancel any in-flight request
     if(curCtrl){ try{ curCtrl.abort(); }catch(e){} }
     var ctrl=(typeof AbortController!=='undefined')?new AbortController():null; curCtrl=ctrl;
-    var body=JSON.stringify({ slideIndex:idx, slideTitle:slideTitle(idx), slideText:slideText(idx),
-      language:lang, isFirstSlide:first, isLastSlide:last, mode:'auto',
-      context:'LineMind AI presentation for industrial maintenance and production customers' });
+    // priority: dedicated narration (verbatim on backend) → else slide text (backend rewrites/generates)
+    var payload={ slideIndex:idx, slideTitle:slideTitle(idx), slideText:slideText(idx),
+      language:ttsLang, isFirstSlide:first, isLastSlide:last, mode:'auto',
+      context:'LineMind AI presentation for industrial maintenance and production customers' };
+    if(narration) payload.narration=narration;
+    var body=JSON.stringify(payload);
     var opts={ method:'POST', headers:{'Content-Type':'application/json'}, body:body };
     if(ctrl) opts.signal=ctrl.signal;
     fetch(BACKEND+ENDPOINT, opts)
       .then(function(r){ if(!r.ok) throw new Error('status'); return r.json(); })
       .then(function(d){ if(!on) return; if(!d||!d.ok) throw new Error('bad');
-        currentText=d.text||localText(idx,lang,first,last);
+        currentText=d.text||narration||localText(idx,ttsLang,first,last);
         if(d.audioProvider==='elevenlabs' && d.ttsAvailable && d.audioBase64){
           var ok=playBase64(d.audioBase64, d.audioMimeType||'audio/mpeg', 'ElevenLabs voice active');
-          if(!ok) browserSpeak(currentText, lang, 'Browser voice fallback');
+          if(!ok) browserSpeak(currentText, ttsLang, 'Browser voice fallback');
         } else {
-          browserSpeak(currentText, lang, 'Browser voice fallback');
+          browserSpeak(currentText, ttsLang, 'Browser voice fallback');
         }
       })
       .catch(function(err){ if(err && err.name==='AbortError') return; if(!on) return;
-        currentText=localText(idx,lang,first,last);
-        browserSpeak(currentText, lang, 'Backend unavailable — browser voice fallback');
+        currentText=narration||localText(idx,ttsLang,first,last);
+        browserSpeak(currentText, ttsLang, 'Backend unavailable — browser voice fallback');
       });
   }
 
