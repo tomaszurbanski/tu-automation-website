@@ -20,7 +20,8 @@ attributes. The language switcher is in the top nav (`.lang-switcher`).
 | `index.html` | Homepage — hero, services, tech, projects, process, calculator, contact |
 | `oferta.html` | **Service Proposal / Serviceangebot** — standalone interactive offer (EN/PL/DE, animated, self-contained). Opened from the **Serwis / Service** button at the end of the "Zakres usług" section on `index.html`. Prices: £ for EN/PL, € for DE (€0.30/km travel). |
 | `plcbridge.html` | PLCbridge product page |
-| `linemind.html` | LineMind AI product page |
+| `linemind-ai-presentation.html` | **LineMind AI — official product presentation** (the single canonical LineMind AI page) |
+| `linemind.html` | **Deprecated** — redirect stub (canonical + meta-refresh + JS) to `linemind-ai-presentation.html` |
 | `scada.html`, `migration.html` | Service detail pages |
 | `omnie.html` | About me |
 | `gallery.html` + `gallery/` | Project gallery |

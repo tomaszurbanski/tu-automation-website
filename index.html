@@ -703,7 +703,7 @@ function openPresModal(){document.getElementById('presModal').classList.add('act
 function closePresModal(){document.getElementById('presModal').classList.remove('active');document.getElementById('presPass').value='';document.getElementById('presModalSub').textContent='Wpisz hasło dostępu, aby otworzyć prezentację interaktywną.';document.getElementById('presModalSub').classList.remove('pres-error');document.getElementById('presForm').style.display='flex';document.getElementById('presNoAccess').style.display='none';}
 function checkPresPass(){
   var p=document.getElementById('presPass').value.trim();
-  if(p==='LineMind2025'){window.open('linemind.html','_blank');closePresModal();}
+  if(p==='LineMind2025'){window.open('linemind-ai-presentation.html','_blank');closePresModal();}
   else if(p===''){document.getElementById('presModalSub').textContent='Pole hasła nie może być puste.';document.getElementById('presModalSub').classList.add('pres-error');}
   else{document.getElementById('presModalSub').textContent='Nieprawidłowe hasło.';document.getElementById('presModalSub').classList.add('pres-error');document.getElementById('presNoAccess').style.display='block';}
 }
