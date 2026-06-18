@@ -47,3 +47,9 @@ python -m http.server 8080   # then visit http://localhost:8080
 ## Deploy
 
 Push to `master` — GitHub Pages publishes automatically to `tuautomation.de`.
+
+## Documentation
+
+- [`docs/LINEMIND_TU_AUTOMATION_STATUS.md`](docs/LINEMIND_TU_AUTOMATION_STATUS.md) — current working state of the AI agents (TU Automation agent vs LineMind presenters), which agent is which, what not to mix, how to test, how to deploy, troubleshooting, last known commits.
+- [`docs/AI_AGENT_ROADMAP.md`](docs/AI_AGENT_ROADMAP.md) — AI agent roadmap.
+- Backend status & Render deployment: see `docs/BACKEND_STATUS.md` in the [linemind-ai-backend](https://github.com/tomaszurbanski/linemind-ai-backend) repo.
