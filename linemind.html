@@ -195,6 +195,10 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
   letter-spacing:.3px}
 .cta-btn:hover{transform:scale(1.04);box-shadow:0 0 55px var(--teal-glow)}
 .cta-mkt{font-size:10px;color:var(--muted);letter-spacing:.5px}
+.censored-price{position:relative;display:inline-block;border-radius:6px;overflow:hidden;vertical-align:middle}
+.censored-price .cp-val{filter:blur(5px);opacity:.55;-webkit-user-select:none;user-select:none;padding:0 6px;letter-spacing:.5px}
+.censored-price .censored-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,rgba(8,12,22,.82),rgba(8,12,22,.9));color:#39ff9e;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;border:1px solid rgba(57,255,158,.4);border-radius:6px;padding:0 8px;white-space:nowrap}
+.pricing-note{font-size:11.5px;color:var(--muted);margin:10px auto 0;max-width:560px;line-height:1.55}
 
 /* ── KEYFRAMES ── */
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.75)}}
@@ -350,6 +354,11 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
     <div class="pulse"></div>
     <span data-pl="WERSJA DEMO · LIVE" data-en="DEMO VERSION · LIVE" data-de="DEMO-VERSION · LIVE">WERSJA DEMO · LIVE</span>
   </div>
+  <a href="linemind-ai-presentation.html"
+     style="display:inline-block;margin-top:18px;color:#14b8a6;font-size:13px;font-weight:700;letter-spacing:.3px;text-decoration:none;border:1px solid rgba(20,184,166,.5);border-radius:10px;padding:9px 16px"
+     data-pl="Zobacz interaktywną prezentację AI →"
+     data-en="Open the interactive AI presentation →"
+     data-de="Interaktive KI-Präsentation öffnen →">Zobacz interaktywną prezentację AI →</a>
 </div>
 
 <!-- ═══ SLIDE 2 — PROBLEM ═══ -->
@@ -950,12 +959,20 @@ h2.title{font-size:clamp(26px,3.6vw,50px);font-weight:800;line-height:1.1;
       Zacznijmy pilot w 3 tygodnie
     </h2>
     <div class="cta-pricing">
-      <strong data-pl="Pilot 3 miesiące:" data-en="3-month pilot:" data-de="3-Monats-Pilot:">Pilot 3 miesiące:</strong> 8 000 – 12 000 EUR <span data-pl="z referencją" data-en="with reference case" data-de="mit Referenzprojekt">z referencją</span><br>
-      <strong data-pl="Pełne wdrożenie:" data-en="Full deployment:" data-de="Vollständige Implementierung:">Pełne wdrożenie:</strong> 25 000 – 80 000 EUR<br>
-      <strong>SaaS:</strong> 1 500 – 4 500 EUR / <span data-pl="miesiąc" data-en="month" data-de="Monat">miesiąc</span>
+      <strong data-pl="Pilot 3 miesiące:" data-en="3-month pilot:" data-de="3-Monats-Pilot:">Pilot 3 miesiące:</strong>
+      <span class="censored-price" data-ai-ignore="true" aria-hidden="true"><span class="cp-val">8 000 – 12 000 EUR</span><span class="censored-overlay" data-pl="WYCENA INDYWIDUALNA" data-en="CUSTOM PRICING" data-de="INDIVIDUELLES ANGEBOT">WYCENA INDYWIDUALNA</span></span><br>
+      <strong data-pl="Pełne wdrożenie:" data-en="Full deployment:" data-de="Vollständige Implementierung:">Pełne wdrożenie:</strong>
+      <span class="censored-price" data-ai-ignore="true" aria-hidden="true"><span class="cp-val">25 000 – 80 000 EUR</span><span class="censored-overlay" data-pl="WYCENA INDYWIDUALNA" data-en="CUSTOM PRICING" data-de="INDIVIDUELLES ANGEBOT">WYCENA INDYWIDUALNA</span></span><br>
+      <strong>SaaS:</strong>
+      <span class="censored-price" data-ai-ignore="true" aria-hidden="true"><span class="cp-val">1 500 – 4 500 EUR / <span data-pl="miesiąc" data-en="month" data-de="Monat">miesiąc</span></span><span class="censored-overlay" data-pl="WYCENA INDYWIDUALNA" data-en="CUSTOM PRICING" data-de="INDIVIDUELLES ANGEBOT">WYCENA INDYWIDUALNA</span></span>
     </div>
-    <div class="cta-email">turbanski824@gmail.com</div>
-    <button class="cta-btn" onclick="window.location.href='mailto:turbanski824@gmail.com?subject=LineMind AI Demo'"
+    <p class="pricing-note"
+      data-pl="Szczegóły cenowe ustalane indywidualnie po konsultacji i analizie zakresu wdrożenia."
+      data-en="Final pricing is defined individually after consultation and review of project scope."
+      data-de="Die endgültige Preisgestaltung erfolgt individuell nach Beratung und Analyse des Projektumfangs.">
+      Szczegóły cenowe ustalane indywidualnie po konsultacji i analizie zakresu wdrożenia.</p>
+    <div class="cta-email">info@tuautomation.de</div>
+    <button class="cta-btn" onclick="window.location.href='mailto:info@tuautomation.de?subject=LineMind AI Demo'"
       data-pl="Umów demonstrację →"
       data-en="Schedule a demo →"
       data-de="Demo vereinbaren →">

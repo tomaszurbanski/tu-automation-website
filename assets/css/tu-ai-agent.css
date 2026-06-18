@@ -1,0 +1,39 @@
+/* TU Automation — floating AI agent (bottom-right). Scoped with .tuai- prefix. */
+.tuai-dock{position:fixed;right:22px;bottom:22px;z-index:9999;display:flex;align-items:center;gap:10px;
+  font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;user-select:none}
+.tuai-pill{display:flex;align-items:center;gap:9px;background:rgba(9,15,27,.82);border:1px solid #233247;
+  border-radius:14px;padding:7px 10px 7px 8px;backdrop-filter:blur(9px);box-shadow:0 8px 28px rgba(0,0,0,.45)}
+.tuai-info{display:flex;flex-direction:column;gap:2px;min-width:92px}
+.tuai-stat{font-size:10px;font-weight:800;letter-spacing:.4px;color:#7B8CA3;line-height:1.2}
+.tuai-stat.on{color:#39ff9e}
+.tuai-wf{display:flex;align-items:center;gap:2.5px;height:11px}
+.tuai-wf i{width:2.5px;height:3px;border-radius:2px;background:#3a4a5e;transition:height .2s,background .2s}
+.tuai-wf.speaking i{background:#39ff9e;animation:tuai-bar .8s ease-in-out infinite}
+.tuai-wf.speaking i:nth-child(2){animation-delay:.12s}.tuai-wf.speaking i:nth-child(3){animation-delay:.24s}
+.tuai-wf.speaking i:nth-child(4){animation-delay:.36s}.tuai-wf.speaking i:nth-child(5){animation-delay:.08s}
+.tuai-wf.thinking i{background:#f59e0b;animation:tuai-think 1.1s ease-in-out infinite}
+@keyframes tuai-bar{0%,100%{height:3px}50%{height:11px}}
+@keyframes tuai-think{0%,100%{opacity:.3}50%{opacity:1}}
+.tuai-pwr{border:1px solid #2C3A4E;background:rgba(30,41,59,.85);color:#9fb1c6;border-radius:10px;
+  font-size:10.5px;font-weight:800;letter-spacing:.6px;padding:6px 11px;cursor:pointer;transition:all .15s}
+.tuai-pwr:hover{border-color:#14b8a6}
+.tuai-pwr.on{border-color:#39ff9e;background:rgba(57,255,158,.16);color:#dffff0;box-shadow:0 0 14px rgba(57,255,158,.25)}
+.tuai-orb{width:54px;height:54px;border-radius:50%;position:relative;cursor:pointer;flex:0 0 auto;
+  background:radial-gradient(circle at 36% 30%,rgba(34,211,238,.30),rgba(9,15,27,.96));
+  border:1px solid rgba(20,184,166,.5);box-shadow:0 0 24px rgba(20,184,166,.4);
+  display:flex;align-items:center;justify-content:center;transition:transform .15s,box-shadow .25s}
+.tuai-orb:hover{transform:translateY(-2px)}
+.tuai-orb.on{box-shadow:0 0 30px rgba(57,255,158,.55);border-color:rgba(57,255,158,.65)}
+.tuai-orb.speaking{animation:tuai-glow 1.4s ease-in-out infinite}
+@keyframes tuai-glow{0%,100%{box-shadow:0 0 24px rgba(57,255,158,.45)}50%{box-shadow:0 0 40px rgba(57,255,158,.8)}}
+.tuai-led{position:absolute;top:5px;right:6px;width:8px;height:8px;border-radius:50%;background:#3a4a5e}
+.tuai-orb svg{display:block;overflow:visible}
+.tuai-dring{transform-origin:center;animation:tuai-spin 18s linear infinite}
+@keyframes tuai-spin{to{transform:rotate(360deg)}}
+.tuai-core{fill:#14b8a6;filter:drop-shadow(0 0 5px rgba(20,184,166,.95));transform-origin:center;animation:tuai-breathe 3.2s ease-in-out infinite}
+.tuai-orb.on .tuai-core{fill:#39ff9e;filter:drop-shadow(0 0 6px rgba(57,255,158,.95))}
+@keyframes tuai-breathe{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.14)}}
+.tuai-head{fill:rgba(20,184,166,.05);stroke:#14b8a6;stroke-width:1.6}
+.tuai-orb.on .tuai-head{stroke:#39ff9e}
+.tuai-eye{stroke:#39ff9e;stroke-width:3;stroke-linecap:round}
+@media(max-width:560px){.tuai-info{min-width:0}.tuai-stat{max-width:118px}}
