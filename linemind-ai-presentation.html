@@ -1704,7 +1704,7 @@ button.ss-cta{font-family:inherit;cursor:pointer}
           <button class="sg-lang" data-l="de" type="button">DE</button>
         </div>
         <input id="sec-code" maxlength="40" placeholder="LM-ACME-2026-001" autocomplete="off" spellcheck="false">
-        <button id="sec-start" type="button">▶ Rozpocznij</button>
+        <button id="sec-start" type="button">▶ Rozpocznij sesję</button>
         <div id="sec-msg"></div>
       </div>
       <div id="sg-greet">
@@ -1713,7 +1713,7 @@ button.ss-cta{font-family:inherit;cursor:pointer}
       </div>
     </div>
   </div>
-  <div class="sg-foot" id="sg-foot">Dostęp jednorazowy · kod wygasa po zakończeniu sesji.</div>
+  <div class="sg-foot" id="sg-foot">Dostęp jednorazowy · kod wygasa po zakończeniu sesji</div>
 </div>
 
 <script src="qrcode.js"></script>
@@ -1793,6 +1793,7 @@ button.ss-cta{font-family:inherit;cursor:pointer}
       $('sg-title').textContent   = SLANG==='pl'?'Prywatna sesja LineMind AI':SLANG==='de'?'Private LineMind-AI-Sitzung':'Private LineMind AI session';
       $('sg-sub').textContent     = SLANG==='pl'?'Wprowadź jednorazowy kod dostępu, aby rozpocząć transmisję.':SLANG==='de'?'Geben Sie Ihren Einmal-Zugangscode ein, um die Übertragung zu starten.':'Enter your one-time access code to begin the transmission.';
       $('sec-start').textContent  = SLANG==='pl'?'▶ Rozpocznij sesję':SLANG==='de'?'▶ Sitzung starten':'▶ Start session';
+      if(!KIOSK) $('sg-foot').textContent = SLANG==='pl'?'Dostęp jednorazowy · kod wygasa po zakończeniu sesji':SLANG==='de'?'Einmaliger Zugang · Code verfällt nach Sitzungsende':'Single-use access · code expires after session ends';
     });
   });
 
