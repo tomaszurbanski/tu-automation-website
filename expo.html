@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LineMind AI — Otwórz w Expo Go</title>
+<link rel="canonical" href="https://tuautomation.de/expo.html"/>
+<!--
+  Strona pośrednia QR → Expo Go.
+  Powód: aparat systemowy Androida NIE otwiera linków "exp://" (tylko http/https).
+  QR prezentacji koduje https://tuautomation.de/expo.html?to=<urlencoded exp://...>,
+  a ta strona przekierowuje do Expo Go (auto + przycisk = gest użytkownika).
+  Działa na iOS (Safari) i Android (Chrome) z aparatu systemowego.
+-->
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',-apple-system,BlinkMacSystemFont,sans-serif;background:#0F172A;color:#F1F5F9;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px}
+.card{width:100%;max-width:400px;background:rgba(30,41,59,.65);border:1px solid #334155;border-radius:18px;
+  padding:34px 28px;backdrop-filter:blur(12px);text-align:center}
+.logo{display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:18px}
+.mark{width:48px;height:48px;border-radius:13px;background:linear-gradient(135deg,#14b8a6,#0f766e);
+  display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:#0F172A;
+  box-shadow:0 0 28px rgba(20,184,166,.5)}
+.name{font-size:22px;font-weight:800;letter-spacing:-.5px}.name span{color:#14b8a6}
+h1{font-size:18px;font-weight:800;margin:6px 0 4px}
+.sub{font-size:13px;color:#94a3b8;line-height:1.55;margin-bottom:22px}
+.btn{display:block;width:100%;background:linear-gradient(135deg,#14b8a6,#0f766e);color:#0F172A;text-decoration:none;
+  border-radius:12px;padding:16px;font-size:15px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;
+  transition:.18s;margin-bottom:14px}
+.btn:hover{filter:brightness(1.08);box-shadow:0 0 20px rgba(20,184,166,.45)}
+.muted{font-size:12px;color:#64748B;line-height:1.7;margin-top:8px}
+.stores{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+.stores a{font-size:12px;color:#14b8a6;text-decoration:none;border:1px solid #334155;border-radius:8px;padding:8px 12px}
+.stores a:hover{border-color:#14b8a6}
+.err{color:#ef4444;font-size:13px;font-weight:700;margin-top:10px}
+code{font-family:'Consolas',monospace;font-size:11px;color:#64748B;word-break:break-all}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo"><div class="mark">L</div><div class="name">Line<span>Mind</span> AI</div></div>
+  <h1>Otwórz mobilne demo</h1>
+  <div class="sub">Uruchamiam aplikację w <b>Expo Go</b>…<br>Jeśli nie otworzy się sama, kliknij przycisk poniżej.</div>
+  <a id="go" class="btn" href="#" rel="noopener">▶ Otwórz w Expo Go</a>
+  <div id="err" class="err" hidden>Brak prawidłowego adresu. Wróć do prezentacji i zeskanuj kod ponownie.</div>
+  <div class="muted">Nie masz aplikacji Expo Go? Zainstaluj ją, a potem kliknij przycisk wyżej.</div>
+  <div class="stores">
+    <a href="https://play.google.com/store/apps/details?id=host.exp.exponent" target="_blank" rel="noopener">Expo Go · Android</a>
+    <a href="https://apps.apple.com/app/expo-go/id982107779" target="_blank" rel="noopener">Expo Go · iPhone</a>
+  </div>
+</div>
+<script>
+(function(){
+  function qp(n){ var m=location.search.match(new RegExp('[?&]'+n+'=([^&]+)')); return m?decodeURIComponent(m[1]):''; }
+  var to = qp('to');
+  var valid = /^exp(\+[a-z0-9.\-]+)?:\/\//i.test(to);   // akceptuj tylko schemat exp:// (bezpieczeństwo)
+  var go = document.getElementById('go');
+  if(!valid){
+    document.getElementById('err').hidden = false;
+    go.style.display = 'none';
+    return;
+  }
+  go.href = to;
+  // Auto-próba otwarcia (na części Androidów wymaga gestu — wtedy zadziała przycisk).
+  setTimeout(function(){ try{ window.location.href = to; }catch(e){} }, 500);
+})();
+</script>
+</body>
+</html>

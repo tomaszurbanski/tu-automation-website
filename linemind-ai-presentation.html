@@ -2044,13 +2044,16 @@ button.ss-cta{font-family:inherit;cursor:pointer}
          + (company ? '&company=' + encodeURIComponent(company) : '')
          + (T.sid   ? '&sid='     + encodeURIComponent(T.sid)   : '');
   }
-  function renderQRInline(){                                    // reużycie istniejącego qrcode.js + demoLink (Expo Go) → QR w modalu
+  function launchURL(){                                         // QR uniwersalny: https → expo.html → exp:// (działa też z APARATU Androida, nie tylko skanera Expo Go)
+    return 'https://tuautomation.de/expo.html?to=' + encodeURIComponent(demoLink());
+  }
+  function renderQRInline(){                                    // reużycie istniejącego qrcode.js + launchURL (https→Expo Go) → QR w modalu
     var box=$('qm-qr'); if(!box || box.getAttribute('data-done')==='1') return;
     try{
-      if(typeof qrcode!=='function'){ box.textContent=demoLink(); return; }
-      var qr=qrcode(0,'M'); qr.addData(demoLink()); qr.make();
+      if(typeof qrcode!=='function'){ box.textContent=launchURL(); return; }
+      var qr=qrcode(0,'M'); qr.addData(launchURL()); qr.make();
       box.innerHTML='<img alt="QR" src="'+qr.createDataURL(8,2)+'">'; box.setAttribute('data-done','1');
-    }catch(e){ box.textContent=demoLink(); }
+    }catch(e){ box.textContent=launchURL(); }
   }
   var END_I18N = {
     platform:{pl:'🚀 Otwórz Platformę LineMind AI',en:'🚀 Open the LineMind AI Platform',de:'🚀 LineMind-AI-Plattform öffnen'},
