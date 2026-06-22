@@ -1885,6 +1885,7 @@ button.ss-cta{font-family:inherit;cursor:pointer}
       try{
         var _L=(SLANG==='de'?'de':SLANG==='en'?'en':'pl');
         var _a=new Audio('audio/'+_L+'/'+audioId+'.mp3'); var _done=false;
+        _a.playbackRate = 1.10;   // globalne tempo MP3 (intro/slajdy/outro, PL/EN/DE)
         var _fin=function(){ if(_done)return; _done=true; if(onEnd)onEnd(); };
         var _fb =function(){ if(_done)return; _done=true; browserSpeakSec(text,onEnd); };
         try{ if(curSecAudio){ curSecAudio.pause(); } }catch(e){}
